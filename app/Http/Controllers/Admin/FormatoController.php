@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\Procesador\CreateRequest;
-use App\Http\Requests\Procesador\UpdateRequest;
+use App\Http\Requests\Formato\CreateRequest;
+use App\Http\Requests\Formato\UpdateRequest;
 
 use App\Models\Formato;
 
