@@ -45,7 +45,7 @@
                         <li><a href="{{ url('admin/despacho/execute') }}"><i class='fa fa-circle-o'></i>Despachar</a></li>
                     </ul>
                 </li>
-                <li class="treeview {{ areActiveRoutes(['admin/procesador','admin/producto', 'admin/calibre', 'admin/calidad','admin/especie']) }}">
+                <li class="treeview {{ areActiveRoutes(['admin/procesador','admin/elaborador','admin/producto', 'admin/calibre', 'admin/calidad','admin/especie']) }}">
                     <a href="#"><i class='glyphicon glyphicon-tasks'></i> <span>Mantenedores</span><i class="fa fa-angle-right pull-right"></i></a>
                     <ul class="treeview-menu">
                     <li class="{{ isActiveRoute('admin/procesador') }}"><a href="{{ url('/admin/procesador') }}"><i class='fa fa-wrench'></i> <span>Procesadora</span></a></li>
