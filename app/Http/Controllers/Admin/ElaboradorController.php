@@ -29,8 +29,9 @@ class ElaboradorController extends Controller
             $dt_json = '{ "data": [';
 
             foreach ($elaboradores as $elaborador) {
-                $dt_json .= '["'.$elaborador->elaborador_id.",".
-                $elaborador->elaborador_name.",".$elaborador->elaborador_rut.'"],';
+                $dt_json .= '["'.$elaborador->elaborador_id.'","'
+                                .$elaborador->elaborador_name.'","'
+                                .$elaborador->elaborador_rut.'"],';
             }
 
             $dt_json = substr($dt_json, 0, -1);

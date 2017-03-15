@@ -3,16 +3,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Eliminar Procesadora</h4>
+                <h4 class="modal-title">Eliminar Elaborador</h4>
                 <p class="alert alert-danger"></p>
             </div>
             <div class="modal-body">
-                {!! Form::open(['url' => 'admin/procesador/delete',
+                {!! Form::open(['url' => 'admin/elaborador/delete',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
                   'id' => 'form-delete']) !!}
                   
-                  @include('admin.procesador.fields')
+                  @include('admin.elaborador.fields')
 
                 {!! Form::close() !!}
             </div>

@@ -3,8 +3,8 @@
 	{!! Form::label('nombre', 'Nombre',
 		['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-7">
-		{!! Form::text('procesador_name', null, ['class' => 'form-control',
-								'placeholder' => 'Nombre del Procesador']) !!}
+		{!! Form::text('elaborador_name', null, ['class' => 'form-control',
+								'placeholder' => 'Nombre del Elaborador']) !!}
 	</div>
 	
 </div>
@@ -14,10 +14,10 @@
 	{!! Form::label('rut', 'RUT',
 		['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-7">
-		{!! Form::text('procesador_rut', null, ['class' => 'form-control',
+		{!! Form::text('elaborador_rut', null, ['class' => 'form-control',
 								'placeholder' => 'RUT']) !!}
 	</div>
 	
 </div>
 
-{!! Form::hidden('procesador_id', null) !!}
+{!! Form::hidden('elaborador_id', null) !!}

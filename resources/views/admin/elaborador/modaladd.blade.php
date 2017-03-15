@@ -7,12 +7,12 @@
                 <p class="alert alert-danger"></p>
             </div>
             <div class="modal-body">
-                {!! Form::open(['url' => 'admin/procesador/store',
+                {!! Form::open(['url' => 'admin/elaborador/store',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
                   'id' => 'form-add']) !!}
                   
-                  @include('admin.procesador.fields')
+                  @include('admin.elaborador.fields')
 
                 {!! Form::close() !!}
             </div>
