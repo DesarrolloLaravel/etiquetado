@@ -27,7 +27,7 @@ class UpdateRequest extends Request
             //
             'formato_nombre'    =>'required|unique:formato,formato_nombre,'
                 .$this->request->get('formato_nombre').',formato_nombre',
-            'formato_abreviacion'    =>'required|unique:formato,formato_abreviacion,'
+            'formato_abreviatura'    =>'required|unique:formato,formato_abreviatura,'
                 .$this->request->get('formato_nombre').',formato_nombre'
         ];
     }
@@ -37,8 +37,8 @@ class UpdateRequest extends Request
         return [
             'formato_nombre.required'   => 'El nombre es obligatorio',
             'formato_nombre.unique'   => 'Ya existe otro Formato con ese Nombre. Por favor verifica tu información',
-            'formato_abreviacion.required'   => 'El nombre es obligatorio',
-            'formato_abreviacion.unique'   => 'Ya existe otro Formato con esa Abreviatura. Por favor verifica tu información',
+            'formato_abreviatura.required'   => 'El nombre es obligatorio',
+            'formato_abreviatura.unique'   => 'Ya existe otro Formato con esa Abreviatura. Por favor verifica tu información',
         ];
     }
 }

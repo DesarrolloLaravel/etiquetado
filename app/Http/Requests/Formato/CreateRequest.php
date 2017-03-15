@@ -26,7 +26,7 @@ class CreateRequest extends Request
         return [
             //
             'formato_nombre' => 'required|unique:formato,formato_nombre',
-            'formato_abreviacion' => 'required|unique:formato,formato_abreviacion',
+            'formato_abreviatura' => 'required|unique:formato,formato_abreviatura',
         ];
     }
 }

@@ -160,7 +160,7 @@ class FormatoController extends Controller
                 return response()->json($v->errors());
             }
             //busco la compañia a eliminar
-            $formato = Procesador::findOrFail($request->formato_id);
+            $formato = Formato::findOrFail($request->formato_id);
             //elimino la compañia
             $formato->delete();
 
