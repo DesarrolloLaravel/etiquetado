@@ -34,6 +34,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('procesador/store','ProcesadorController@store');
 	Route::post('procesador/update','ProcesadorController@update');
 	Route::post('procesador/delete','ProcesadorController@delete');
+    
+    Route::get('elaborador','ElaboradorController@index');
 
 	Route::get('empresa','EmpresaController@index');
 	Route::get('empresa/edit','EmpresaController@edit');
