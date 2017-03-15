@@ -10,9 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Procesador\CreateRequest;
 use App\Http\Requests\Procesador\UpdateRequest;
 
-use App\Models\Procesador;
+use App\Models\Formato;
 
-class ProcesadorController extends Controller
+class FormatoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,36 +22,40 @@ class ProcesadorController extends Controller
     public function index(Request $request)
     {
         //
-        $procesadores = Procesador::all();
+        $formatos = Formato::all();
 
-        if($request->ajax())
-        {
-            if($procesadores->count() == 0)
-            {
+        if($request -> ajax()){
+
+            if($formatos-> count() == 0){
                 return '{"data":[]}';
             }
-            //inicializo el json
-            $dt_json = '{ "data" : [';
+            $dt_json = '{ "data": [';
 
-            //para cada compañia
-            foreach ($procesadores as $procesador) {
-                //completo el json
-                $dt_json .= '["'.$procesador->procesador_id.'","'
-                                .$procesador->procesador_name.'","'
-                                .$procesador->procesador_rut.'"],';
+            foreach ($formatos as $formato) {
+                $dt_json .= '["'.$formato->formato_id.'","'
+                                .$formato->formato_nombre.'","'
+                                .$formato->formato_abreviatura.'"],';
             }
-            //elimino la ultima coma del json
+
             $dt_json = substr($dt_json, 0, -1);
-            //se cierra el json
-            $dt_json.= "] }";
-            //envio respuesta al cliente
+            $dt_json .= "] }";
+
             return $dt_json;
         }
-        else
-        {
-            return view('admin.procesador.index', compact('procesadores'));
+        else{
+            return view('admin.formato.index', compact('formato'));    
         }
         
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -62,7 +66,7 @@ class ProcesadorController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        //si la peticion es ajax
+         //si la peticion es ajax
         if($request->ajax())
         {
             //creo y guardo una compañia con toda la informacion enviada
@@ -72,6 +76,17 @@ class ProcesadorController extends Controller
                 "ok"
             ]);
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -86,9 +101,9 @@ class ProcesadorController extends Controller
         if($request->ajax())
         {  
             //busco la compañia a consultar
-            $procesador = Procesador::findOrFail($request->procesador_id);
+            $formato = Formato::findOrFail($request->formato_id);
             
-            return response()->json($procesador);
+            return response()->json($formato);
         }
     }
 
@@ -104,17 +119,17 @@ class ProcesadorController extends Controller
         //
         if($request->ajax())
         {
-            $procesador = Procesador::findOrFail($request->procesador_id);
+            $formato = Formato::findOrFail($request->formato_id);
 
             //se crea un array con la información enviada desde el cliente
             $info = array(
-                'procesador_name' => $request->procesador_name, 
-                'procesador_rut' => $request->procesador_rut);
+                'formato_nombre' => $request->formato_nombre, 
+                'formato_abreviatura' => $request->formato_abreviatura);
 
             //se pasa la información a la compañia encontrada
-            $procesador->fill($info);
+            $formato->fill($info);
             //se guardan los cambios en la base de datos
-            $procesador->save();
+            $formato->save();
             //se envia respuesta al cliente
             return response()->json([
                 "ok"
@@ -136,7 +151,7 @@ class ProcesadorController extends Controller
             //se crea el validador con la información enviada desde el cliente
             //y con las reglas de validación respectiva
             $v = \Validator::make($request->all(), [
-                'procesador_id' => 'required|exists:procesador,procesador_id'
+                'formato_id' => 'required|exists:formato,formato_id'
             ]);
             //si falla la validación
             if ($v->fails())
@@ -145,14 +160,13 @@ class ProcesadorController extends Controller
                 return response()->json($v->errors());
             }
             //busco la compañia a eliminar
-            $procesador = Procesador::findOrFail($request->procesador_id);
+            $formato = Procesador::findOrFail($request->formato_id);
             //elimino la compañia
-            $procesador->delete();
+            $formato->delete();
 
             //respuesta al cliente
             return response()->json([
                 "ok"
             ]);
         }
-    }
-}
+    }}
