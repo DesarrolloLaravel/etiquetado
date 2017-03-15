@@ -40,15 +40,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('elaborador/store','ElaboradorController@store');
     Route::post('elaborador/update','ElaboradorController@update');
     Route::post('elaborador/delete','ElaboradorController@delete');
-<<<<<<< HEAD
+
 
     Route::get('formato','FormatoController@index');
     Route::get('formato/edit','FormatoController@edit');
 	Route::post('formato/store','FormatoController@store');
 	Route::post('formato/update','FormatoController@update');
 	Route::post('formato/delete','FormatoController@delete');
-=======
->>>>>>> origin/master
 
 	Route::get('empresa','EmpresaController@index');
 	Route::get('empresa/edit','EmpresaController@edit');
