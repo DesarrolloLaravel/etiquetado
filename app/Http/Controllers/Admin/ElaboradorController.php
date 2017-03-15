@@ -18,23 +18,31 @@ class ElaboradorController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        //toma todos los elaboradores
         $elaboradores = Elaborador::all();
 
+        //si es petición ajax
         if($request -> ajax()){
 
+            //si no hay elaboradores
             if($elaboradores-> count() == 0){
                 return '{"data":[]}';
             }
+
+            //si no hay elaboradores
             $dt_json = '{ "data": [';
 
+            //guarda en json los datos de todos los elaboradores
             foreach ($elaboradores as $elaborador) {
                 $dt_json .= '["'.$elaborador->elaborador_id.'","'
                                 .$elaborador->elaborador_name.'","'
                                 .$elaborador->elaborador_rut.'"],';
             }
 
+            //elimina la ultima coma del json
             $dt_json = substr($dt_json, 0, -1);
+
+            //cierra el json
             $dt_json .= "] }";
 
             return $dt_json;
@@ -61,9 +69,18 @@ class ElaboradorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        //si es petición ajax
+        if($request -> ajax()){
+            //crea un elaborador con los datos del request
+            Elaborador::create($request->all());
+            return response()->json([
+
+                "ok"
+
+                ]);
+        }
     }
 
     /**
