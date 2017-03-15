@@ -185,6 +185,8 @@
 
             $("#"+form+" input[name='especie_id']").val(data.especie_id);
             $("#"+form+" input[name='especie_name']").val(data.especie_name);
+            $("#"+form+" input[name='especie_comercial_name']").val(data.especie_comercial_name);
+            $("#"+form+" input[name='especie_abbreviation']").val(data.especie_abbreviation);
         }
 
     </script>

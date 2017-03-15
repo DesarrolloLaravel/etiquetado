@@ -127,7 +127,9 @@ class EspecieController extends Controller
 
             //se crea un array con la información enviada desde el cliente
             $info = array(
-                'especie_name' => $request->especie_name);
+                'especie_comercial_name' => $request->especie_comercial_name,
+                'especie_name' => $request->especie_name,
+                'especie_abbreviation' => $request->especie_abbreviation);
 
             //se pasa la información a la compañia encontrada
             $especie->fill($info);
