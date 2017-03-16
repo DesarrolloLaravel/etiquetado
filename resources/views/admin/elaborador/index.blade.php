@@ -45,11 +45,17 @@
             $.get("elaborador/edit",
                 {elaborador_id : elaborador_id},
                 function(data){
-                    console.log(data);
-                    setValues(data, 0);
 
-                    $('#modal_edit').modal('show');
+                    if(data[0] == "nok"){
+                        $('#modal_add').modal('show');
+                    }
+                    else{
+                        console.log(data);
+                        setValues(data, 0);
 
+                        $('#modal_edit').modal('show');
+    
+                    }
                 });
         } );
 
@@ -62,14 +68,22 @@
             $.get("elaborador/edit",
                 {elaborador_id : elaborador_id},
                 function(data){
-                    setValues(data, 1);
+                    
+                    if(data[0] == "nok"){
+                        $('#modal_add').modal('show');
+                    }
+                    else{
+                        
+                        setValues(data, 1);
 
-                    $('#modal_delete').modal('show');
+                        $('#modal_delete').modal('show');
 
-                    $("#form-delete :input")
-                        .not('.btn')
-                        .not("input[type='hidden']")
-                        .attr("disabled", true);
+                        $("#form-delete :input")
+                            .not('.btn')
+                            .not("input[type='hidden']")
+                            .attr("disabled", true);    
+    
+                    }
 
                 });
         } );

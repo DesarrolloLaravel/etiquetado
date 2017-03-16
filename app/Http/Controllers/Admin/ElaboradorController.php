@@ -11,6 +11,7 @@ use App\Http\Requests\Elaborador\CreateRequest;
 use App\Http\Requests\Elaborador\UpdateRequest;
 
 use App\Models\Elaborador;
+use App\Models\Lote;
 
 class ElaboradorController extends Controller
 {
@@ -105,18 +106,22 @@ class ElaboradorController extends Controller
     public function edit(Request $request)
     {
         //revisa si es una petición ajax
+
         if($request->ajax()){
 
-            if(!Lote::where("lote_elaborador_id",$request->elaborador_id)->first()){
-
+            
+            $lot = Lote::where('lote_elaborador_id',$request->elaborador_id)->count();
+            
+            if($lot == 0){
                 //se busca el elaborador a modificar
                 $elaborador = Elaborador::findOrFail($request->elaborador_id);
 
-                return response()->json($elaborador);
+                return response()->json($elaborador);        
             }
             else{
-                return response()->json(["null"]);
+                return response()->json(["nok"]);
             }
+    
         }
 
     }
