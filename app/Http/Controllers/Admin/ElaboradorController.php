@@ -107,10 +107,16 @@ class ElaboradorController extends Controller
         //revisa si es una petición ajax
         if($request->ajax()){
 
-            //se busca el elaborador a modificar
-            $elaborador = Elaborador::findOrFail($request->elaborador_id);
+            if(!Lote::where("lote_elaborador_id",$request->elaborador_id)->first()){
 
-            return response()->json($elaborador);
+                //se busca el elaborador a modificar
+                $elaborador = Elaborador::findOrFail($request->elaborador_id);
+
+                return response()->json($elaborador);
+            }
+            else{
+                return response()->json(["null"]);
+            }
         }
 
     }
