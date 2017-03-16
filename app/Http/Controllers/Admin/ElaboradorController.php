@@ -172,7 +172,7 @@ class ElaboradorController extends Controller
                 return response()->json($v->errors());
             }
             //busco la elaboradora a eliminar
-            $elaborador = Elaborador::findOrfail($request->elaborador);
+            $elaborador = Elaborador::findOrfail($request->elaborador_id);
             //elimino la compañia
             $elaborador->delete();
 

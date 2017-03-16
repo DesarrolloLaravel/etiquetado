@@ -60,7 +60,7 @@
             elaborador_id = $(this).parents('tr').data('id');
 
             $.get("elaborador/edit",
-                {elaborador : elaborador_id},
+                {elaborador_id : elaborador_id},
                 function(data){
                     setValues(data, 1);
 
@@ -246,6 +246,6 @@
 
 @include('admin.elaborador.modaladd')
 @include('admin.elaborador.modaledit')
-@include('admin.elaborador.modaldisable')
+@include('admin.elaborador.modaldelete')
 
 @endsection
