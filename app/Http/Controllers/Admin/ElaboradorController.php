@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\Elaborador\CreateRequest;
+use App\Http\Requests\Elaborador\UpdateRequest;
+
 use App\Models\Elaborador;
 
 class ElaboradorController extends Controller
@@ -76,7 +79,6 @@ class ElaboradorController extends Controller
             //crea un elaborador con los datos del request
             Elaborador::create($request->all());
             return response()->json([
-
                 "ok"
 
                 ]);
@@ -100,9 +102,17 @@ class ElaboradorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        //revisa si es una petición ajax
+        if($request->ajax()){
+
+            //se busca el elaborador a modificar
+            $elaborador = Elaborador::findOrFail($request->elaborador_id);
+
+            return response()->json($elaborador);
+        }
+
     }
 
     /**
@@ -112,9 +122,31 @@ class ElaboradorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request)
     {
         //
+        if($request-> ajax()){
+
+            //busca por el id al elaborador
+            $elaborador = Elaborador::findOrFail($request->elaborador_id);
+
+            //genera un array con la info del update
+            $info = array(
+                'elaborador_name' => $request->elaborador_name,
+                'elaborador_rut' => $request->elaborador_rut
+            );
+
+            //añade la info al elaborador encontrado
+            $elaborador->fill($info);
+
+            //guarda en la bd el elaborador ya modificado
+            $elaborador->save();
+
+            //retorna la respuesta
+            return response()->json([
+                "ok"
+            ]);
+        }
     }
 
     /**
@@ -123,8 +155,31 @@ class ElaboradorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+       //si la petición es ajax
+        if($request->ajax())
+        {
+            //se crea el validador con la información enviada desde el cliente
+            //y con las reglas de validación respectiva
+            $v = \Validator::make($request->all(), [
+                'elaborador_id' => 'required|exists:elaborador,elaborador_id'
+            ]);
+            //si falla la validación
+            if ($v->fails())
+            {
+                //respondo con un json que contiene los errores
+                return response()->json($v->errors());
+            }
+            //busco la elaboradora a eliminar
+            $elaborador = Elaborador::findOrfail($request->elaborador);
+            //elimino la compañia
+            $elaborador->delete();
+
+            //respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
     }
 }

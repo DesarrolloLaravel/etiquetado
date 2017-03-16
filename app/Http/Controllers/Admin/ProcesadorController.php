@@ -66,7 +66,7 @@ class ProcesadorController extends Controller
         if($request->ajax())
         {
             //creo y guardo una compañia con toda la informacion enviada
-            Formato::create($request->all());
+            Procesador::create($request->all());
             //envio respuesta al cliente
             return response()->json([
                 "ok"
