@@ -47,7 +47,7 @@
                 function(data){
 
                     if(data[0] == "nok"){
-                        $('#modal_add').modal('show');
+                        $('#modal_error').modal('show');
                     }
                     else{
                         console.log(data);
@@ -70,7 +70,7 @@
                 function(data){
                     
                     if(data[0] == "nok"){
-                        $('#modal_add').modal('show');
+                        $('#modal_error').modal('show');
                     }
                     else{
                         
@@ -261,5 +261,6 @@
 @include('admin.elaborador.modaladd')
 @include('admin.elaborador.modaledit')
 @include('admin.elaborador.modaldelete')
+@include('admin.elaborador.modalerror')
 
 @endsection
