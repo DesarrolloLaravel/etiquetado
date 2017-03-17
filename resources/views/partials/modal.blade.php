@@ -5,8 +5,9 @@
                 <span aria-hidden="true" style="color: white;">&times;</span>
             </button>
             <h4 class="modal-title">@yield('modal-title', 'title')</h4>
+            
         </div>
-
+        <p class="alert alert-danger"></p>
         @yield('modal-body')
 
         @yield('modal-footer')

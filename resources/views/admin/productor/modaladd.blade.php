@@ -2,17 +2,16 @@
 
 @section('modal-id'){{"modal_add"}}@overwrite
 
-@section('modal-title'){{"Agregar Elaborador"}}@overwrite
-@section('modal-body')  
+@section('modal-title'){{"Añadir Productor"}}@overwrite
+@section('modal-body') 
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/elaborador/store',
-        'class' => 'form-horizontal',
-        'method' => 'POST',
-        'id' => 'form-add']) !!}
-        
-        @include('admin.elaborador.fields')
-
-      {!! Form::close() !!}
+    {!! Form::open(['url' => 'admin/productor/store',
+      'class' => 'form-horizontal',
+      'method' => 'POST',
+      'id' => 'form-add']) !!}
+      
+      @include('admin.productor.fields')
+    {!! Form::close() !!}
   </div>
 @overwrite
 @section('modal-footer')
@@ -21,5 +20,4 @@
     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
   </div>
 @overwrite
-
         

@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_delete"}}@overwrite
 
-@section('modal-title'){{"Eliminar Procesador"}}@overwrite
-@section('modal-body')
+@section('modal-title'){{"Eliminar Productor"}}@overwrite
+@section('modal-body')           
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/procesador/delete',
+      {!! Form::open(['url' => 'admin/productor/delete',
         'class' => 'form-horizontal',
         'method' => 'POST',
         'id' => 'form-delete']) !!}
         
-        @include('admin.procesador.fields')
+        @include('admin.productor.fields')
 
       {!! Form::close() !!}
   </div>
@@ -20,4 +20,4 @@
     <button id="delete" type="button" class="btn btn-danger">Eliminar</button>
     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
   </div>
-@overwrite        
+@overwrite

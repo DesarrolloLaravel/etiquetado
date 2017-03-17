@@ -41,6 +41,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('elaborador/update','ElaboradorController@update');
     Route::post('elaborador/delete','ElaboradorController@delete');
 
+ 	Route::get('productor','ProductorController@index');
+    Route::get('productor/edit','ProductorController@edit');
+    Route::post('productor/store','ProductorController@store');
+    Route::post('productor/update','ProductorController@update');
+    Route::post('productor/delete','ProductorController@delete');
 
     Route::get('formato','FormatoController@index');
     Route::get('formato/edit','FormatoController@edit');

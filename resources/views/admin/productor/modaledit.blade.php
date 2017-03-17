@@ -2,17 +2,17 @@
 
 @section('modal-id'){{"modal_edit"}}@overwrite
 
-@section('modal-title'){{"Editar Elaborador"}}@overwrite
+@section('modal-title'){{"Editar Productor"}}@overwrite
 @section('modal-body')
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/elaborador/update',
-        'class' => 'form-horizontal',
-        'method' => 'POST',
-        'id' => 'form-edit']) !!}
-        
-        @include('admin.elaborador.fields')
+    {!! Form::open(['url' => 'admin/productor/update',
+    'class' => 'form-horizontal',
+    'method' => 'POST',
+      'id' => 'form-edit']) !!}
+      
+      @include('admin.productor.fields')
 
-      {!! Form::close() !!}
+    {!! Form::close() !!}
   </div>
 @overwrite
 @section('modal-footer')
@@ -21,3 +21,5 @@
     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
   </div>
 @overwrite
+
+        

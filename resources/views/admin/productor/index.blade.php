@@ -1,11 +1,11 @@
 @extends('app')
 
 @section('htmlheader_title')
-    Procesador
+    Productor
 @endsection
 
 @section('contentheader_title')
-    Procesador
+    Productor
 @endsection
 
 @section('main-content')
@@ -19,8 +19,8 @@
 
         $(".alert").hide();
 
-        table = $('#table-procesadores').DataTable({
-            "ajax" : "procesador",
+        table = $('#table-productores').DataTable({
+            "ajax" : "productor",
             "language": {
                 "url": "../../plugins/datatables/es_ES.txt"
             },
@@ -36,40 +36,54 @@
             }
         });
 
-        $('#table-procesadores tbody').on( 'click', '#edit', function ()
+        $('#table-productores tbody').on( 'click', '#edit', function ()
         {
             $(".alert").hide();
 
-            procesador_id = $(this).parents('tr').data('id');
+            productor_id = $(this).parents('tr').data('id');
 
-            $.get("procesador/edit",
-                {procesador_id : procesador_id},
+            $.get("productor/edit",
+                {productor_id : productor_id},
                 function(data){
-                    console.log(data);
-                    setValues(data, 0);
 
-                    $('#modal_edit').modal('show');
+                    if(data[0] == "nok"){
+                        $('#modal_error').modal('show');
+                    }
+                    else{
+                        console.log(data);
+                        setValues(data, 0);
 
+                        $('#modal_edit').modal('show');
+    
+                    }
                 });
         } );
 
-        $('#table-procesadores tbody').on( 'click', '#delete', function ()
+        $('#table-productores tbody').on( 'click', '#delete', function ()
         {
             $(".alert").hide();
 
-            procesador_id = $(this).parents('tr').data('id');
+            productor_id = $(this).parents('tr').data('id');
 
-            $.get("procesador/edit",
-                {procesador_id : procesador_id},
+            $.get("productor/edit",
+                {productor_id : productor_id},
                 function(data){
-                    setValues(data, 1);
+                    
+                    if(data[0] == "nok"){
+                        $('#modal_error').modal('show');
+                    }
+                    else{
+                        
+                        setValues(data, 1);
 
-                    $('#modal_delete').modal('show');
+                        $('#modal_delete').modal('show');
 
-                    $("#form-delete :input")
-                        .not('.btn')
-                        .not("input[type='hidden']")
-                        .attr("disabled", true);
+                        $("#form-delete :input")
+                            .not('.btn')
+                            .not("input[type='hidden']")
+                            .attr("disabled", true);    
+    
+                    }
 
                 });
         } );
@@ -101,6 +115,9 @@
                     $('#modal_add').modal('hide');
 
                     table.ajax.reload();
+                }else{
+                    $(".alert-success").hide();
+                    $(".alert-danger").html("Ya existe un productor con ese nombre, revise su información").show();    
                 }
 
             }).fail(function(resp){
@@ -113,7 +130,6 @@
                 $(".alert-success").hide();
                 $(".alert-danger").html(html).show();
             });
-
         });
 
         $("#update").click(function(){
@@ -195,9 +211,9 @@
             form = "form-delete";
         }
 
-        $("#"+form+" input[name='procesador_id']").val(data.procesador_id);
-        $("#"+form+" input[name='procesador_name']").val(data.procesador_name);
-        $("#"+form+" input[name='procesador_rut']").val(data.procesador_rut);
+        $("#"+form+" input[name='productor_id']").val(data.productor_id);
+        $("#"+form+" input[name='productor_name']").val(data.productor_name);
+        
     }
 
 </script>
@@ -208,25 +224,23 @@
                 <div class="box-body">
                     <a class="btn btn-primary" id="add">
                         <i class="fa fa-plus"></i>
-                        Agregar Procesadora
+                        Agregar Productor
                     </a>
                     <br><br>
                     <p class="alert alert-success"></p>
-                    <table class="table table-bordered" id="table-procesadores" width="100%">
+                    <table class="table table-bordered" id="table-productores" width="100%">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Procesadora</th>
-                                <th>RUT</th>
+                                <th>Productor</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($procesadores as $procesador)
-                            <tr role="row" data-id="{{ $procesador->procesador_id }}">
-                                <td>{{ $procesador->procesador_id }}</td>
-                                <td>{{ $procesador->procesador_name }}</td>
-                                <td>{{ $procesador->procesador_rut }}</td>
+                            @foreach ($productores as $productor)
+                            <tr role="row" data-id="{{ $productor->productor_id }}">
+                                <td>{{ $productor->productor_id }}</td>
+                                <td>{{ $productor->productor_name }}</td>
                                 <td></td>
                             </tr>
                             @endforeach
@@ -234,8 +248,7 @@
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Procesadora</th>
-                                <th>RUT</th>
+                                <th>Productor</th>
                                 <th>Opciones</th>
                             </tr>
                         </tfoot>
@@ -246,8 +259,9 @@
     </div>
 </div>
 
-@include('admin.procesador.modaladd')
-@include('admin.procesador.modaledit')
-@include('admin.procesador.modaldisable')
+@include('admin.productor.modaladd')
+@include('admin.productor.modaledit')
+@include('admin.productor.modaldelete')
+@include('admin.productor.modalerror')
 
 @endsection

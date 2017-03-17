@@ -90,6 +90,8 @@
 
         $("#add").click(function(){
 
+            $('#form-add').trigger("reset");
+            $(".alert").hide();
             $('#modal_add').modal('show');
         });
 
