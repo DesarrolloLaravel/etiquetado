@@ -9,6 +9,7 @@
         </div>
         <p class="alert alert-danger"></p>
         @yield('modal-body')
+        
 
         @yield('modal-footer')
     </div>

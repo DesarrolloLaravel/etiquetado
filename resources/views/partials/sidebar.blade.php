@@ -51,6 +51,7 @@
                     <li class="{{ isActiveRoute('admin/procesador') }}"><a href="{{ url('/admin/procesador') }}"><i class='fa fa-wrench'></i> <span>Procesadora</span></a></li>
                     <li class="{{ isActiveRoute('admin/elaborador') }}"><a href="{{ url('/admin/elaborador') }}"><i class='fa fa-wrench'></i> <span>Elaborador</span></a></li>
                     <li class="{{ isActiveRoute('admin/productor') }}"><a href="{{ url('/admin/productor') }}"><i class='fa fa-wrench'></i> <span>Productor</span></a></li>
+                    <li class="{{ isActiveRoute('admin/cliente') }}"><a href="{{ url('/admin/cliente') }}"><i class='fa fa-wrench'></i> <span>Cliente</span></a></li>
                     <li class="{{ isActiveRoute('admin/producto') }}"><a href="{{ url('/admin/producto') }}"><i class='fa fa-cube'></i> <span>Producto</span></a></li>
                     <li class="{{ isActiveRoute('admin/calibre') }}"><a href="{{ url('/admin/calibre') }}"><i class='fa fa-cube'></i> <span>Calibre</span></a></li>
                     <li class="{{ isActiveRoute('admin/formato') }}"><a href="{{ url('/admin/formato') }}"><i class='fa fa-cube'></i> <span>Formato</span></a></li>
