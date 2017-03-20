@@ -14,4 +14,9 @@ class Envase extends Model
     protected $primaryKey = 'envase_id';
     protected $fillable = [ 'envase_nombre',
         'envase_capacidad'];
+
+    public function productos(){
+
+    	return $this->hasMany('App\Models\Producto','producto_envase1_id','envase_id');
+    }
 }
