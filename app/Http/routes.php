@@ -141,6 +141,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('especie/update','EspecieController@update');
     Route::post('especie/delete','EspecieController@destroy');
 
+    Route::get('unidad_medida','UnidadMedidaController@index');
+    Route::post('unidad_medida/store','UnidadMedidaController@store');
+    Route::get('unidad_medida/edit','UnidadMedidaController@edit');
+    Route::post('unidad_medida/update','UnidadMedidaController@update');
+    Route::post('unidad_medida/delete','UnidadMedidaController@destroy');
+
     Route::get('nordic','NordicController@index');
     Route::get('nordic/print/{orden_id}/{producto_id}/{fecha}', 'NordicController@print_etiqueta');
     Route::get('nordic/create', 'NordicController@create');
