@@ -47,6 +47,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('envase/update','EnvaseController@update');
     Route::post('envase/delete','EnvaseController@delete');
 
+    Route::get('envaseDos','EnvaseDosController@index');
+    Route::get('envaseDos/edit','EnvaseDosController@edit');
+    Route::post('envaseDos/store','EnvaseDosController@store');
+    Route::post('envaseDos/update','EnvaseDosController@update');
+    Route::post('envaseDos/delete','EnvaseDosController@delete');
+
  	Route::get('productor','ProductorController@index');
     Route::get('productor/edit','ProductorController@edit');
     Route::post('productor/store','ProductorController@store');

@@ -138,4 +138,10 @@ class Producto extends Model
             'producto_envase1_id',
             'envase_id');
     }
+
+    public function envaseDos(){
+        return $this->belongsTo('App\Models\Envase_Dos',
+            'producto_envase2_id',
+            'envaseDos_id');
+    }
 }
