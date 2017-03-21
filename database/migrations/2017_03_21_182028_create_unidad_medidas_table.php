@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCalibresTable extends Migration
+class CreateUnidadMedidasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreateCalibresTable extends Migration
      */
     public function up()
     {
-        Schema::create('calibre', function (Blueprint $table) {
-            $table->increments('calibre_id');
-            $table->string('calibre_nombre');
-            $table->unsignedInteger('calibre_unidad_medida_id')->index();
+        Schema::create('unidad_medida', function (Blueprint $table) {
+            $table->increments('unidad_medida_id');
+            $table->string('unidad_medida_nombre');
+            $table->string('unidad_medida_abreviacion');
             $table->timestamps();
             $table->softDeletes();
+                           
         });
     }
 
@@ -28,6 +29,6 @@ class CreateCalibresTable extends Migration
      */
     public function down()
     {
-        Schema::drop('calibre');
+        Schema::drop('unidad_medida');
     }
 }
