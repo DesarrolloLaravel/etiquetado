@@ -11,6 +11,7 @@ use App\Http\Requests\Formato\CreateRequest;
 use App\Http\Requests\Formato\UpdateRequest;
 
 use App\Models\Formato;
+use App\Models\Producto;
 
 class FormatoController extends Controller
 {
@@ -43,7 +44,7 @@ class FormatoController extends Controller
             return $dt_json;
         }
         else{
-            return view('admin.formato.index', compact('formato'));    
+            return view('admin.formato.index', compact('formatos'));    
         }
         
     }
@@ -99,11 +100,20 @@ class FormatoController extends Controller
     {
         //si la peticion es ajax
         if($request->ajax())
-        {  
-            //busco la compañia a consultar
-            $formato = Formato::findOrFail($request->formato_id);
+        {   
+
+            $prod=Producto::where('producto_formato_id',$request->formato_id)->count();
+
+            if($prod == 0){
+
+                $formato = Formato::findOrFail($request->formato_id);
+
+                return response()->json($formato);        
+            }
+            else{
+                return response()->json(["nok"]);
+            }
             
-            return response()->json($formato);
         }
     }
 

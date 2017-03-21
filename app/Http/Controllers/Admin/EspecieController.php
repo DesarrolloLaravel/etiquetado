@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Especie;
+use App\Models\Producto;
+use App\Models\Lote;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -105,9 +108,19 @@ class EspecieController extends Controller
         //
         if($request->ajax())
         {
-            $especie = Especie::findOrFail($request->especie_id);
+            $lot = Lote::where('lote_especie_id',$request->especie_id)->count();
+            $prod = Producto::where('producto_especie_id',$request->especie_id)->count();
 
-            return response()->json($especie);
+            if($lot == 0 && $prod==0) {
+                //se busca el elaborador a modificar
+                $especie = Especie::findOrFail($request->especie_id);
+
+                return response()->json($especie);        
+            }
+            else{
+                return response()->json(["nok"]);
+            }
+            
         }
     }
 

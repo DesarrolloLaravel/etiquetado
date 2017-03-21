@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Calidad;
+use App\Models\Producto;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -103,9 +105,17 @@ class CalidadController extends Controller
         //
         if($request->ajax())
         {
-            $calidad = Calidad::findOrFail($request->calidad_id);
+            $prod=Producto::where('producto_calidad_id',$request->calidad_id)->count();
 
-            return response()->json($calidad);
+           if($prod == 0){
+
+                $calidad = Calidad::findOrFail($request->calidad_id);
+
+                return response()->json($calidad);        
+            }
+            else{
+                return response()->json(["nok"]);
+            }
         }
     }
 
