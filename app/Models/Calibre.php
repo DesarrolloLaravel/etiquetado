@@ -12,5 +12,6 @@ class Calibre extends Model
 
     protected $table = 'calibre';
     protected $primaryKey = 'calibre_id';
-    protected $fillable = [ 'calibre_nombre'];
+    protected $fillable = [ 'calibre_nombre',
+    						'calibre_unidad_medida_id'];
 }

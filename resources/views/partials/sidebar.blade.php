@@ -45,7 +45,7 @@
                         <li><a href="{{ url('admin/despacho/execute') }}"><i class='fa fa-circle-o'></i>Despachar</a></li>
                     </ul>
                 </li>
-                <li class="treeview {{ areActiveRoutes(['admin/procesador','admin/elaborador','admin/producto','admin/formato', 'admin/calibre', 'admin/calidad','admin/especie']) }}">
+                <li class="treeview {{ areActiveRoutes(['admin/procesador','admin/elaborador','admin/producto','admin/formato', 'admin/calibre', 'admin/calidad','admin/especie','admin/unidad_medida']) }}">
                     <a href="#"><i class='glyphicon glyphicon-tasks'></i> <span>Mantenedores</span><i class="fa fa-angle-right pull-right"></i></a>
                     <ul class="treeview-menu">
                     <li class="{{ isActiveRoute('admin/procesador') }}"><a href="{{ url('/admin/procesador') }}"><i class='fa fa-wrench'></i> <span>Procesadora</span></a></li>
@@ -55,6 +55,7 @@
                     <li class="{{ isActiveRoute('admin/envase') }}"><a href="{{ url('/admin/envase') }}"><i class='fa fa-wrench'></i> <span>Envase</span></a></li>
                     <li class="{{ isActiveRoute('admin/envaseDos') }}"><a href="{{ url('/admin/envaseDos') }}"><i class='fa fa-wrench'></i> <span>Envase Dos</span></a></li>
                     <li class="{{ isActiveRoute('admin/producto') }}"><a href="{{ url('/admin/producto') }}"><i class='fa fa-cube'></i> <span>Producto</span></a></li>
+                    <li class="{{ isActiveRoute('admin/unidad_medida') }}"><a href="{{ url('/admin/unidad_medida') }}"><i class='fa fa-cube'></i> <span>Unidad Medida</span></a></li>
                     <li class="{{ isActiveRoute('admin/calibre') }}"><a href="{{ url('/admin/calibre') }}"><i class='fa fa-cube'></i> <span>Calibre</span></a></li>
                     <li class="{{ isActiveRoute('admin/formato') }}"><a href="{{ url('/admin/formato') }}"><i class='fa fa-cube'></i> <span>Formato</span></a></li>
                     <li class="{{ isActiveRoute('admin/calidad') }}"><a href="{{ url('/admin/calidad') }}"><i class='fa fa-cube'></i> <span>Calidad</span></a></li>
