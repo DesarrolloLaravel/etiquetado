@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Variante;
+namespace App\Http\Requests\VarianteDos;
 
 use App\Http\Requests\Request;
 
@@ -25,7 +25,7 @@ class CreateRequest extends Request
     {
        return [
         //
-            'variante_name' => 'required|max:255'
+            'varianteDos_name' => 'required|max:255'
             
         ];
         
@@ -36,7 +36,7 @@ class CreateRequest extends Request
     {
         return [
             //
-            'variante_name.required' => 'El campo Variante es obligatorio',
+            'varianteDos_name.required' => 'El campo Variante es obligatorio',
             
         ];
     }

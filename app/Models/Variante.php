@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Models;
@@ -12,9 +11,9 @@ class Variante extends Model
 	use SoftDeletes;
 
 	protected $table = 'variante';
-	protected $primary_key = 'variante_id';
+	protected $primaryKey = 'variante_id';
 
-	protected $fillable = ['variante_nombre'];
+	protected $fillable = ['variante_name'];
 	protected $dates = ['delete_at'];
 
 	function producto(){

@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-
-use App\Http\Requests\Variante\CreateRequest;
-use App\Http\Requests\Variante\UpdateRequest;
+use App\Http\Requests\VarianteDos\CreateRequest;
+use App\Http\Requests\VarianteDos\UpdateRequest;
 
 use App\Models\Producto;
-use App\Models\Variante;
+use App\Models\VarianteDos;
 
-class VarianteController extends Controller
+class VarianteDosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,8 +22,8 @@ class VarianteController extends Controller
      */
     public function index(Request $request)
     {
-        //toma todos las variantes
-        $variantes = Variante::all();
+        //
+         $variantes = VarianteDos::all();
 
         //si es petición ajax
         if($request -> ajax()){
@@ -39,8 +38,8 @@ class VarianteController extends Controller
 
             //guarda en json los datos de todos los variantes
             foreach ($variantes as $variante) {
-                $dt_json .= '["'.$variante->variante_id.'","'
-                                .$variante->variante_name.'"],';
+                $dt_json .= '["'.$variante->varianteDos_id.'","'
+                                .$variante->varianteDos_name.'"],';
             }
 
             //elimina la ultima coma del json
@@ -52,7 +51,7 @@ class VarianteController extends Controller
             return $dt_json;
         }
         else{
-            return view('admin.variante.index', compact('variantes'));    
+            return view('admin.varianteDos.index', compact('variantes'));    
         }
     }
 
@@ -61,9 +60,10 @@ class VarianteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CreateRequest $request)
     {
         //
+         
     }
 
     /**
@@ -79,7 +79,7 @@ class VarianteController extends Controller
             //crea un elaborador con los datos del request
 
             $v = \Validator::make($request->all(), [
-                'variante_name' => 'unique:variante,variante_name'
+                'varianteDos_name' => 'unique:varianteDos,varianteDos_name'
             ]);
             //si falla la validación
             if ($v->fails())
@@ -87,7 +87,7 @@ class VarianteController extends Controller
                 //respondo con un json que contiene los errores
                 return response()->json(["nok"]);
             }            
-            Variante::create($request->all());
+            VarianteDos::create($request->all());
             return response()->json([
                 "ok"
             ]);
@@ -114,13 +114,13 @@ class VarianteController extends Controller
     public function edit(Request $request)
     {
         //
-         if($request->ajax()){
+        if($request->ajax()){
 
-            $prole = Producto::where('producto_variante_id',$request->variante_id)->count();
+            $prole = Producto::where('producto_v2_id',$request->varianteDos_id)->count();
             
             if($prole == 0){
                 //se busca la variante a modificar
-                $variante = Variante::findOrFail($request->variante_id);
+                $variante = VarianteDos::findOrFail($request->varianteDos_id);
 
                 return response()->json($variante);        
             }
@@ -144,11 +144,11 @@ class VarianteController extends Controller
         if($request-> ajax()){
 
             //busca por el id al variante
-            $variante = Variante::findOrFail($request->variante_id);
+            $variante = VarianteDos::findOrFail($request->varianteDos_id);
 
             //genera un array con la info del update
             $info = array(
-                'variante_name' => $request->variante_name,
+                'varianteDos_name' => $request->varianteDos_name,
             );
 
             //añade la info al elaborador encontrado
@@ -178,7 +178,7 @@ class VarianteController extends Controller
             //se crea el validador con la información enviada desde el cliente
             //y con las reglas de validación respectiva
             $v = \Validator::make($request->all(), [
-                'variante_id' => 'required|exists:variante,variante_id'
+                'varianteDos_id' => 'required|exists:varianteDos,varianteDos_id'
             ]);
             //si falla la validación
             if ($v->fails())
@@ -187,7 +187,7 @@ class VarianteController extends Controller
                 return response()->json($v->errors());
             }
             //busco el vairnate a eliminar
-            $variante = Variante::findOrFail($request->variante_id);
+            $variante = VarianteDos::findOrFail($request->varianteDos_id);
             //elimino la variante
             $variante->delete();
 
@@ -197,4 +197,6 @@ class VarianteController extends Controller
             ]);
         }
     }
+    
+    
 }

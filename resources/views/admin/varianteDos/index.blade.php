@@ -1,11 +1,11 @@
 @extends('app')
 
 @section('htmlheader_title')
-    Variante Primaria
+    Variante Secundaria
 @endsection
 
 @section('contentheader_title')
-    Variante Primaria
+    Variante Secundaria
 @endsection
 
 @section('main-content')
@@ -20,7 +20,7 @@
         $(".alert").hide();
 
         table = $('#table-variante').DataTable({
-            "ajax" : "variante",
+            "ajax" : "varianteDos",
             "language": {
                 "url": "../../plugins/datatables/es_ES.txt"
             },
@@ -40,10 +40,10 @@
         {
             $(".alert").hide();
 
-            variante_id = $(this).parents('tr').data('id');
+            varianteDos_id = $(this).parents('tr').data('id');
 
-            $.get("variante/edit",
-                {variante_id : variante_id},
+            $.get("varianteDos/edit",
+                {varianteDos_id : varianteDos_id},
                 function(data){
 
                     if(data[0] == "nok"){
@@ -63,10 +63,10 @@
         {
             $(".alert").hide();
 
-            variante_id = $(this).parents('tr').data('id');
+            varianteDos_id = $(this).parents('tr').data('id');
 
-            $.get("variante/edit",
-                {variante_id : variante_id},
+            $.get("varianteDos/edit",
+                {varianteDos_id : varianteDos_id},
                 function(data){
                     
                     if(data[0] == "nok"){
@@ -211,8 +211,8 @@
             form = "form-delete";
         }
 
-        $("#"+form+" input[name='variante_id']").val(data.variante_id);
-        $("#"+form+" input[name='variante_name']").val(data.variante_name);
+        $("#"+form+" input[name='varianteDos_id']").val(data.varianteDos_id);
+        $("#"+form+" input[name='varianteDos_name']").val(data.varianteDos_name);
         
     }
 
@@ -224,7 +224,7 @@
                 <div class="box-body">
                     <a class="btn btn-primary" id="add">
                         <i class="fa fa-plus"></i>
-                        Agregar Variante
+                        Agregar Variante Secundaria
                     </a>
                     <br><br>
                     <p class="alert alert-success"></p>
@@ -232,15 +232,15 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Variante</th>
+                                <th>Variante Secudaria</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($variantes as $variante)
-                            <tr role="row" data-id="{{ $variante->variante_id }}">
-                                <td>{{ $variante->variante_id }}</td>
-                                <td>{{ $variante->variante_name }}</td>
+                            <tr role="row" data-id="{{ $variante->varianteDos_id }}">
+                                <td>{{ $variante->varianteDos_id }}</td>
+                                <td>{{ $variante->varianteDos_name }}</td>
                                 <td></td>
                             </tr>
                             @endforeach
@@ -248,7 +248,7 @@
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Variante</th>
+                                <th>Variante Secundaria</th>
                                 <th>Opciones</th>
                             </tr>
                         </tfoot>
@@ -259,9 +259,9 @@
     </div>
 </div>
 
-@include('admin.variante.modaladd')
-@include('admin.variante.modaledit')
-@include('admin.variante.modaldelete')
-@include('admin.variante.modalerror')
+@include('admin.varianteDos.modaladd')
+@include('admin.varianteDos.modaledit')
+@include('admin.varianteDos.modaldelete')
+@include('admin.varianteDos.modalerror')
 
 @endsection

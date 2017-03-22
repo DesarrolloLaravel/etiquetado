@@ -59,6 +59,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('variante/update','VarianteController@update');
     Route::post('variante/delete','VarianteController@delete');
 
+    Route::get('varianteDos','VarianteDosController@index');
+    Route::get('varianteDos/edit','VarianteDosController@edit');
+    Route::post('varianteDos/store','VarianteDosController@store');
+    Route::post('varianteDos/update','VarianteDosController@update');
+    Route::post('varianteDos/delete','VarianteDosController@delete');
+
  	Route::get('productor','ProductorController@index');
     Route::get('productor/edit','ProductorController@edit');
     Route::post('productor/store','ProductorController@store');

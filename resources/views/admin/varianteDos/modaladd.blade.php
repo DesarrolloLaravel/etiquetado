@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_add"}}@overwrite
 
-@section('modal-title'){{"Añadir Variante Primaria"}}@overwrite
+@section('modal-title'){{"Añadir Variante Secundaria"}}@overwrite
 @section('modal-body') 
   <div class="modal-body">
-    {!! Form::open(['url' => 'admin/variante/store',
+    {!! Form::open(['url' => 'admin/varianteDos/store',
       'class' => 'form-horizontal',
       'method' => 'POST',
       'id' => 'form-add']) !!}
       
-      @include('admin.variante.fields')
+      @include('admin.varianteDos.fields')
     {!! Form::close() !!}
   </div>
 @overwrite

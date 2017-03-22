@@ -426,6 +426,8 @@ class ComposerStaticInit292d320630d46996cb5a01d80e547381
         'CreateTrimsTable' => __DIR__ . '/../..' . '/database/migrations/2016_09_29_191357_create_trims_table.php',
         'CreateUnidadMedidasTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_21_182028_create_unidad_medidas_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
+        'CreateVariabledosTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_205115_create_variabledos_table.php',
+        'CreateVarianteTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_152839_create_variante_table.php',
         'DOMPDF' => __DIR__ . '/..' . '/dompdf/dompdf/include/dompdf.cls.php',
         'DOMPDF_Exception' => __DIR__ . '/..' . '/dompdf/dompdf/include/dompdf_exception.cls.php',
         'DOMPDF_Image_Exception' => __DIR__ . '/..' . '/dompdf/dompdf/include/dompdf_image_exception.cls.php',

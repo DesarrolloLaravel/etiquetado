@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_edit"}}@overwrite
 
-@section('modal-title'){{"Editar Variante Primaria"}}@overwrite
+@section('modal-title'){{"Editar Variante Secundaria"}}@overwrite
 @section('modal-body')
   <div class="modal-body">
-    {!! Form::open(['url' => 'admin/variante/update',
+    {!! Form::open(['url' => 'admin/varianteDos/update',
     'class' => 'form-horizontal',
     'method' => 'POST',
       'id' => 'form-edit']) !!}
       
-      @include('admin.variante.fields')
+      @include('admin.varianteDos.fields')
 
     {!! Form::close() !!}
   </div>

@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_delete"}}@overwrite
 
-@section('modal-title'){{"Eliminar Variante Primaria"}}@overwrite
+@section('modal-title'){{"Eliminar Variante Secundaria"}}@overwrite
 @section('modal-body')           
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/variante/delete',
+      {!! Form::open(['url' => 'admin/varianteDos/delete',
         'class' => 'form-horizontal',
         'method' => 'POST',
         'id' => 'form-delete']) !!}
         
-        @include('admin.variante.fields')
+        @include('admin.varianteDos.fields')
 
       {!! Form::close() !!}
   </div>

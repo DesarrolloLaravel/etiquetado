@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Variante;
+namespace App\Http\Requests\VarianteDos;
 
 use App\Http\Requests\Request;
 
@@ -25,9 +25,9 @@ class UpdateRequest extends Request
     public function rules()
     {
         return [ 
-            'variante_name'   =>'required',
-            'variante_name'    =>'required|unique:variante,variante_name,'
-                .$this->request->get('variante_id').',variante_id'
+            'varianteDos_name'   =>'required',
+            'varianteDos_name'    =>'required|unique:varianteDos,varianteDos_name,'
+                .$this->request->get('varianteDos_id').',varianteDos_id'
         ];
         
     }
@@ -35,8 +35,8 @@ class UpdateRequest extends Request
     public function messages()
     {
         return [
-            'variante_name.required'      =>'La Variante es obligatoria',
-            'variante_name.unique'         =>'Ya existe otra Variante con ese nombre. Por favor verifique su información'      
+            'varianteDos_name.required'      =>'La Variante es obligatoria',
+            'varianteDos_name.unique'         =>'Ya existe otra Variante con ese nombre. Por favor verifique su información'      
         ];
     }
 }
