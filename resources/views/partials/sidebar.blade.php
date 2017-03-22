@@ -59,6 +59,7 @@
                     <li class="{{ isActiveRoute('admin/formato') }}"><a href="{{ url('/admin/formato') }}"><i class='fa fa-cube'></i> <span>Formato</span></a></li>
                     <li class="{{ isActiveRoute('admin/calidad') }}"><a href="{{ url('/admin/calidad') }}"><i class='fa fa-cube'></i> <span>Calidad</span></a></li>
                     <li class="{{ isActiveRoute('admin/especie') }}"><a href="{{ url('/admin/especie') }}"><i class='fa fa-cube'></i> <span>Especie</span></a></li>
+                    <li class="{{ isActiveRoute('admin/variante') }}"><a href="{{ url('/admin/variante') }}"><i class='fa fa-cube'></i> <span>Variante</span></a></li>
                     </ul>
                 </li>    
             @elseif(\Auth::user()->users_role == "recepcion")

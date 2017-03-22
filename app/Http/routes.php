@@ -53,6 +53,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('envaseDos/update','EnvaseDosController@update');
     Route::post('envaseDos/delete','EnvaseDosController@delete');
 
+    Route::get('variante','VarianteController@index');
+    Route::get('variante/edit','VarianteController@edit');
+    Route::post('variante/store','VarianteController@store');
+    Route::post('variante/update','VarianteController@update');
+    Route::post('variante/delete','VarianteController@delete');
+
  	Route::get('productor','ProductorController@index');
     Route::get('productor/edit','ProductorController@edit');
     Route::post('productor/store','ProductorController@store');
