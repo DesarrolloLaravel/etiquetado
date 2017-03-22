@@ -28,7 +28,7 @@ class UpdateRequest extends Request
             'unidad_medida_nombre'    =>'required|unique:unidad_medida,unidad_medida_nombre,'
                 .$this->request->get('unidad_medida_nombre').',unidad_medida_nombre',
             'unidad_medida_abreviacion'    =>'required|unique:unidad_medida,unidad_medida_abreviacion,'
-                .$this->request->get('unidad_medida_nombre').',unidad_medida_nombre'
+                .$this->request->get('unidad_medida_abreviacion').',unidad_medida_abreviacion'
         ];
     }
 
