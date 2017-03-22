@@ -1067,6 +1067,7 @@ class ComposerStaticInit292d320630d46996cb5a01d80e547381
         'Text_Renderer' => __DIR__ . '/..' . '/dompdf/dompdf/include/text_renderer.cls.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
         'TrimTableSeeder' => __DIR__ . '/../..' . '/database/seeds/TrimTableSeeder.php',
+        'UnidadMedidaTableSeeder' => __DIR__ . '/../..' . '/database/seeds/UnidadMedidaTableSeeder.php',
         'UserSeeder' => __DIR__ . '/../..' . '/database/seeds/UserSeeder.php',
     );
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\UnidadMedida;
+use App\Models\Calibre;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -36,9 +37,9 @@ class UnidadMedidaController extends Controller
             //para cada compañia
             foreach ($unidades_medida as $unidad) {
                 //completo el json
-                $dt_json .= '["'.$unidad->unidades_medida_id.'","'
-                    .$unidad->unidades_medida_nombre.'","'
-                    .$unidad->unidades_medida_abreviacion'"],';
+                $dt_json .= '["'.$unidad->unidad_medida_id.'","'
+                    .$unidad->unidad_medida_nombre.'","'
+                    .$unidad->unidad_medida_abreviacion.'"],';
             }
             //elimino la ultima coma del json
             $dt_json = substr($dt_json, 0, -1);
@@ -49,7 +50,7 @@ class UnidadMedidaController extends Controller
         }
         else
         {
-            return view('admin.unidades_medida.index', compact('unidades_medida'));
+            return view('admin.unidad_medida.index', compact('unidades_medida'));
         }
     }
 
@@ -105,9 +106,15 @@ class UnidadMedidaController extends Controller
         //
         if($request->ajax())
         {
-            $calibre = UnidadMedida::findOrFail($request->calibre_id);
+            $calibre = Calibre:: where('calibre_unidad_medida_id',$request->unidad_medida_id)->count();
 
-            return response()->json($calibre);
+            if($calibre==0){
+                $unidad = UnidadMedida::findOrFail($request->unidad_medida_id);
+
+                return response()->json($unidad);
+            }else{
+                return response()->json(["nok"]);
+            }
         }
     }
 

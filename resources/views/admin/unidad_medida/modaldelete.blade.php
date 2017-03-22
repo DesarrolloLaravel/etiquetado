@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_delete"}}@overwrite
 
-@section('modal-title'){{"Eliminar Especie"}}@overwrite
+@section('modal-title'){{"Eliminar Unidad Medida"}}@overwrite
 @section('modal-body')           
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/especie/delete',
+      {!! Form::open(['url' => 'admin/unidad_medida/delete',
         'class' => 'form-horizontal',
         'method' => 'POST',
         'id' => 'form-delete']) !!}
         
-        @include('admin.especie.fields')
+        @include('admin.unidad_medida.fields')
 
       {!! Form::close() !!}
   </div>

@@ -6,7 +6,7 @@
 @section('modal-body')
     <div class="modal-body">
         <div class="col-sm-12">
-           <h4>No puede editar o eliminar esta ESPECIE</h4>
+           <h4>No puede editar o eliminar esta UNIDAD DE MEDIDA</h4>
           <h4>Bajo política de integridad del sistema </h4>
         </div>
     </div>

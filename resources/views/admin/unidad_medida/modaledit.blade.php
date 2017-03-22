@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_edit"}}@overwrite
 
-@section('modal-title'){{"Editar Especie"}}@overwrite
+@section('modal-title'){{"Editar Unidad Medida"}}@overwrite
 @section('modal-body')
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/especie/update',
+      {!! Form::open(['url' => 'admin/unidad_medida/update',
         'class' => 'form-horizontal',
         'method' => 'POST',
         'id' => 'form-edit']) !!}
         
-        @include('admin.especie.fields')
+        @include('admin.unidad_medida.fields')
 
       {!! Form::close() !!}
   </div>

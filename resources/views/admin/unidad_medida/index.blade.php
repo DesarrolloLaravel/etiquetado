@@ -1,11 +1,11 @@
 @extends('app')
 
 @section('htmlheader_title')
-    Especie
+    Unidad Medida
 @endsection
 
 @section('contentheader_title')
-    Especie
+    Unidad Medida
 @endsection
 
 @section('main-content')
@@ -19,8 +19,8 @@
 
         $(".alert").hide();
 
-        table = $('#table-especies').DataTable({
-            "ajax" : "especie",
+        table = $('#table-unidades').DataTable({
+            "ajax" : "unidad_medida",
             "language": {
                 "url": "../../plugins/datatables/es_ES.txt"
             },
@@ -36,14 +36,14 @@
             }
         });
 
-        $('#table-especies tbody').on( 'click', '#edit', function ()
+        $('#table-unidades tbody').on( 'click', '#edit', function ()
         {
             $(".alert").hide();
 
-            especie_id = $(this).parents('tr').data('id');
+            unidad_medida_id = $(this).parents('tr').data('id');
 
-            $.get("especie/edit",
-                {especie_id : especie_id},
+            $.get("unidad_medida/edit",
+                {unidad_medida_id : unidad_medida_id},
                 function(data){
 
                     if(data[0] == "nok"){
@@ -59,14 +59,14 @@
                 });
         } );
 
-        $('#table-especies tbody').on( 'click', '#delete', function ()
+        $('#table-unidades tbody').on( 'click', '#delete', function ()
         {
             $(".alert").hide();
 
-            especie_id = $(this).parents('tr').data('id');
+            unidad_medida_id = $(this).parents('tr').data('id');
 
-            $.get("especie/edit",
-                {especie_id : especie_id},
+            $.get("unidad_medida/edit",
+                {unidad_medida_id : unidad_medida_id},
                 function(data){
                     
                     if(data[0] == "nok"){
@@ -209,10 +209,9 @@
             form = "form-delete";
         }
 
-        $("#"+form+" input[name='especie_id']").val(data.especie_id);
-        $("#"+form+" input[name='especie_name']").val(data.especie_name);
-        $("#"+form+" input[name='especie_comercial_name']").val(data.especie_comercial_name);
-        $("#"+form+" input[name='especie_abbreviation']").val(data.especie_abbreviation);
+        $("#"+form+" input[name='unidad_medida_id']").val(data.unidad_medida_id);
+        $("#"+form+" input[name='unidad_medida_nombre']").val(data.unidad_medida_nombre);
+        $("#"+form+" input[name='unidad_medida_abreviacion']").val(data.unidad_medida_abreviacion);
 
     }
 
@@ -224,26 +223,24 @@
                 <div class="box-body">
                     <a class="btn btn-primary" id="add">
                         <i class="fa fa-plus"></i>
-                        Agregar Especie
+                        Agregar Unidad Medida
                     </a>
                     <br><br>
                     <p class="alert alert-success"></p>
-                    <table class="table table-bordered" id="table-especies" width="100%">
+                    <table class="table table-bordered" id="table-unidades" width="100%">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Especie</th>
-                                <th>Nombre Comercial</th>
+                                <th>Unidad Medida</th>
                                 <th>Nombre Abreviacion</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($especies as $especie)
-                            <tr role="row" data-id="{{ $especie->especie_id }}">
-                                <td>{{ $especie->especie_id }}</td>
-                                <td>{{ $especie->especie_comercial_name }}</td>
-                                <td>{{ $especie->especie_abbreviation }}</td>
+                            @foreach ($unidades_medida as $unidad)
+                            <tr role="row" data-id="{{ $unidad->unidad_medida_id }}">
+                                <td>{{ $unidad->unidad_medida_nombre }}</td>
+                                <td>{{ $unidad->unidad_medida_abreviacion }}</td>
                                 <td></td>
                             </tr>
                             @endforeach
@@ -252,7 +249,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Especie</th>
-                                <th>Nombre Comercial</th>
                                 <th>Nombre Abreviacion</th>
                                 <th>Opciones</th>
                             </tr>
@@ -264,9 +260,9 @@
     </div>
 </div>
 
-@include('admin.especie.modaladd')
-@include('admin.especie.modaledit')
-@include('admin.especie.modaldelete')
-@include('admin.especie.modalerror')
+@include('admin.unidad_medida.modaladd')
+@include('admin.unidad_medida.modaledit')
+@include('admin.unidad_medida.modaldelete')
+@include('admin.unidad_medida.modalerror')
 
 @endsection

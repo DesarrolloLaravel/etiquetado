@@ -55,11 +55,11 @@
                     <li class="{{ isActiveRoute('admin/envase') }}"><a href="{{ url('/admin/envase') }}"><i class='fa fa-wrench'></i> <span>Envase</span></a></li>
                     <li class="{{ isActiveRoute('admin/envaseDos') }}"><a href="{{ url('/admin/envaseDos') }}"><i class='fa fa-wrench'></i> <span>Envase Dos</span></a></li>
                     <li class="{{ isActiveRoute('admin/producto') }}"><a href="{{ url('/admin/producto') }}"><i class='fa fa-cube'></i> <span>Producto</span></a></li>
+                    <li class="{{ isActiveRoute('admin/unidad_medida') }}"><a href="{{ url('/admin/unidad_medida') }}"><i class='fa fa-cube'></i> <span>Unidad Medida</span></a></li>
                     <li class="{{ isActiveRoute('admin/calibre') }}"><a href="{{ url('/admin/calibre') }}"><i class='fa fa-cube'></i> <span>Calibre</span></a></li>
                     <li class="{{ isActiveRoute('admin/formato') }}"><a href="{{ url('/admin/formato') }}"><i class='fa fa-cube'></i> <span>Formato</span></a></li>
                     <li class="{{ isActiveRoute('admin/calidad') }}"><a href="{{ url('/admin/calidad') }}"><i class='fa fa-cube'></i> <span>Calidad</span></a></li>
                     <li class="{{ isActiveRoute('admin/especie') }}"><a href="{{ url('/admin/especie') }}"><i class='fa fa-cube'></i> <span>Especie</span></a></li>
-                    <li class="{{ isActiveRoute('admin/unidad_medida') }}"><a href="{{ url('/admin/unidad_medida') }}"><i class='fa fa-cube'></i> <span>Especie</span></a></li>
                     </ul>
                 </li>    
             @elseif(\Auth::user()->users_role == "recepcion")

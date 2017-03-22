@@ -710,5 +710,6 @@ return array(
     'Text_Renderer' => $vendorDir . '/dompdf/dompdf/include/text_renderer.cls.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
     'TrimTableSeeder' => $baseDir . '/database/seeds/TrimTableSeeder.php',
+    'UnidadMedidaTableSeeder' => $baseDir . '/database/seeds/UnidadMedidaTableSeeder.php',
     'UserSeeder' => $baseDir . '/database/seeds/UserSeeder.php',
 );

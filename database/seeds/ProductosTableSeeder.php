@@ -20,6 +20,7 @@ class ProductosTableSeeder extends Seeder
      */
     public function run()
     {
+        
         //
         $faker = Faker::create();
         $productos = [];

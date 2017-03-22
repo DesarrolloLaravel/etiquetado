@@ -2,15 +2,15 @@
 
 @section('modal-id'){{"modal_add"}}@overwrite
 
-@section('modal-title'){{"Agregar Especie"}}@overwrite
+@section('modal-title'){{"Agregar Unidad Medida"}}@overwrite
 @section('modal-body')  
   <div class="modal-body">
-      {!! Form::open(['url' => 'admin/especie/store',
+      {!! Form::open(['url' => 'admin/unidad_medida/store',
         'class' => 'form-horizontal',
         'method' => 'POST',
         'id' => 'form-add']) !!}
         
-        @include('admin.especie.fields')
+        @include('admin.unidad_medida.fields')
 
       {!! Form::close() !!}
   </div>

@@ -3,32 +3,22 @@
 	{!! Form::label('nombre', 'Nombre',
 		['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-7">
-		{!! Form::text('especie_name', null, ['class' => 'form-control',
-								'placeholder' => 'Nombre de Especie']) !!}
+		{!! Form::text('unidad_medida_nombre', null, ['class' => 'form-control',
+								'placeholder' => 'Nombre de Unidad de Medida']) !!}
 	</div>
 	
 </div>
 
 <div class="form-group">
 
-	{!! Form::label('nombre_comercial', 'Nombre Comercial',
+	{!! Form::label('nombre_comercial', 'Abreviacion',
 		['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-7">
-		{!! Form::text('especie_comercial_name', null, ['class' => 'form-control',
-								'placeholder' => 'Nombre Comercial ']) !!}
+		{!! Form::text('unidad_medida_abreviacion', null, ['class' => 'form-control',
+								'placeholder' => 'Abreviacion Unidad de Medida ']) !!}
 	</div>
 	
 </div>
 
-<div class="form-group">
 
-	{!! Form::label('abreviatura', 'Abreviatura',
-		['class' => 'col-sm-3 control-label']) !!}
-	<div class="col-sm-7">
-		{!! Form::text('especie_abbreviation', null, ['class' => 'form-control',
-								'placeholder' => 'Abreviatura']) !!}
-	</div>
-	
-</div>
-
-{!! Form::hidden('especie_id', null) !!}
+{!! Form::hidden('unidad_medida_id', null) !!}
