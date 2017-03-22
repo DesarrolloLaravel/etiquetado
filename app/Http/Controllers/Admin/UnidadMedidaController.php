@@ -130,16 +130,17 @@ class UnidadMedidaController extends Controller
         //
         if($request->ajax())
         {
-            $calibre = UnidadMedida::findOrFail($request->calibre_id);
+            $unidad = UnidadMedida::findOrFail($request->unidad_medida_id);
 
             //se crea un array con la información enviada desde el cliente
             $info = array(
-                'calibre_nombre' => $request->calibre_nombre);
+                'unidad_medida_nombre' => $request->unidad_medida_nombre,
+                'unidad_medida_abreviacion' => $request->unidad_medida_abreviacion);
 
             //se pasa la información a la compañia encontrada
-            $calibre->fill($info);
+            $unidad->fill($info);
             //se guardan los cambios en la base de datos
-            $calibre->save();
+            $unidad->save();
             //se envia respuesta al cliente
             return response()->json([
                 "ok"
@@ -161,7 +162,7 @@ class UnidadMedidaController extends Controller
             //se crea el validador con la información enviada desde el cliente
             //y con las reglas de validación respectiva
             $v = \Validator::make($request->all(), [
-                'calibre_id' => 'required|exists:calibre,calibre_id'
+                'unidad_medida_id' => 'required|exists:unidad_medida,unidad_medida_id'
             ]);
             //si falla la validación
             if ($v->fails())
@@ -170,9 +171,9 @@ class UnidadMedidaController extends Controller
                 return response()->json($v->errors());
             }
             //busco la compañia a eliminar
-            $calibre = UnidadMedida::findOrFail($request->calibre_id);
+            $unidad = UnidadMedida::findOrFail($request->unidad_medida_id);
             //elimino la compañia
-            $calibre->delete();
+            $unidad->delete();
 
             //respuesta al cliente
             return response()->json([

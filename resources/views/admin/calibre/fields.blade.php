@@ -6,5 +6,15 @@
                                 'placeholder' => 'Calibre']) !!}
     </div>
 </div>
+<div class="form-group">
+    {!! Form::label('nombre', 'Unidad de Medida',
+        ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-7">
+        {!! Form::select('calibre_unidad_medida_id',
+							$unidades,
+							null, 
+							['class' => 'form-control']) !!}
+    </div>
+</div>
 
 {!! Form::hidden('calibre_id', null) !!}

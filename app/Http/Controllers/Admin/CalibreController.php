@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Calibre;
+use App\Models\UnidadMedida;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -22,6 +23,9 @@ class CalibreController extends Controller
     {
         //
         $calibres = Calibre::all();
+        $unidades = ['null' => 'Ninguno'] + UnidadMedida::orderBy('unidad_medida_nombre', 'ASC')
+                ->get()
+                ->lists('unidad_medida_nombre', 'unidad_medida_id')->all();
 
         if($request->ajax())
         {
@@ -47,7 +51,7 @@ class CalibreController extends Controller
         }
         else
         {
-            return view('admin.calibre.index', compact('calibres'));
+            return view('admin.calibre.index', compact('calibres','unidades'));
         }
     }
 

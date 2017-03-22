@@ -25,7 +25,8 @@ class CreateRequest extends Request
     {
         return [
             //
-            'calibre_nombre' => 'required|unique:calibre,calibre_nombre'
+            'calibre_nombre' => 'required|unique:calibre,calibre_nombre',
+            'calibre_unidad_medida_id' => 'required'
         ];
     }
 
@@ -34,7 +35,8 @@ class CreateRequest extends Request
         return [
             //
             'calibre_nombre.required' => 'El campo Nombre es obligatorio',
-            'calibre_nombre.unique' => 'Ya existe otro Calibre con ese nombre. Por favor verifica tu información'
+            'calibre_nombre.unique' => 'Ya existe otro Calibre con ese nombre. Por favor verifica tu información',
+            'unidad_medida_id.required' => 'El campo Unidad de Medida debe ser seleccionado'
         ];
     }
 }
