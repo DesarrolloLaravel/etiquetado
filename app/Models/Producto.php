@@ -25,6 +25,7 @@ class Producto extends Model
                             'producto_envase2_id',
     						'producto_descripcion',
     						'producto_codigo',
+                            'producto_v2_id',
     						'producto_peso'];
     protected $dates = ['deleted_at'];
     //agregar propiedad por default
@@ -89,7 +90,7 @@ class Producto extends Model
         $especie = $this->especie ? $this->especie->especie_abbreviation : '';
         $producto = $this->producto_condicion_id == 0 ? '' : $this->producto_condicion_id;
         $formato = $this->formato ? $this->formato->formato_nombre : '';
-        $trim = $this->trim ? $this->trim->trim_nombre : '';
+        $trim = $this->trim ? $this->trim->trim_name : '';
         $calibre = $this->calibre ? $this->calibre->calibre_nombre : '';
         $productov2 = $this->producto_v2_id == 0 ? '' : $this->producto_v2_id;
         $calidad = $this->calidad ? $this->calidad->calidad_nombre : '';
@@ -144,4 +145,23 @@ class Producto extends Model
             'producto_envase2_id',
             'envaseDos_id');
     }
+
+    public function variante(){
+        return $this->belongsTo('App\Models\Variante',
+            'producto_variante_id',
+            'variante_id');
+    }
+
+    public function varianteDos(){
+        return $this->belongsTo('App\Models\VarianteDos',
+            'producto_v2_id',
+            'varianteDos_id');
+    }
+
+    public function condicion(){
+        return $this->belongsTo('App\Models\Condicion',
+            'producto_condicion_id',
+            'condicion_id');
+    }
+
 }

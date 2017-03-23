@@ -393,6 +393,7 @@ class ComposerStaticInit292d320630d46996cb5a01d80e547381
         'CreateCamaraFk' => __DIR__ . '/../..' . '/database/migrations/2016_04_26_144852_create_camara_fk.php',
         'CreateCamaraTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_26_144526_create_camara_table.php',
         'CreateClientesTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_11_130737_create_clientes_table.php',
+        'CreateCondicionTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_23_161846_create_condicion_table.php',
         'CreateDespachoCajaFk' => __DIR__ . '/../..' . '/database/migrations/2016_05_11_152045_create_despacho_caja_fk.php',
         'CreateDespachoCajaTable' => __DIR__ . '/../..' . '/database/migrations/2016_05_10_165851_create_despacho_caja_table.php',
         'CreateDespachoLoteFk' => __DIR__ . '/../..' . '/database/migrations/2016_05_10_165416_create_despacho_lote_fk.php',

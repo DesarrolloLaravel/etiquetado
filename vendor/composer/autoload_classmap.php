@@ -36,6 +36,7 @@ return array(
     'CreateCamaraFk' => $baseDir . '/database/migrations/2016_04_26_144852_create_camara_fk.php',
     'CreateCamaraTable' => $baseDir . '/database/migrations/2016_04_26_144526_create_camara_table.php',
     'CreateClientesTable' => $baseDir . '/database/migrations/2016_10_11_130737_create_clientes_table.php',
+    'CreateCondicionTable' => $baseDir . '/database/migrations/2017_03_23_161846_create_condicion_table.php',
     'CreateDespachoCajaFk' => $baseDir . '/database/migrations/2016_05_11_152045_create_despacho_caja_fk.php',
     'CreateDespachoCajaTable' => $baseDir . '/database/migrations/2016_05_10_165851_create_despacho_caja_table.php',
     'CreateDespachoLoteFk' => $baseDir . '/database/migrations/2016_05_10_165416_create_despacho_lote_fk.php',

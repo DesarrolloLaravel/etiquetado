@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVarianteTable extends Migration
+class CreateCondicionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateVarianteTable extends Migration
     public function up()
     {
         //
-        Schema::create('variante', function (Blueprint $table) {
-            $table->increments('variante_id');
-            $table->string('variante_name');
+        Schema::create('condicion', function (Blueprint $table) {
+            $table->increments('condicion_id');
+            $table->string('condicion_name');
 
             $table->timestamps();
             $table->softDeletes();
@@ -30,6 +30,6 @@ class CreateVarianteTable extends Migration
     public function down()
     {
         //
-        Schema::drop('variante');
+        Schema::drop('condicion');
     }
 }

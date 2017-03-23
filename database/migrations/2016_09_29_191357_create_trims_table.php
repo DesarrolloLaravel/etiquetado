@@ -14,7 +14,7 @@ class CreateTrimsTable extends Migration
     {
         Schema::create('trim', function (Blueprint $table) {
             $table->increments('trim_id');
-            $table->string('trim_nombre');
+            $table->string('trim_name');
 
             $table->timestamps();
             $table->softDeletes();

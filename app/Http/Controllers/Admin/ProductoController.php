@@ -62,9 +62,9 @@ class ProductoController extends Controller
                     ->get()
                     ->lists('formato_abreviatura','formato_id')->all();
 
-            $trims = ['null'=>'NO APLICA'] + Trim::orderBy('trim_nombre', 'ASC')
+            $trims = ['null'=>'NO APLICA'] + Trim::orderBy('trim_name', 'ASC')
                     ->get()
-                    ->lists('trim_nombre','trim_id')->all();
+                    ->lists('trim_name','trim_id')->all();
 
             $calidades = ['null' => 'NO APLICA'] + Calidad::orderBy('calidad_nombre', 'ASC')
                     ->get()

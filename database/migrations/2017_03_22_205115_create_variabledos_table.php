@@ -19,6 +19,7 @@ class CreateVariabledosTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+        });
     }
 
     /**

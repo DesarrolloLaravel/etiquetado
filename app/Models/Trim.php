@@ -12,5 +12,10 @@ class Trim extends Model
 
     protected $table = 'trim';
     protected $primaryKey = 'trim_id';
-    protected $fillable = [ 'trim_nombre'];
+    protected $fillable = [ 'trim_name'];
+
+    function producto(){
+		return $this->hasMany('App\Models\Producto','producto_trim_id','trim_id');
+	} 
+
 }

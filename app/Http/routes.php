@@ -71,11 +71,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('productor/update','ProductorController@update');
     Route::post('productor/delete','ProductorController@delete');
 
+    Route::get('trim','TrimController@index');
+    Route::get('trim/edit','TrimController@edit');
+    Route::post('trim/store','TrimController@store');
+    Route::post('trim/update','TrimController@update');
+    Route::post('trim/delete','TrimController@delete');
+
     Route::get('cliente','ClienteController@index');
     Route::get('cliente/edit','ClienteController@edit');
     Route::post('cliente/store','ClienteController@store');
     Route::post('cliente/update','ClienteController@update');
     Route::post('cliente/delete','ClienteController@delete');
+
+    Route::get('condicion','CondicionController@index');
+    Route::get('condicion/edit','CondicionController@edit');
+    Route::post('condicion/store','CondicionController@store');
+    Route::post('condicion/update','CondicionController@update');
+    Route::post('condicion/delete','CondicionController@delete');
 
     Route::get('formato','FormatoController@index');
     Route::get('formato/edit','FormatoController@edit');
