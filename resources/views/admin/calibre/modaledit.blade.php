@@ -4,14 +4,15 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Editar Calibre</h4>
+                
             </div>
-            <div class="modal-body">
+            <div class="modal-body row">
                 {!! Form::open(['url' => 'admin/calibre/update',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
                   'id' => 'form-edit']) !!}
 
-                @include('admin.calibre.fields')
+
 
                 {!! Form::close() !!}
             </div>

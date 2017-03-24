@@ -4,9 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Calibre;
 use App\Models\Calidad;
+use App\Models\Condicion;
 use App\Models\Envase;
+use App\Models\Envase_Dos;
 use App\Models\Formato;
 use App\Models\Trim;
+use App\Models\Variante;
+use App\Models\VarianteDos;
+use App\Models\Producto;
+use App\Models\Especie;
+
+
+
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -14,8 +24,6 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Producto\CreateRequest;
 
-use App\Models\Producto;
-use App\Models\Especie;
 
 class ProductoController extends Controller
 {
@@ -58,6 +66,10 @@ class ProductoController extends Controller
                     ->get()
                     ->lists('especie_abbreviation','especie_id')->all();
 
+            $condiciones = ['null'=>'NO APLICA'] + Condicion::orderBy('condicion_name', 'ASC')
+                    ->get()
+                    ->lists('condicion_name','condicion_id')->all();
+
             $formatos = ['null'=>'NO APLICA'] + Formato::orderBy('formato_nombre', 'ASC')
                     ->get()
                     ->lists('formato_abreviatura','formato_id')->all();
@@ -70,6 +82,14 @@ class ProductoController extends Controller
                     ->get()
                     ->lists('calidad_nombre', 'calidad_id')->all();
 
+            $variantes = ['null'=>'NO APLICA'] + Variante::orderBy('variante_name', 'ASC')
+                    ->get()
+                    ->lists('variante_name','variante_id')->all();
+
+            $variantes_dos = ['null'=>'NO APLICA'] + VarianteDos::orderBy('varianteDos_name', 'ASC')
+                    ->get()
+                    ->lists('varianteDos_name','varianteDos_id')->all();
+
             $calibres = ['null' => 'NO APLICA'] + Calibre::orderBy('calibre_nombre', 'ASC')
                     ->get()
                     ->lists('calibre_nombre', 'calibre_id')->all();
@@ -78,8 +98,12 @@ class ProductoController extends Controller
                     ->get()
                     ->lists('envase_nombre', 'envase_id')->all();
 
-            return view('admin.producto.index', compact('productos', 'especies', 'formatos', 'trims',
-                'calidades', 'calibres', 'envases'));
+            $envases_dos = ['null' => 'NO APLICA'] + Envase_Dos::orderBy('envaseDos_nombre', 'ASC')
+                    ->get()
+                    ->lists('envaseDos_nombre', 'envaseDos_id')->all();
+
+            return view('admin.producto.index', compact('productos', 'especies','condiciones', 'formatos', 'trims',
+                'calidades','variantes','variantes_dos', 'calibres', 'envases','envases_dos'));
         }
     }
 

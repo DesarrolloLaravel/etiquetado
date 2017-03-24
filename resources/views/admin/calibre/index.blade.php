@@ -154,7 +154,10 @@
                 $.get("calibre/edit",
                         {calibre_id : calibre_id},
                         function(data){
-                            setValues(data, 0);
+                            $('#modal_edit .modal-dialog .modal-content .modal-body').find('#form-edit').html(data['section']);
+
+                            setValues(data['calibre'], 0);
+
                             $('#modal_edit').modal('show');
                         });
             } );
@@ -185,6 +188,7 @@
 
             $("#"+form+" input[name='calibre_id']").val(data.calibre_id);
             $("#"+form+" input[name='calibre_nombre']").val(data.calibre_nombre);
+            $("#"+form+" input[name='calibre_unidad_medida_id']").val(data.calibre_unidad_medida_id);
         }
 
     </script>

@@ -41,7 +41,7 @@
 		['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-4">
 			{!! Form::select('producto_condicion',
-                                \Config::get('producto.condicion'),
+                                $condiciones,
                                 null,
                                 ['class' => 'form-control select2',
                                 'style' => 'width:100%']) !!}
@@ -82,11 +82,11 @@
 
 <div class="col-sm-12">
 	<div class="form-group">
-		{!! Form::label('producto_variante', 'Variante',
+		{!! Form::label('producto_variante', 'Variante Primaria',
             ['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-4">
 			{!! Form::select('producto_variante',
-                                \Config::get('producto.variante'),
+                                $variantes,
                                 null,
                                 ['class' => 'form-control select2',
                                 'style' => 'width:100%']) !!}
@@ -105,16 +105,16 @@
 
 <div class="col-sm-12">
 	<div class="form-group">
-		{!! Form::label('producto_v2', 'V2',
+		{!! Form::label('producto_v2', 'Variante Secundaria',
             ['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-4">
 			{!! Form::select('producto_v2',
-                                \Config::get('producto.v2'),
+                                $variantes_dos,
                                 null,
                                 ['class' => 'form-control select2',
                                 'style' => 'width:100%']) !!}
 		</div>
-		{!! Form::label('producto_envase1', 'Envase 1',
+		{!! Form::label('producto_envase1', 'Envase Primario',
 		['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-4">
 			{!! Form::select('producto_envase1',
@@ -129,11 +129,11 @@
 
 <div class="col-sm-12">
 	<div class="form-group">
-		{!! Form::label('producto_envase2', 'Envase 2',
+		{!! Form::label('producto_envase2', 'Envase Secundario',
             ['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-4">
 			{!! Form::select('producto_envase2',
-                                \Config::get('producto.env2'),
+                                $envases_dos,
                                 null,
                                 ['class' => 'form-control select2',
                                 'style' => 'width:100%']) !!}

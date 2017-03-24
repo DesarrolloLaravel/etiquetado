@@ -1,3 +1,4 @@
+
 <div class="form-group">
     {!! Form::label('nombre', 'Nombre',
         ['class' => 'col-sm-3 control-label']) !!}

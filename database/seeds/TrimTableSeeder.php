@@ -15,8 +15,8 @@ class TrimTableSeeder extends Seeder
         //
         $trim = [];
 
-        $trim [] = ['trim_nombre' => 'TD'];
-        $trim [] = ['trim_nombre' => 'TE 3,5 cm'];
+        $trim [] = ['trim_name' => 'TD'];
+        $trim [] = ['trim_name' => 'TE 3,5 cm'];
 
         Trim::insert($trim);
     }
