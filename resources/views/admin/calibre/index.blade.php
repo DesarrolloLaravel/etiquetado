@@ -41,6 +41,8 @@
             $("#add").click(function(){
 
                 $('#modal_add').modal('show');
+                $('#form-add').trigger("reset");
+                $(".alert").hide();
             });
 
             $("#save").click(function(){
@@ -154,27 +156,54 @@
                 $.get("calibre/edit",
                         {calibre_id : calibre_id},
                         function(data){
-                            $('#modal_edit .modal-dialog .modal-content .modal-body').find('#form-edit').html(data['section']);
 
-                            setValues(data['calibre'], 0);
+                            if(data[0] == "nok"){
+                                
+                                $('#modal_error').modal('show');
+                                $(".alert").hide();
+                            
+                            }else{
 
-                            $('#modal_edit').modal('show');
+
+                                $(".alert").hide();
+                                $('#modal_edit .modal-dialog .modal-content .modal-body').find('#form-edit').html(data['section']);
+
+                                setValues(data['calibre'], 0);
+
+                                $('#modal_edit').modal('show');
+                            }
+                            
                         });
             } );
 
             $('#table-calibres tbody').on( 'click', '#delete', function () {
+
                 calibre_id = $(this).parents('tr').data('id');
 
                 $.get("calibre/edit",
                         {calibre_id : calibre_id},
                         function(data){
-                            setValues(data, 1);
-                            $('#modal_delete').modal('show');
 
-                            $("#form-delete :input")
+                            if(data[0] == "nok"){
+                                
+                                $('#modal_error').modal('show');
+                                $(".alert").hide();
+                            
+                            }else{
+                                
+
+                                $(".alert").hide();
+                                $('#modal_delete .modal-dialog .modal-content .modal-body').find('#form-delete').html(data['section']);
+
+                                setValues(data['calibre'], 1);
+
+                                $("#form-delete :input")
                                     .not('.btn')
                                     .not("input[type='hidden']")
                                     .attr("disabled", true);
+                                $('#modal_delete').modal('show');
+                            }
+
                         });
             } );
         });
@@ -225,8 +254,8 @@
         </div>
     </div>
 
-    @include('admin.calibre.modaladd')
-    @include('admin.calibre.modaledit')
-    @include('admin.calibre.modaldelete')
-
+@include('admin.calibre.modaladd')
+@include('admin.calibre.modaledit')
+@include('admin.calibre.modaldelete')
+@include('admin.calibre.modalerror')
 @endsection

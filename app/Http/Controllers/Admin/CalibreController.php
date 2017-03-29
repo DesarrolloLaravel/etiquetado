@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Calibre;
 use App\Models\UnidadMedida;
+Use App\Models\Producto;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -107,20 +108,27 @@ class CalibreController extends Controller
         //
         if($request->ajax())
         {
-            $calibre = Calibre::findOrFail($request->calibre_id);
-            $unidades = [''=>'Ninguno'] + 
+            $counter = Producto::where('producto_calibre_id',$request->calibre_id)->count();
+
+            if($counter == 0){
+                $calibre = Calibre::findOrFail($request->calibre_id);
+                $unidades = [''=>'Ninguno'] + 
                         UnidadMedida::orderBy('unidad_medida_nombre', 'ASC')
                         ->get()
                         ->lists('unidad_medida_nombre','unidad_medida_id')
                         ->all();
             
-            $view = \View::make('admin.calibre.fields')
+                $view = \View::make('admin.calibre.fields')
                     ->with('unidades', $unidades);
 
-             $sections = $view->renderSections();
+                $sections = $view->renderSections();
            
 
-            return response()->json(["calibre" => $calibre,"section" => $sections['contentPanelCalibre']]);
+                return response()->json(
+                    ["calibre" => $calibre,"section" => $sections['contentPanelCalibre']]);    
+            }else{
+                return response()->json(["nok"]);
+            }   
         }
     }
 

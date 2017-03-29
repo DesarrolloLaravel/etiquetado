@@ -1,4 +1,3 @@
-@section('contentPanelCalibre')
 <div class="form-group">
     {!! Form::label('nombre', 'Nombre',
         ['class' => 'col-sm-3 control-label']) !!}
@@ -18,4 +17,3 @@
     </div>
 </div>
 {!! Form::hidden('calibre_id', null) !!}
-@endsection
