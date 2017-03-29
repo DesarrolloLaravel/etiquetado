@@ -1,4 +1,4 @@
-
+@section('contentPanelCalibre')
 <div class="form-group">
     {!! Form::label('nombre', 'Nombre',
         ['class' => 'col-sm-3 control-label']) !!}
@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('nombre', 'Unidad de Medida',
+    {!! Form::label('unidad_medida', 'Unidad de Medida',
         ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-7">
         {!! Form::select('calibre_unidad_medida_id',
@@ -19,3 +19,4 @@
 </div>
 
 {!! Form::hidden('calibre_id', null) !!}
+@endsection

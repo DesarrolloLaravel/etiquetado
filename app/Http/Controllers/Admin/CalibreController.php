@@ -116,9 +116,11 @@ class CalibreController extends Controller
             
             $view = \View::make('admin.calibre.fields')
                     ->with('unidades', $unidades);
-            $sections = $view->renderSections();
 
-            return response()->json(["calibre" => $calibre, "section" => $sections['contentPanel']]);
+             $sections = $view->renderSections();
+           
+
+            return response()->json(["calibre" => $calibre,"section" => $sections['contentPanelCalibre']]);
         }
     }
 
