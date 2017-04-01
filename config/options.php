@@ -10,6 +10,13 @@ return array(
 		'4' => 'Calidad 4',
 		'5' => 'Calidad 5'
 	],
+	'role' =>[
+		'administrador' => 'Administrador',
+		'recepcion' => 'Recepcion',
+		'produccion' => 'Produccion',
+		'empaque' => 'Empaque',
+		'almacenamiento' =>'Almacenamiento'
+	],
 	'especie' => [
 		''=>'Ninguno',
 		'1' =>'Especie 1',

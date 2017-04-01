@@ -67,6 +67,7 @@ return array(
     'CreateProductoresTable' => $baseDir . '/database/migrations/2016_04_04_204519_create_productores_table.php',
     'CreateProductosFk' => $baseDir . '/database/migrations/2016_09_30_134805_create_productos_fk.php',
     'CreateProductosTable' => $baseDir . '/database/migrations/2016_04_13_132934_create_productos_table.php',
+    'CreateRolesTable' => $baseDir . '/database/migrations/2017_03_29_024422_create_roles_table.php',
     'CreateTrimsTable' => $baseDir . '/database/migrations/2016_09_29_191357_create_trims_table.php',
     'CreateUnidadMedidasTable' => $baseDir . '/database/migrations/2017_03_21_182028_create_unidad_medidas_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',

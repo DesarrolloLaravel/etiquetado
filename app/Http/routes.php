@@ -83,6 +83,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('cliente/update','ClienteController@update');
     Route::post('cliente/delete','ClienteController@delete');
 
+    Route::get('user','UserController@index');
+    Route::get('user/edit','UserController@edit');
+    Route::post('user/store','UserController@store');
+    Route::post('user/update','UserController@update');
+    Route::post('user/delete','UserController@delete');
+
     Route::get('condicion','CondicionController@index');
     Route::get('condicion/edit','CondicionController@edit');
     Route::post('condicion/store','CondicionController@store');
