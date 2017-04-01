@@ -3,7 +3,7 @@
 @section('modal-id'){{"modal_delete"}}@overwrite
 
 @section('modal-title'){{"Eliminar Calibre"}}@overwrite
-@section('modal-body ContentPanelCalibre') 
+@section('modal-body') 
     <div class="modal-body">
         {!! Form::open(['url' => 'admin/calibre/destroy',
           'class' => 'form-horizontal',

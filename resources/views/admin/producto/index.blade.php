@@ -45,6 +45,125 @@
             $('#modal_add').modal('show');
         });
 
+        $('#table-productos tbody').on( 'click', '#edit', function () {
+                producto_id = $(this).parents('tr').data('id');
+
+                $.get("producto/edit",
+                        {producto_id : producto_id},
+                        function(data){
+
+                            if(data[0] == "nok"){
+                                
+                                $('#modal_error').modal('show');
+                                $(".alert").hide();
+                            
+                            }else{
+
+                                $(".alert").hide();
+                                setValues(data['producto'], 0);
+                                $('#modal_edit').modal('show');
+                            }
+                            
+                        });
+        } );
+
+        $('#table-productos tbody').on( 'click', '#delete', function () {
+
+                producto_id = $(this).parents('tr').data('id');
+
+                $.get("producto/edit",
+                        {producto_id : producto_id},
+                        function(data){
+
+                            if(data[0] == "nok"){
+                                
+                                $('#modal_error').modal('show');
+                                $(".alert").hide();
+                            
+                            }else{
+                                
+
+                                $(".alert").hide();
+                                setValues(data['producto'], 1);
+
+                                $("#form-delete :input")
+                                    .not('.btn')
+                                    .not("input[type='hidden']")
+                                    .attr("disabled", true);
+                                $('#modal_delete').modal('show');
+                            }
+
+                        });
+        } );
+
+        $("#update").click(function(){
+
+                var form = $("#form-edit");
+                //obtengo url
+                var url = form.attr('action');
+                //obtengo la informacion del formulario
+                var data = form.serialize();
+
+                $.post(url, data, function(resp)
+                {
+                    if(resp[0] == "ok")
+                    {
+                        alert.success("El registro fue actualizado exitosamente.")
+                        //reseteo el formulario
+                        $('#form-edit').trigger("reset");
+
+                        $('#modal_edit').modal('hide');
+
+                        table.ajax.reload();
+                    }
+
+                }).fail(function(resp){
+
+                    var html = "";
+                    for(var key in resp.responseJSON)
+                    {
+                        html += resp.responseJSON[key][0] + "<br>";
+                    }
+                    alert.error(html);
+                });
+
+        });
+
+        $("#delete").click(function(){
+
+                var form = $("#form-delete");
+                //obtengo url
+                var url = form.attr('action');
+                //obtengo la informacion del formulario
+                var data = form.serialize();
+                var html = "";
+
+                $.post(url, data, function(resp)
+                {
+                    if(resp[0] == "ok")
+                    {
+                        alert.success("El registro fue eliminado exitosamente.");
+                        //reseteo el formulario
+                        $('#form-delete').trigger("reset");
+
+                        $('#modal_delete').modal('hide');
+
+                        table.ajax.reload();
+                    }
+
+                }).fail(function(resp){
+
+                    for(var key in resp.responseJSON)
+                    {
+                        html += resp.responseJSON[key][0] + "<br>";
+                    }
+                    alert.error(html);
+                });
+
+            });
+
+
+
         $("#save").click(function(){
 
             $.ajaxSetup({
@@ -84,6 +203,29 @@
 
         });
 	});
+
+    function setValues(data, n)
+        {
+            var form = "form-edit";
+            if (n == 1) {
+                form = "form-delete";
+            }
+
+            $("#"+form+" input[name='producto_id']").val(data.producto_id);
+            $("#"+form+" input[name='producto_nombre']").val(data.producto_nombre);
+            $("#"+form+" input[name='producto_peso']").val(data.producto_peso);
+            $("#"+form+" input[name='producto_codigo']").val(data.producto_codigo);
+            $("#"+form+" select[name='producto_condicion']").val(data.producto_condicion_id).change();
+            $("#"+form+" select[name='producto_trim']").val(data.producto_trim_id).change();
+            $("#"+form+" select[name='producto_calidad']").val(data.producto_calidad_id).change();
+            $("#"+form+" select[name='producto_variante']").val(data.producto_variante_id).change();
+            $("#"+form+" select[name='producto_calibre']").val(data.producto_calibre_id).change();
+            $("#"+form+" select[name='producto_v2']").val(data.producto_v2_id).change();
+            $("#"+form+" select[name='producto_envase1']").val(data.producto_envase1_id).change();
+            $("#"+form+" select[name='producto_envase2']").val(data.producto_envase2_id).change();
+            $("#"+form+" select[name='producto_especie']").val(data.producto_especie_id).change();
+            $("#"+form+" select[name='producto_formato']").val(data.producto_formato_id).change();
+        }
 
 </script>
 
@@ -132,5 +274,8 @@
 </div>
 
 @include('admin.producto.modaladd')
+@include('admin.producto.modaledit')
+@include('admin.producto.modaldelete')
+@include('admin.producto.modalerror')
 
 @endsection

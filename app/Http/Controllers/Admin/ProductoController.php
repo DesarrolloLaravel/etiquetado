@@ -23,6 +23,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Producto\CreateRequest;
+use App\Http\Requests\Producto\UpdateRequest;
 
 
 class ProductoController extends Controller
@@ -196,9 +197,15 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         //
+        if($request->ajax())
+        {
+            $producto = Producto::findOrFail($request->producto_id);
+            return response()->json(["producto" => $producto]);    
+              
+        }
     }
 
     /**
@@ -208,9 +215,41 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request)
     {
         //
+        if($request->ajax())
+        {
+            $producto = Producto::findOrFail($request->producto_id);
+
+            //se crea un array con la información enviada desde el cliente
+
+            $info = array(
+                'producto_nombre' => $request->producto_nombre,
+                'producto_codigo' => $request->producto_codigo,
+                'producto_peso' => $request->producto_peso,
+                'producto_condicion_id' => $request->producto_condicion,
+                'producto_variante_id'=> $request->producto_variante,
+                'producto_v2_id' => $request->producto_v2,
+                'producto_envase2_id' => $request->producto_envase2,
+                'producto_especie_id' => $request->producto_especie,
+                'producto_formato_id' => $request->producto_formato,
+                'producto_trim_id' => $request->producto_trim,
+                'producto_calidad_id' => $request->producto_calidad,
+                'producto_calibre_id' => $request->producto_calibre,
+                'producto_envase1_id' => $request->producto_envase1
+
+                );
+
+            //se pasa la información a la compañia encontrada
+            $producto->fill($info);
+            //se guardan los cambios en la base de datos
+            $producto->save();
+            //se envia respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
     }
 
     /**
@@ -219,8 +258,31 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
         //
+        if($request->ajax())
+        {
+            //se crea el validador con la información enviada desde el cliente
+            //y con las reglas de validación respectiva
+            $v = \Validator::make($request->all(), [
+                'producto_id' => 'required|exists:producto,producto_id'
+            ]);
+            //si falla la validación
+            if ($v->fails())
+            {
+                //respondo con un json que contiene los errores
+                return response()->json($v->errors());
+            }
+            //busco la compañia a eliminar
+            $producto = Producto::findOrFail($request->producto_id);
+            //elimino la compañia
+            $producto->delete();
+
+            //respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
     }
 }
