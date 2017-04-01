@@ -10,7 +10,7 @@
         'method' => 'POST',
         'id' => 'form-edit']) !!}
         
-        @include('admin.user.fields')
+        @include('admin.user.fields_edit')
 
       {!! Form::close() !!}
   </div>

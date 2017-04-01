@@ -11,7 +11,8 @@ return array(
 		'5' => 'Calidad 5'
 	],
 	'role' =>[
-		'administrador' => 'Administrador',
+		'' => "Seleccione un Rol",
+		'administracion' => 'Administrador',
 		'recepcion' => 'Recepcion',
 		'produccion' => 'Produccion',
 		'empaque' => 'Empaque',

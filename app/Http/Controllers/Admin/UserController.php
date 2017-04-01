@@ -11,6 +11,7 @@ use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 
 use App\Models\User;
+use App\Models\Lote;
 
 
 class UserController extends Controller
@@ -80,7 +81,6 @@ class UserController extends Controller
             //crea un cliente con los datos del request
 
             $v = \Validator::make($request->all(), [
-                'cliente_nombre' => 'unique:cliente,cliente_nombre',
                 'users_name' => 'max:255',
                 'users_email' => 'unique:users,users_email',
                 'users_user' => 'unique:users,users_user',
@@ -151,18 +151,21 @@ class UserController extends Controller
         if($request-> ajax()){
 
             //busca por el id al elaborador
-            $cliente = Cliente::findOrFail($request->cliente_id);
+            $user = User::findOrFail($request->users_id);
 
             //genera un array con la info del update
             $info = array(
-                'cliente_nombre' => $request->cliente_nombre
+                'users_name' => $request->users_name,
+                'users_email' => $request->users_email,
+                'users_role' => $request->users_role,
+                'users_password' => $request->users_password
             );
 
             //añade la info al elaborador encontrado
-            $cliente->fill($info);
+            $user->fill($info);
 
             //guarda en la bd el elaborador ya modificado
-            $cliente->save();
+            $user->save();
 
             //retorna la respuesta
             return response()->json([

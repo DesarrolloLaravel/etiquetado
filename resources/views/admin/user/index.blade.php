@@ -217,6 +217,7 @@
         $("#"+form+" input[name='users_name']").val(data.users_name);
         $("#"+form+" input[name='users_email']").val(data.users_email);
         $("#"+form+" input[name='users_role']").val(data.users_role);
+        $("#"+form+" input[name='users_user']").val(data.users_user);
     }
 
 </script>

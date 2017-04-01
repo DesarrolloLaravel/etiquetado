@@ -28,7 +28,8 @@ class CreateRequest extends Request
             'users_name' => 'required|max:255',
             'users_email' => 'required|email|unique:users,users_email',
             'users_user' => 'required|unique:users,users_user',
-            'password' => 'required|min:5'
+            'password' => 'required|min:5',
+            'users_role' => 'required'
             
         ];
         
@@ -46,8 +47,8 @@ class CreateRequest extends Request
             'users_user.required' => 'El campo ID-Usuario es obligatorio',
             'users_user.unique' => 'Ya existe ese ID-Usuario',
             'password.required' => 'El campo Clave es obligatorio',
-            'password.min' => 'El campo Clave debe tener minimo  caracteres'
-
+            'password.min' => 'El campo Clave debe tener minimo  caracteres',
+            'users_role.required' => 'El Rol es requerido'
             
         ];
     }

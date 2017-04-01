@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Cliente;
+namespace App\Http\Requests\User;
 
 use App\Http\Requests\Request;
 
@@ -25,9 +25,10 @@ class UpdateRequest extends Request
     public function rules()
     {
         return [ 
-            'cliente_nombre'   =>'required',
-            'cliente_nombre'    =>'required|unique:cliente,cliente_nombre,'
-                .$this->request->get('cliente_id').',cliente_id'
+            'users_name' => 'required|max:255',
+            'users_email' => 'required|email',
+            'users_user' => 'required',
+            'users_role' => 'required'
         ];
         
     }
@@ -35,8 +36,11 @@ class UpdateRequest extends Request
     public function messages()
     {
         return [
-            'cliente_nombre.required'      =>'El nombre es obligatorio',
-            'cliente_nombre.unique'         =>'Ya existe otro Cliente con ese nombre. Por favor verifique su información'      
+            'users_name.required' => 'El campo Nombre es obligatorio',
+            'users_email.required' => 'El campo Email es obligatorio',
+            'users_email.email' => 'El campo Email debe ser valido',
+            'users_user.required' => 'El campo ID-Usuario es obligatorio',
+            'users_role.required' => 'El Rol es requerido'      
         ];
     }
 }
