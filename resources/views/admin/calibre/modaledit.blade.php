@@ -3,7 +3,7 @@
 @section('modal-id'){{"modal_edit"}}@overwrite
 
 @section('modal-title'){{"Editar Calibre"}}@overwrite
-@section('modal-body ContentPanelCalibre') 
+@section('modal-body')
     <div class="modal-body row">
         {!! Form::open(['url' => 'admin/calibre/update',
           'class' => 'form-horizontal',
@@ -11,7 +11,6 @@
           'id' => 'form-edit']) !!}
 
           @include('admin.calibre.fields')
-
 
         {!! Form::close() !!}
     </div>

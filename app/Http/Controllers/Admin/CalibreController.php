@@ -112,20 +112,8 @@ class CalibreController extends Controller
 
             if($counter == 0){
                 $calibre = Calibre::findOrFail($request->calibre_id);
-                $unidades = [''=>'Ninguno'] + 
-                        UnidadMedida::orderBy('unidad_medida_nombre', 'ASC')
-                        ->get()
-                        ->lists('unidad_medida_nombre','unidad_medida_id')
-                        ->all();
-            
-                $view = \View::make('admin.calibre.fields')
-                    ->with('unidades', $unidades);
-
-                $sections = $view->renderSections();
-           
-
                 return response()->json(
-                    ["calibre" => $calibre,"section" => $sections['contentPanelCalibre']]);    
+                    ["calibre" => $calibre]);    
             }else{
                 return response()->json(["nok"]);
             }   

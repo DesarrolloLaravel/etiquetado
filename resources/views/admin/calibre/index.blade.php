@@ -166,8 +166,6 @@
 
 
                                 $(".alert").hide();
-                                $('#modal_edit .modal-dialog .modal-content .modal-body').find('#form-edit').html(data['section']);
-
                                 setValues(data['calibre'], 0);
 
                                 $('#modal_edit').modal('show');
@@ -193,8 +191,6 @@
                                 
 
                                 $(".alert").hide();
-                                $('#modal_delete .modal-dialog .modal-content .modal-body').find('#form-delete').html(data['section']);
-
                                 setValues(data['calibre'], 1);
 
                                 $("#form-delete :input")
@@ -217,7 +213,7 @@
 
             $("#"+form+" input[name='calibre_id']").val(data.calibre_id);
             $("#"+form+" input[name='calibre_nombre']").val(data.calibre_nombre);
-            $("#"+form+" input[name='calibre_unidad_medida_id']").val(data.calibre_unidad_medida_id);
+            $("#"+form+" select[name='calibre_unidad_medida_id']").val(data.calibre_unidad_medida_id);
         }
 
     </script>

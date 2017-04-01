@@ -10,7 +10,7 @@
           'method' => 'POST',
           'id' => 'form-add']) !!}
 
-        @include('admin.calibre.fields_add')
+        @include('admin.calibre.fields')
 
         {!! Form::close() !!}
     </div>

@@ -120,6 +120,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('producto', 'ProductoController@index');
 	Route::post('producto/store', 'ProductoController@store');
 	Route::get('producto/show', 'ProductoController@show');
+	Route::get('producto/edit','ProductoController@edit');
+    Route::post('producto/update','ProductoController@update');
+    Route::post('producto/delete','ProductoController@delete');
 
 	Route::get('caja','CajaController@index');
 	Route::post('caja','CajaController@index');
