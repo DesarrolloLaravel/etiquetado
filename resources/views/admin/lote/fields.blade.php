@@ -190,10 +190,21 @@
 		</div>
 	</div>
 </div>
+
+<div class="col-sm-6">
+	<div class="col-xs-6">
+		<div class="form-group">
+			{!! Form::label('cliente', 'Cliente',
+				['class' => 'control-label']) !!}
+			{!! Form::select('lote_cliente_id', $clientes, null , ['class' => 'form-control']) !!}
+		</div>
+	</div>
+</div>
+
 <div class="col-sm-6">
 	<div class="col-xs-4">
 		<div class="form-group">
-			{!! Form::label('reestricciones', 'Reestricciones',
+			{!! Form::label('reestricciones', 'Restricciones',
 				['class' => 'control-label']) !!}
 			{!! Form::select('lote_reestriccion', 
 							\Config::get('options.reestriccion'),

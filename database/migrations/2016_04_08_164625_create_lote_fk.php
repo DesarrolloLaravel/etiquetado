@@ -46,6 +46,11 @@ class CreateLoteFk extends Migration
                     ->on('destino')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
 
+            $table->foreign('lote_cliente_id', 'lote_cliente_id')
+                    ->references('cliente_id')
+                    ->on('cliente')
+                    ->onUpdate('NO ACTION')->onDelete('cascade');
+
         });
     }
 
@@ -65,6 +70,7 @@ class CreateLoteFk extends Migration
             $table->dropForeign('lote_productor_id');
             $table->dropForeign('lote_especie_id');
             $table->dropForeign('lote_destino_id');
+            $table->dropForeign('lote_cliente_id');
         });
     }
 }

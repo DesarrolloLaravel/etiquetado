@@ -52,16 +52,16 @@
         }        
         return html += '</table>';  
     }
-	
-	var table;
+    
+    var table;
 
     $(document).ready(function(){
 
-    	$.ajaxSetup({
-	        headers:{
-	          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	        }
-	    });
+        $.ajaxSetup({
+            headers:{
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $(".alert").hide();
 
@@ -177,12 +177,12 @@
 
         $("#produccion").click(function(){
 
-        	$.get('lote/produccion',
-        		function(data){
+            $.get('lote/produccion',
+                function(data){
 
-	    			$('#modal_produccion .modal-dialog .modal-content').find('.modal-body').html(data[1]);
-	    			$('#modal_produccion').modal('show');
-        		});
+                    $('#modal_produccion .modal-dialog .modal-content').find('.modal-body').html(data[1]);
+                    $('#modal_produccion').modal('show');
+                });
         });
 
         $(document).on('click','#update',function(event){
@@ -257,46 +257,52 @@
 
         $(document).on('click','#pro_lote',function(event){
 
-			if($("#select_no_produccion").val() != null)
-			{
-				var lote_id = $("#select_no_produccion").val();
+            if($("#select_no_produccion").val() != null)
+            {
+                var lote_id = $("#select_no_produccion").val();
 
-				$.post('lote/change',
-				{lote_id : lote_id,
-					action: 1},
-				function(data)
-				{
-					table.ajax.reload();
-					$("#produccion").trigger('click');
-				});
-			}
-			else
-			{
-			alert("Debes seleccionar un LOTE");
-			}
+                $.post('lote/change',
+                {lote_id : lote_id,
+                    action: 1},
+                function(data)
+                {
+                    if(data[1]==1){
 
-	    });
+                        alert("LOTE sin Declaración Jurada. Restricción: SOLO MERCADO NACIONAL");
+                            
+                    }
 
-		$(document).on('click','#np_lote',function(event){
+                    table.ajax.reload();
+                    $("#produccion").trigger('click');
+                });
+            }
+            else
+            {
+            alert("Debes seleccionar un LOTE");
+            }
 
-			if($("#select_produccion").val() != null)
-			{
-				var lote_id = $("#select_produccion").val();
+        });
 
-				$.post('lote/change',
-				{lote_id: lote_id,
-				action: 0},
-				function(data)
-				{
-					table.ajax.reload();
-					$("#produccion").trigger('click');
-				});
-			}
-			else
-			{
-			alert("Debes seleccionar un LOTE");
-			}
-		});
+        $(document).on('click','#np_lote',function(event){
+
+            if($("#select_produccion").val() != null)
+            {
+                var lote_id = $("#select_produccion").val();
+
+                $.post('lote/change',
+                {lote_id: lote_id,
+                action: 0},
+                function(data)
+                {
+                    table.ajax.reload();
+                    $("#produccion").trigger('click');
+                });
+            }
+            else
+            {
+            alert("Debes seleccionar un LOTE");
+            }
+        });
 
     });
 
@@ -320,6 +326,7 @@
         $("#"+form+" select[name='lote_condicion']").val(data.lote_condicion == "CONGELADO"?1:2);
         $("#"+form+" select[name='lote_mp_id']").val(data.lote_mp_id);
         $("#"+form+" select[name='lote_destino_id']").val(data.lote_destino_id);
+        $("#"+form+" select[name='lote_cliente_id']").val(data.lote_cliente_id);
         $("#"+form+" input[name='lote_kilos_declarado']").val(data.lote_kilos_declarado);
         $("#"+form+" input[name='lote_kilos_recepcion']").val(data.lote_kilos_recepcion);
         $("#"+form+" input[name='lote_cajas_declarado']").val(data.lote_cajas_declarado);
