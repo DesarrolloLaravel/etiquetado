@@ -22,6 +22,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('lote/produccion','LoteController@lotes_produccion');
 	Route::get('lote/next','LoteController@next');
 	Route::post('lote/change','LoteController@lote_change');
+	Route::post('lote/change_validate','LoteController@lote_change_validate');
 	Route::get('lote/create','LoteController@create');
 	Route::post('lote/store','LoteController@store');
 	Route::post('lote/update','LoteController@update');

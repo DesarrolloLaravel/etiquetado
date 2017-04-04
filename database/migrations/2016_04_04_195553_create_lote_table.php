@@ -20,6 +20,7 @@ class CreateLoteTable extends Migration
             $table->unsignedInteger('lote_tipo_id')->index();
             $table->unsignedInteger('lote_procesador_id')->index();
             $table->unsignedInteger('lote_elaborador_id')->index();
+            $table->unsignedInteger('lote_cliente_id')->index();
             $table->unsignedInteger('lote_mp_id')->index();
             $table->unsignedInteger('lote_productor_id')->index();
             $table->unsignedInteger('lote_especie_id')->index();

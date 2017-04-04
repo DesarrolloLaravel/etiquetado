@@ -20,6 +20,7 @@ use App\Models\Productor;
 use App\Models\Destino;
 use App\Models\Lote;
 use App\Models\Caja;
+use App\Models\Cliente;
 
 class LoteController extends Controller
 {
@@ -40,10 +41,8 @@ class LoteController extends Controller
             $lotes = Lote::all();
 
             $no_produccion = $lotes->where('lote_produccion', 'NO')
-                            ->where('lote_djurada','SI')
                             ->lists('lote_id', 'lote_id');
             $produccion = $lotes->where('lote_produccion', 'SI')
-                            ->where('lote_djurada','SI')
                             ->lists('lote_id', 'lote_id');
 
             $view = \View::make('admin.lote.produccionfields')
@@ -61,22 +60,51 @@ class LoteController extends Controller
         if($request->ajax())
         {
             $lote = Lote::findOrFail($request->lote_id);
+            $lotus = Lote::findOrFail($request->lote_id);
 
             if($request->action == 1)
             {
-                $lote->lote_produccion = 'SI';
+                if($lotus->lote_djurada == "NO"){
 
-                $lote->save();
+                    $lote->lote_produccion = 'SI';
+                    $lote->lote_reestriccion = 'SI';
+                    $lote->lote_observaciones = 'SOLO MERCADO NACIONAL';
 
-                return response()->json("OK");
+                    $lote->save();
+
+                    return response()->json(["OK",1]);    
+                }
+                else{
+
+                    $lote->lote_produccion = 'SI';
+
+                    $lote->save();
+
+                    return response()->json(["OK",0]);    
+                }           
+                
             }
             else if($request->action == 0)
             {
-                $lote->lote_produccion = 'NO';
 
-                $lote->save();
+                if($lotus->lote_djurada == "NO"){
 
-                return response()->json("OK");
+                    $lote->lote_produccion = 'NO';
+                    $lote->lote_reestriccion = 'NO';
+                    $lote->lote_observaciones = ''; 
+                    
+                    $lote->save();
+
+                    return response()->json("OK");
+
+                }else{
+
+                    $lote->lote_produccion = 'NO';
+
+                    $lote->save();
+
+                    return response()->json("OK");
+                }                
             }
         }
     }
@@ -119,10 +147,10 @@ class LoteController extends Controller
                 //completo el json
                 $dt_json .= '["","'
                                 .$lote->lote_id.'","'
-                                .$lote->lote_kilos_recepcion.'","'
                                 .$lote->lote_n_documento.'","'
                                 .$lote->procesador->procesador_name.'","'
                                 .$lote->productor->productor_name.'","'
+                                .$lote->lote_djurada.'","'
                                 .$lote->lote_produccion.'"],';
             }
             //elimino la ultima coma del json
@@ -191,6 +219,13 @@ class LoteController extends Controller
                         ->lists('destino_name','destino_id')
                         ->all();
 
+        $clientes = [''=>'Ninguno'] + 
+                        Cliente::orderBy('cliente_nombre', 'ASC')
+                        ->get()
+                        ->lists('cliente_nombre','cliente_id')
+                        ->all();
+
+
         if(is_null(Lote::withTrashed()->max('lote_id')))
             $proximo_lote = env('PRIMER_LOTE');
         else
@@ -212,7 +247,8 @@ class LoteController extends Controller
                         'proximo_lote',
                         'fecha_documento',
                         'fecha_planta',
-                        'fecha_expiracion'));
+                        'fecha_expiracion',
+                        'clientes'));
     }
 
     /**
@@ -248,6 +284,7 @@ class LoteController extends Controller
                 'lote_cajas_recepcion'  => $request->lote_cajas_recepcion,
                 'lote_productor_id'     => $request->lote_productor_id,
                 'lote_destino_id'       => $request->lote_destino_id,
+                'lote_cliente_id'       => $request->lote_cliente_id,
                 'lote_users_id'         => \Auth::user()->users_id,
                 'lote_observaciones'    => $request->lote_observaciones,
                 'lote_djurada'          => \Config::get('options.djurada')[$request->lote_djurada],
@@ -389,6 +426,12 @@ class LoteController extends Controller
                             ->lists('destino_name','destino_id')
                             ->all();
 
+            $clientes = [''=>'Ninguno'] + 
+                        Cliente::orderBy('cliente_nombre', 'ASC')
+                        ->get()
+                        ->lists('cliente_nombre','cliente_id')
+                        ->all();
+
             $view = \View::make('admin.lote.fields')
                     ->with('procesadores', $procesadores)
                     ->with('formatos', $formatos)
@@ -397,6 +440,7 @@ class LoteController extends Controller
                     ->with('elaboradores', $elaboradores)
                     ->with('especies', $especies)
                     ->with('productores', $productores)
+                    ->with('clientes', $clientes)
                     ->with('destinos', $destinos)
                     ->with('proximo_lote', $lote->lote_id)
                     ->with('fecha_documento',\Carbon\Carbon::createFromFormat('Y-m-d',$lote->lote_fecha_documento)->format('d-m-Y'))
@@ -446,6 +490,7 @@ class LoteController extends Controller
                 'lote_cajas_recepcion'  => $request->lote_cajas_recepcion,
                 'lote_productor_id'     => $request->lote_productor_id,
                 'lote_destino_id'       => $request->lote_destino_id,
+                'lote_cliente_id'       => $request->lote_cliente_id,
                 'lote_users_id'         => \Auth::user()->users_id,
                 'lote_observaciones'    => $request->lote_observaciones,
                 'lote_djurada'          => \Config::get('options.djurada')[$request->lote_djurada],

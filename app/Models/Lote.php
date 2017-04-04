@@ -33,6 +33,7 @@ class Lote extends Model
                             'lote_kilos_recepcion',
                             'lote_cajas_declarado',
                             'lote_cajas_recepcion',
+                            'lote_cliente_id',
                             'lote_observaciones',
                             'lote_djurada',
                             'lote_reestriccion',
@@ -113,6 +114,13 @@ class Lote extends Model
         return $this->belongsTo('App\Models\Elaborador',
                                 'lote_elaborador_id',
                                 'elaborador_id');
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo('App\Models\Cliente',
+                                'lote_cliente_id',
+                                'cliente_id');
     }
 
     public function getLastCajaNumber()
