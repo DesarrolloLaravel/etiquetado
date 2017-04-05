@@ -346,6 +346,13 @@
                         Lote a Producci&oacute;n
                     </a>
                     <br><br>
+                    <a class="btn btn-default disabled" id="activos">
+                        Activos
+                    </a>
+                    <a class="btn btn-primary" href="{{ url('/admin/anulados') }}" id="anulados">
+                        Anulados
+                    </a>
+                    <br><br>
                     <p class="alert alert-success"></p>
                     <table class="table table-bordered" id="table-lotes" width="100%">
                         <thead>

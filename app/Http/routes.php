@@ -28,7 +28,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('lote/update','LoteController@update');
 	Route::get('lote/show','LoteController@show');
 	Route::get('lote/edit','LoteController@edit');
+	Route::get('lote/anulados','LoteController@anulados');
 	Route::post('lote/delete','LoteController@destroy');
+
+
+	Route::get('anulados','AnuladosController@index');
+	
 
 	Route::get('procesador','ProcesadorController@index');
 	Route::get('procesador/edit','ProcesadorController@edit');
