@@ -15,9 +15,19 @@ class CreateOrdenProduccionFk extends Migration
         //
         Schema::table('orden_produccion', function(Blueprint $table)
         {
-            $table->foreign('orden_lote_id', 'orden_lote_id')
-                    ->references('lote_id')
-                    ->on('lote')
+            $table->foreign('orden_cliente_id', 'orden_cliente_id')
+                    ->references('cliente_id')
+                    ->on('cliente')
+                    ->onUpdate('NO ACTION')->onDelete('cascade');
+
+            $table->foreign('orden_especie_id', 'orden_especie_id')
+                    ->references('especie_id')
+                    ->on('especie')
+                    ->onUpdate('NO ACTION')->onDelete('cascade');
+
+            $table->foreign('orden_producto_id', 'orden_producto_id')
+                    ->references('producto_id')
+                    ->on('producto')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
         });
     }
@@ -32,7 +42,9 @@ class CreateOrdenProduccionFk extends Migration
         //
         Schema::table('orden_produccion', function(Blueprint $table)
         {
-            $table->dropForeign('orden_lote_id');
+            $table->dropForeign('orden_cliente_id');
+            $table->dropForeign('orden_especie_id');
+            $table->dropForeign('orden_producto_id');
         });
     }
 }

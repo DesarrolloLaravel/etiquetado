@@ -14,6 +14,7 @@ use App\Http\Requests\OrdenProduccion\UpdateRequest;
 use App\Models\OrdenProduccion;
 use App\Models\Producto;
 use App\Models\Lote;
+use App\Models\Especie;
 
 class OrdenProduccionController extends Controller
 {
@@ -22,6 +23,26 @@ class OrdenProduccionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function cargar_producto(Request $request)
+    {
+        //
+        if($request->ajax())
+        {
+
+            $productos =[''=>'Ninguno'] +
+                Producto::orderBy('producto_nombre','ASC')
+                    ->where('producto_especie_id',$request->especie_id)
+                    ->lists('producto_nombre','producto_id')
+                    ->all();
+
+        $data = view('admin.orden_produccion.fields',compact('productos'))->render();
+            
+        return response()->json(['options'=>$data]);
+
+        }
+    }
+
     public function index(Request $request)
     {
         //
@@ -74,23 +95,20 @@ class OrdenProduccionController extends Controller
         //
         if($request->ajax())
         {
-            $lotes = [''=>'Ninguno'] + 
-                        Lote::where('lote_produccion', 'SI')
-                            ->get()
-                            ->lists('lote_id', 'lote_id')
-                            ->all();
-
-            $productos = [''=>'Ninguno'] + 
-                        Producto::orderBy('producto_nombre', 'ASC')
-                        ->get()
-                        ->lists('fullName','producto_id')
-                        ->all();
 
             $clientes = [''=>'Ninguno'] +
                 Cliente::orderBy('cliente_nombre', 'ASC')
                     ->get()
                     ->lists('cliente_nombre','cliente_id')
                     ->all();
+
+            $especies =[''=>'Ninguno'] +
+                Especie::orderBy('especie_name','ASC')
+                    ->get()
+                    ->lists('especie_name','especie_id')
+                    ->all();
+            
+            $productos =[''=>'Ninguno'];
 
             $proxima_orden = OrdenProduccion::all()->max('orden_id')+1;
 
@@ -99,13 +117,13 @@ class OrdenProduccionController extends Controller
             $orden_fecha_compromiso = \Carbon\Carbon::now()->format('d-m-Y');
 
             $view = \View::make('admin.orden_produccion.fields')
-                    ->with('productos', $productos)
                     ->with('clientes', $clientes)
-                    ->with('lotes', $lotes)
                     ->with('proxima_orden', $proxima_orden)
                     ->with('orden_fecha', $orden_fecha)
                     ->with('orden_fecha_inicio', $orden_fecha_inicio)
-                    ->with('orden_fecha_compromiso', $orden_fecha_compromiso);
+                    ->with('orden_fecha_compromiso', $orden_fecha_compromiso)
+                    ->with('especies',$especies)
+                    ->with('productos',$productos);
 
             $sections = $view->renderSections();
 

@@ -134,6 +134,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	
 	Route::get('ordenproduccion', 'OrdenProduccionController@index');
 	Route::get('ordenproduccion/create', 'OrdenProduccionController@create');
+	Route::get('ordenproduccion/cargar_producto', 'OrdenProduccionController@cargar_producto');
 	Route::get('ordenproduccion/show', 'OrdenProduccionController@show');
 	Route::get('ordenproduccion/edit', 'OrdenProduccionController@edit');
 	Route::post('ordenproduccion/store', 'OrdenProduccionController@store');

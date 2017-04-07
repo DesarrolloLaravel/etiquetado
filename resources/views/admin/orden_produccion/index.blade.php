@@ -157,6 +157,25 @@
                 });
         } );
 
+         $('#modal_add .modal-dialog .modal-content .modal-body').on('change', 'especie_id', function() {
+  
+                
+            /*var especie_id = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+
+                url: 'ordenproduccion/cargar_producto',
+                method: 'GET',
+                data: {especie_id:especie_id, _token:token},
+                success: function(data) {
+
+                $('#modal_add .modal-dialog .modal-content .modal-body').find("select[name='orden_producto_id'").html(data.options);
+            }
+            });*/
+            $('#modal_add').modal('hide');
+         });
+
+
         $("#add").click(function(){
 
             arr_products = [];
