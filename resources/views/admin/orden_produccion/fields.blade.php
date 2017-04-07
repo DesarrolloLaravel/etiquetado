@@ -63,7 +63,7 @@
 		<div class="col-sm-2">
 			{!! Form::select('orden_producto_id',$productos, 
 								null, 
-								['class' => 'form-control']) !!}
+								['class' => 'form-control','id' => 'producto_ide']) !!}
 		</div>
 
 		{!! Form::label('kilos', 'Kilos Declarados',

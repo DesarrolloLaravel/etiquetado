@@ -27,20 +27,17 @@ class OrdenProduccionController extends Controller
     public function cargar_producto(Request $request)
     {
         //
-        if($request->ajax())
-        {
+        
 
-            $productos =[''=>'Ninguno'] +
-                Producto::orderBy('producto_nombre','ASC')
-                    ->where('producto_especie_id',$request->especie_id)
-                    ->lists('producto_nombre','producto_id')
-                    ->all();
+        $productos = Producto::orderBy('producto_nombre','ASC')
+                ->where('producto_especie_id',$request->especie_id)
+                ->lists('producto_nombre','producto_id')
+                ->all();
 
-        $data = view('admin.orden_produccion.fields',compact('productos'))->render();
-            
-        return response()->json(['options'=>$data]);
-
-        }
+        return $productos;
+           
+        
+        
     }
 
     public function index(Request $request)
