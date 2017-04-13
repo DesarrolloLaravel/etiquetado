@@ -108,17 +108,6 @@ $(document).ready(function(){
         });
 	});
 
-	$('#peso_real').on("keyup", function() {
-
-		var peso_bruto = $("#peso_real").val() * $("#glaseado").val();
-		$("#peso_bruto").val(peso_bruto);
-	});
-
-	$('#glaseado').on("keyup", function() {
-
-		var peso_bruto = $("#peso_real").val() * $("#glaseado").val();
-		$("#peso_bruto").val(peso_bruto);
-	});
 
 	$("#lote_search").click(function(){
 
@@ -146,50 +135,6 @@ $(document).ready(function(){
 		$("#modal_lote").modal('show');
 	});
 
-	$("#orden_search").click(function(){
-
-		$('.alert').hide();
-
-		if(lote_id == undefined)
-		{
-			alert("Debes seleccionar un LOTE");
-		}
-		else
-		{
-			if(table2 != undefined)
-			{
-				table2.destroy();
-			}
-
-			table2 = $('#table-ordenes').DataTable({
-		        "ajax" : "../ordenproduccion?q=etiqueta&lote_id="+lote_id,
-		        "language": {
-		            "url": "../../plugins/datatables/es_ES.txt"
-		        },
-		        "order": [[ 1, 'desc' ]],
-		        "columnDefs": [
-					{ "visible": false, "targets": 0 }
-				],
-		        'fnCreatedRow': function (nRow, aData, iDataIndex) {
-		            $(nRow).attr('data-id', aData[1]);
-		        }
-		    });
-
-			$("#modal_orden").modal('show');
-		}
-		
-	});
-
-	$('#table-ordenes tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            table2.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    } );
-
 	$('#table-lotes tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -200,42 +145,6 @@ $(document).ready(function(){
         }
     } );
 
-    $("#select_orden").click(function(){
-
-    	if(table2.rows('tr.selected').data().length > 0)
-    	{
-    		orden_id = $("#table-ordenes").find('tbody tr.selected').data('id');
-
-    		$.get("../ordenproduccion/show?q=etiqueta",
-    			{orden_id : orden_id},
-    			function(data){
-
-    				console.log(data.orden_productos);
-    				var html_select = '';
-    				for (var key in data.orden_productos){
-			            html_select += '<option value="'+data.orden_productos[key]+'">'+
-			            				key+
-			                    		'</option>';
-			        }
-			        $("#select_productos").empty();
-			        $("#select_productos").append(html_select);
-
-					$('.select2').select2().select2("val", null);
-
-			        $("#orden_detail").val(data.orden_descripcion);
-			        $("#orden_id").val(data.orden_id);
-
-			        $("#glaseado").val(1);
-
-    				$("#modal_orden").modal('hide');
-
-    			});
-    	}
-    	else
-    	{
-    		alert("Debes seleccionar una ORDEN");
-    	}
-    });
 
     $('#select_lote').click( function () {
 
@@ -319,6 +228,5 @@ $(document).ready(function(){
 </div>
 
 @include('admin.etiqueta_mp.modallotes')
-@include('admin.etiqueta_mp.modalordenproduccion')
 
 @endsection

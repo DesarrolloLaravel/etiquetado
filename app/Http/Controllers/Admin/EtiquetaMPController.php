@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Frigorifico;
 use Illuminate\Http\Request;
+use Illuminate\Console\Command;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -229,7 +230,7 @@ class EtiquetaMPController extends Controller
     public function create()
     {
         //
-        $etiqueta = Etiqueta::with('caja.orden_producto.orden.lote',
+        /*$etiqueta = Etiqueta::with('caja.orden_producto.orden.lote',
             'caja.orden.productos', 'caja.orden_producto.producto')
             ->orderBy('created_at', 'DESC')->limit(1)->first();
 
@@ -248,7 +249,11 @@ class EtiquetaMPController extends Controller
         $caja_id = $etiqueta->caja->caja_id + 1;
 
         return view('admin.etiqueta_mp.create', compact('lote_id', 'orden_id', 'producto_id',
-            'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));
+            'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
+
+        $lote_id = Lote::get()->all();
+
+        return view('admin.etiqueta_mp.create',compact('lote_id'));
 
     }
 

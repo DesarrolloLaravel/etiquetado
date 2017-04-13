@@ -33,14 +33,7 @@
 		<div class="form-group">
 			{!! Form::label('producto', 'Producto',
 				['class' => 'control-label']) !!}
-			{!! Form::select('orden_productos', $productos, $producto_id,['class' => 'form-control select2','id' => 'select_productos']) !!}
-		</div>
-	</div>
-	<div class="col-sm-8">
-		<div class="form-group">
-			{!! Form::label('producto_detail', 'Detalle Producto',
-				['class' => 'control-label']) !!}
-			{!! Form::text('producto_detail', $producto_fullName, ['class' => 'disabled form-control', 'id' => 'producto_detail', 'disabled']) !!}
+			{!! Form::select('orden_productos',null,['class' => 'form-control select2','id' => 'select_productos']) !!}
 		</div>
 	</div>
 </div>
