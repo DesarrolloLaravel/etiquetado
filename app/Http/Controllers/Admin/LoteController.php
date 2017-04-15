@@ -125,6 +125,11 @@ class LoteController extends Controller
                             ->has('orden_produccion')
                             ->with('procesador','productor')->get();
             }
+            else if($request->q == "etiquetamp")
+            {
+                $lotes = Lote::where('lote_produccion', 'SI')
+                            ->with('procesador','productor','especie')->get();
+            }
             else if($request->q == "despacho")
             {
                 $lotes = Lote::has('orden_produccion.cajas.caja_posicion')
@@ -147,10 +152,10 @@ class LoteController extends Controller
                 //completo el json
                 $dt_json .= '["","'
                                 .$lote->lote_id.'","'
+                                .$lote->lote_kilos_recepcion.'","'
                                 .$lote->lote_n_documento.'","'
                                 .$lote->procesador->procesador_name.'","'
                                 .$lote->productor->productor_name.'","'
-                                .$lote->lote_djurada.'","'
                                 .$lote->lote_produccion.'"],';
             }
             //elimino la ultima coma del json

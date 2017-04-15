@@ -6,6 +6,7 @@ use App\Models\Frigorifico;
 use Illuminate\Http\Request;
 use Illuminate\Console\Command;
 
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -251,9 +252,8 @@ class EtiquetaMPController extends Controller
         return view('admin.etiqueta_mp.create', compact('lote_id', 'orden_id', 'producto_id',
             'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
 
-        $lote_id = Lote::get()->all();
 
-        return view('admin.etiqueta_mp.create',compact('lote_id'));
+        return view('admin.etiqueta_mp.create');
 
     }
 

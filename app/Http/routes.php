@@ -190,6 +190,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::get('especie/edit','EspecieController@edit');
     Route::post('especie/update','EspecieController@update');
     Route::post('especie/delete','EspecieController@destroy');
+    Route::get('especie/show','EspecieController@show');
+
 
     Route::get('unidad_medida','UnidadMedidaController@index');
     Route::post('unidad_medida/store','UnidadMedidaController@store');

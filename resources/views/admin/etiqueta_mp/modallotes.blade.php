@@ -11,7 +11,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>N&uacute;mero</th>
+                        <th>Lote</th>
                         <th>Kilos</th>
                         <th>Gu&iacute;a</th>
                         <th>Procesador</th>
@@ -24,7 +24,7 @@
                 <tfoot>
                     <tr>
                         <th>#</th>
-                        <th>N&uacute;mero</th>
+                        <th>Lote</th>
                         <th>Kilos</th>
                         <th>Gu&iacute;a</th>
                         <th>Procesador</th>
