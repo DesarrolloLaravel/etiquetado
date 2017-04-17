@@ -15,7 +15,7 @@ use App\Http\Requests\EtiquetaMP\UpdateRequest;
 
 use App\Models\Caja;
 use App\Models\Lote;
-use App\Models\Etiqueta;
+use App\Models\EtiquetaMP;
 use App\Models\Producto;
 use App\Models\CajaPosicion;
 use App\Models\OrdenProduccion;
@@ -230,27 +230,7 @@ class EtiquetaMPController extends Controller
      */
     public function create()
     {
-        //
-        /*$etiqueta = Etiqueta::with('caja.orden_producto.orden.lote',
-            'caja.orden.productos', 'caja.orden_producto.producto')
-            ->orderBy('created_at', 'DESC')->limit(1)->first();
 
-        $orden = $etiqueta->caja->orden_producto->orden;
-        $lote = $orden->lote;
-
-        $productos = $orden->productos->lists('fullName','producto_id');
-
-        $producto = $etiqueta->caja->orden_producto->producto;
-
-        $orden_id = $orden->orden_id;
-        $lote_id = $lote->lote_id;
-        $producto_id = $producto->producto_id;
-        $producto_fullName = $producto->fullName;
-        $peso_estandar = $producto->producto_peso;
-        $caja_id = $etiqueta->caja->caja_id + 1;
-
-        return view('admin.etiqueta_mp.create', compact('lote_id', 'orden_id', 'producto_id',
-            'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
         $productos =[''=>'Ninguno'];
 
         return view('admin.etiqueta_mp.create',compact('productos'));
@@ -272,22 +252,20 @@ class EtiquetaMPController extends Controller
             $lote = Lote::find($request->lote_id);
 
             $info_pallet = array(
-                'caja_op_producto_id' => $orden_producto_id,
-                'caja_peso_real' => $request->peso_real,
-                'caja_glaseado' => $request->glaseado,
-                'caja_peso_bruto' => $request->peso_bruto,
-                'caja_unidades' => $request->unidades
+                'pallet_op_producto_id' => $orden_producto_id,
+                'pallet_peso_real' => $request->peso_real,
+                'pallet_unidades' => $request->unidades
             );
 
-            $caja = Caja::create($info_caja);
+            
 
-            $number = str_pad($caja->caja_id, 6, 0, STR_PAD_LEFT);
+            
 
             $lote_number = $lote->lote_id < 10 ? "0".$lote->lote_id : $lote->lote_id;
 
             $barcode = 'AF0'.$request->etiqueta_year.'0'.
                         $lote_number.'0'.
-                        $number;
+                        $number.'P';
 
             $info_etiqueta = array(
                 'etiqueta_caja_id' => $caja->caja_id,

@@ -54,60 +54,60 @@ $(document).ready(function(){
     	}
     });
 
-	// $("#print").click(function(){
+	$("#print").click(function(){
 
-	// 	$('.alert').hide();
+		$('.alert').hide();
 
-	// 	var form = $("#form-add");
- //        //obtengo url
- //        var url = form.attr('action');
+		var form = $("#form-add");
+        //obtengo url
+        var url = form.attr('action');
 
- //        var disabled = form.find(':input:disabled').removeAttr('disabled');
- //        //obtengo la informacion del formulario
- //        var data = form.serialize();
+        var disabled = form.find(':input:disabled').removeAttr('disabled');
+        //obtengo la informacion del formulario
+        var data = form.serialize();
 
- //        disabled.attr('disabled','disabled');
+        disabled.attr('disabled','disabled');
 
- //        console.log(data);
+        console.log(data);
 
-	// 	$.post(url, data,
-	// 		function(data){
-	// 			if(data['estado'] == "ok")
-	// 			{
-	// 				/*$.get("print/"+data['etiqueta_id'],function(data){
-	// 					var win = window.open('', '_blank');
- //    					win.location.href = data;
-	// 				});*/
-	// 				var printPage = window.open('{{ url("admin/etiqueta/print") }}'+'/'+data['etiqueta_id']+'/'+$("#idioma").val(), '');
-	// 				//printPage.close();
-	// 				//printPage.print({bUI: false, bSilent: true,bShrinkToFit: true});
-	// 				//$("#caja_number").val(parseInt($("#caja_number").val())+1);
+		$.post(url, data,
+			function(data){
+				if(data['estado'] == "ok")
+				{
+					/*$.get("print/"+data['etiqueta_id'],function(data){
+						var win = window.open('', '_blank');
+    					win.location.href = data;
+					});*/
+					var printPage = window.open('{{ url("admin/etiqueta/print") }}'+'/'+data['etiqueta_id']+'/'+$("#idioma").val(), '');
+					//printPage.close();
+					//printPage.print({bUI: false, bSilent: true,bShrinkToFit: true});
+					//$("#caja_number").val(parseInt($("#caja_number").val())+1);
 					
-	// 				$.get("../lote/show",
-	// 	    			{lote_id : lote_id},
-	// 	    			function(data){
-	// 			    		$("#caja_number").val(data.caja_number);
- //    				});
+					$.get("../lote/show",
+		    			{lote_id : lote_id},
+		    			function(data){
+				    		$("#caja_number").val(data.caja_number);
+    				});
     				
-	// 				$("#peso_bruto").val("");
-	// 				$("#peso_real").val("");
-	// 			}
-	// 			else
-	// 			{
-	// 				alert("Ha ocurrido un error. Inténtalo más tarde.")
-	// 			}
+					$("#peso_bruto").val("");
+					$("#peso_real").val("");
+				}
+				else
+				{
+					alert("Ha ocurrido un error. Inténtalo más tarde.")
+				}
 			
-	// 	}).fail(function(resp){
+		}).fail(function(resp){
 
- //            html = "";
- //            for(var key in resp.responseJSON)
- //            {
- //                html += resp.responseJSON[key][0] + "<br>";
- //            }
- //            $(".alert-success").hide()
- //            $(".alert-danger").html(html).show();
- //        });
-	// });
+            html = "";
+            for(var key in resp.responseJSON)
+            {
+                html += resp.responseJSON[key][0] + "<br>";
+            }
+            $(".alert-success").hide()
+            $(".alert-danger").html(html).show();
+        });
+	});
 
 
 	$("#lote_search").click(function(){
@@ -173,10 +173,9 @@ $(document).ready(function(){
     			});
 
              
-            alert("producto...."+ especie_id);
-            
-            $.get('ordenproduccion/cargar_producto',{especie_id:especie_id},function(data){
-
+            $.get('../ordenproduccion/cargar_producto',
+            	{especie_id:especie_id},
+            	function(data){
                 $.each(data, function(key, element) {
 
                     $('#producto_ide').append("<option value='" + key +"'>" + element + "</option>");
@@ -191,38 +190,7 @@ $(document).ready(function(){
     	}
     });
 
-<<<<<<< HEAD
-    $("lote_id").change(function(){
-	alert("sadas");
-	});
-
- });
-=======
-    $("#lote_id").change(function(){
-        alert("iujuuuu");
-    });
-});
-
-
-
-    
->>>>>>> origin/master
-
-/*	$('#select_productos').on("select2:select", function() {
-
-		if($("#select_productos").select2('val') != "")
-		{
-			producto_id = $("#select_productos").select2('val');
-
-			$.get('../producto/show',
-					{producto_id : producto_id},
-					function(data){
-						$("#peso_estandar").val(data.producto_peso);
-						$("#producto_detail").val(data.producto_fullname);
-					});
-		}
-	});
-*/
+  });
 
 </script>
 

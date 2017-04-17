@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Etiqueta;
+namespace App\Http\Requests\EtiquetaMP;
 
 use App\Http\Requests\Request;
 
@@ -24,15 +24,12 @@ class CreateRequest extends Request
     public function rules()
     {
         return [
-            'etiqueta_year'         => 'required',
+
             'lote_id'               => 'required|exists:lote,lote_id',
             'etiqueta_fecha'        => 'required|date_format:d-m-Y',
-            'orden_id'              => 'required|exists:orden_produccion,orden_id',
-            'orden_productos'       => 'required|exists:producto,producto_id',
+            'orden_productos_id'    => 'required|exists:producto,producto_id',
             'peso_real'             => 'required',
-            'peso_bruto'            => 'required',
-            'unidades'              => 'required',
-            'caja_number'           => 'required|unique:caja,caja_id'
+            'unidades'              => 'required|integer|min:1'
         ];
     }
 
@@ -40,20 +37,16 @@ class CreateRequest extends Request
     {
         return [
             //
-            'etiqueta_year.required'    => 'El Año es obligatorio',
-            'lote_id.required'          => 'El Lote es obligatorio',
-            'lote_id.exists'            => 'Ha ocurrido un error',
-            'etiqueta_fecha.required'   => 'La Fecha es obligación',
-            'etiqueta_fecha.date_format'=> 'La Fecha tiene un formato incorrecto',
-            'orden_id.required'         => 'La Orden es obligatoria',
-            'orden_id.exists'           => 'Ha ocurrido un error',
-            'orden_productos.required'  => 'Debe seleccionar un producto',
-            'orden_productos.exists'    => 'Ha ocurrido un error',
-            'peso_real.required'        => 'El Peso Real es obligatorio',
-            'peso_bruto.required'       => 'El Peso Bruto es obligatorio',
-            'unidades.required'         => 'Las Unidades son obligatorias',
-            'caja_number.required'      => 'El Número de Caja es obligatorio',
-            'caja_number.unique'        => 'Ya existe existe una caja creada para este Lote'
+
+            'lote_id.required'             => 'El Lote es obligatorio',
+            'lote_id.exists'               => 'Ha ocurrido un error',
+            'etiqueta_fecha.required'      => 'La Fecha es obligación',
+            'etiqueta_fecha.date_format'   => 'La Fecha tiene un formato incorrecto',
+            'orden_productos_id.required'  => 'Debe seleccionar un producto',
+            'orden_productos_id.exists'    => 'Ha ocurrido un error',
+            'peso_real.required'           => 'El Peso Pallet es obligatorio',
+            'unidades.required'            => 'Las Unidades son obligatorias',
+            'unidades.min'                 => 'Cantidad de Cajas incorrecta'
         ];
     }
 }
