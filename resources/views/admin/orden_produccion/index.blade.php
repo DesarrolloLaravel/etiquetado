@@ -105,7 +105,6 @@
                     function(data)
                     {
                         var arr = [];
-                        arr['Lote'] = data.orden_lote_id;
                         arr['Descripción'] = data.orden_descripcion;
                         var i = 0;
                         for (var key in data.orden_productos) {
@@ -158,20 +157,22 @@
         } );
 
          $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#especie_id',function() {
-  
-                
-            alert("producto....");
+
 
             var especie_id = $(this).val();
 
             
             $.get('ordenproduccion/cargar_producto',{especie_id:especie_id},function(data){
 
+                $('#producto_ide').empty()
+                
                 
                 $.each(data, function(key, element) {
 
                     $('#producto_ide').append("<option value='" + key +"'>" + element + "</option>");
                 });
+
+                $('#producto_ide').append("<option value=' '">"Ninguno</option>");
             });
                     
         });
@@ -309,7 +310,7 @@
 
         $(document).on('click','#add_product',function(event){
 
-            product_id = $("#select_producto").val();
+            product_id = $("#producto_ide").val();
             if(product_id != '')
             {
                 in_array = false;
@@ -327,7 +328,7 @@
                 {
                     table_products.row.add( [
                         product_id,
-                        $("#select_producto option:selected").text()
+                        $("#producto_ide option:selected").text()
                     ] ).draw( false );
                     arr_products.push(product_id);
                 }
@@ -347,13 +348,10 @@
             form = "form-delete";
         }
 
-        $("#"+form+" select[name='orden_lote_id']").val(data.orden_lote_id);
         $("#"+form+" input[name='orden_number']").val(data.orden_id);
         $("#"+form+" select[name='orden_cliente_id']").val(data.orden_cliente_id);
         $("#"+form+" input[name='orden_descripcion']").val(data.orden_descripcion);
-        $("#"+form+" select[name='orden_ciudad_id']").val(data.orden_ciudad_id);
-        $("#"+form+" select[name='orden_provincia_id']").val(data.orden_provincia_id);
-
+       
         table_products = $(document).find('#'+form+' #table-products').DataTable({
             "language": {
                 "url": "../../plugins/datatables/es_ES.txt"
@@ -406,7 +404,6 @@
                             <tr>
                                 <th></th>
                                 <th>N&uacute;mero</th>
-                                <th>N° Lote</th>
                                 <th>Cliente</th>
                                 <th>Fecha</th>
                                 <th>Opciones</th>
@@ -418,7 +415,6 @@
                             <tr>
                                 <th></th>
                                 <th>N&uacute;mero</th>
-                                <th>N° Lote</th>
                                 <th>Cliente</th>
                                 <th>Fecha</th>
                                 <th>Opciones</th>

@@ -18,6 +18,8 @@ class CreateOpProductosTable extends Migration
             $table->increments('op_producto_id');
             $table->unsignedInteger('op_producto_orden_id')->index();
             $table->unsignedInteger('op_producto_producto_id')->index();
+            $table->unsignedInteger('op_producto_especie_id')->index();
+            $table->unsignedInteger('op_producto_kilos_declarados');
             $table->timestamps();
             $table->softDeletes();
         });

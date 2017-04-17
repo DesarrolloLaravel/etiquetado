@@ -191,11 +191,22 @@ $(document).ready(function(){
     	}
     });
 
+<<<<<<< HEAD
     $("lote_id").change(function(){
 	alert("sadas");
 	});
 
  });
+=======
+    $("#lote_id").change(function(){
+        alert("iujuuuu");
+    });
+});
+
+
+
+    
+>>>>>>> origin/master
 
 /*	$('#select_productos').on("select2:select", function() {
 

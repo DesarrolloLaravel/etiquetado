@@ -83,12 +83,16 @@
 
 <div class="col-sm-12">
 	<div class="form-group">
-		<div class="col-sm-9 col-md-offset-2">
+		<div class="col-sm-12">
 			<table id="table-products" cellspacing="0">
 		        <thead>
 		            <tr>
 		            	<th>#</th>
-		                <th>Producto</th>
+		                <th>Especie</th>
+		                <th>Productos</th>
+		                <th>Peso Estimado (KG)</th>
+		                <th>MP Frigor&iacute;fico</th>
+		                <th>Deficit</th>
 		                <th>Opci&oacute;n</th>
 		            </tr>
 		        </thead>

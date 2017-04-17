@@ -28,16 +28,12 @@ class OrdenProduccionController extends Controller
     {
         //
         
-
         $productos = Producto::orderBy('producto_nombre','ASC')
                 ->where('producto_especie_id',$request->especie_id)
                 ->lists('producto_nombre','producto_id')
                 ->all();
 
-        return $productos;
-           
-        
-        
+        return $productos;    
     }
 
     public function index(Request $request)
@@ -45,14 +41,8 @@ class OrdenProduccionController extends Controller
         //
         if($request->ajax())
         {
-            if($request->q == "etiqueta")
-            {
-                $ordenes = Lote::find($request->lote_id)->orden_produccion()->with('lote')->get();
-            }
-            else
-            {
-                $ordenes = OrdenProduccion::has('lote')->with('lote')->get();
-            }
+            $ordenes = OrdenProduccion::with('Cliente')->get();
+
             if($ordenes->count() == 0)
             {
                 return '{"data":[]}'; 
@@ -65,7 +55,6 @@ class OrdenProduccionController extends Controller
                 //completo el json
                 $dt_json .= '["","'
                                 .$orden->orden_id.'","'
-                                .$orden->lote->lote_id.'","'
                                 .$orden->cliente->cliente_nombre.'","'
                                 .\Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha)->format('d-m-Y').'"],';
             }
