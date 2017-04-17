@@ -156,7 +156,10 @@ class LoteController extends Controller
                                 .$lote->lote_n_documento.'","'
                                 .$lote->procesador->procesador_name.'","'
                                 .$lote->productor->productor_name.'","'
-                                .$lote->lote_produccion.'"],';
+                                .$lote->lote_djurada.'","'
+                                .$lote->lote_produccion.'","'
+                                .$lote->especie->especie_id.'","'
+                                .$lote->especie->especie_name.'"],';
             }
             //elimino la ultima coma del json
             $dt_json = substr($dt_json, 0, -1);

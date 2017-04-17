@@ -34,6 +34,7 @@ $(document).ready(function(){
         language : 'es'
     });
 
+
     $('.datepicker').datepicker('update', new Date());
 
     $("#refresh").click(function(){
@@ -129,6 +130,9 @@ $(document).ready(function(){
 			],
 	        'fnCreatedRow': function (nRow, aData, iDataIndex) {
 	            $(nRow).attr('data-id', aData[1]);
+	            $(nRow).attr('data-especie_id', aData[8]);
+	            $(nRow).attr('data-especie', aData[9]);
+
 	        }
 	    });
 
@@ -151,6 +155,8 @@ $(document).ready(function(){
     	if(table.rows('tr.selected').data().length > 0)
     	{
     		lote_id = $("#table-lotes").find('tbody tr.selected').data('id');
+    		especie_id = $("#table-lotes").find('tbody tr.selected').data('especie_id');
+    		especie = $("#table-lotes").find('tbody tr.selected').data('especie');
 
     		$.get("../lote/show?q=etiquetamp",
     			{lote_id : lote_id},
@@ -159,11 +165,24 @@ $(document).ready(function(){
 
     				$("#modal_lote").modal('hide');
 		    		$("#lote_id").val(data.lote_id);
+		    		$("#especie").val(especie)
 			        $("#select_productos").html("");
 			        $("#peso_estandar").val("");
     				$("#producto_detail").val("");
 
     			});
+
+             
+            alert("producto...."+ especie_id);
+            
+            $.get('ordenproduccion/cargar_producto',{especie_id:especie_id},function(data){
+
+                $.each(data, function(key, element) {
+
+                    $('#producto_ide').append("<option value='" + key +"'>" + element + "</option>");
+                });
+            });
+
 
     	}
     	else
@@ -172,9 +191,11 @@ $(document).ready(function(){
     	}
     });
 
-    $('input-group .form-control').on('change', '#lote_id', function(){
-    		alert("asd");
-    });
+    $("lote_id").change(function(){
+	alert("sadas");
+	});
+
+ });
 
 /*	$('#select_productos').on("select2:select", function() {
 
@@ -191,10 +212,10 @@ $(document).ready(function(){
 		}
 	});
 */
-});
 
 </script>
-<div class="row">
+
+<div class="row" id="modal_create">
 	<div class="col-md-12">
 	    <div class="box box-primary">
 	        <div class="box-header with-border">

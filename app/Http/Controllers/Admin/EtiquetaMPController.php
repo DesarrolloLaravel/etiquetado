@@ -251,9 +251,9 @@ class EtiquetaMPController extends Controller
 
         return view('admin.etiqueta_mp.create', compact('lote_id', 'orden_id', 'producto_id',
             'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
+        $productos =[''=>'Ninguno'];
 
-
-        return view('admin.etiqueta_mp.create');
+        return view('admin.etiqueta_mp.create',compact('productos'));
 
     }
 

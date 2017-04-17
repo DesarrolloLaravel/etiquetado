@@ -4,7 +4,7 @@
 				{!! Form::label('etiqueta_lote_id', 'Lote',
 					['class' => 'control-label']) !!}
 				<div class="input-group">
-					<input name="lote_id" id="lote_id" type="text" class="form-control"  disabled>
+					<input name="lote_id" id="lote_id" type="text" class="form-control"  >
 					<span class="input-group-btn">
 						<button id="lote_search" class="btn btn-secondary" type="button">
 							<i class="fa fa-search"></i>
@@ -33,7 +33,9 @@
 		<div class="form-group">
 			{!! Form::label('producto', 'Producto',
 				['class' => 'control-label']) !!}
-			{!! Form::text('orden_productos',null,['class' => 'form-control select2','id' => 'select_productos']) !!}
+			{!! Form::select('orden_productos_id',$productos,
+								null,
+								['class' => 'form-control','id' => 'producto_ide']) !!}
 		</div>
 	</div>
 	<div class="col-sm-4">
