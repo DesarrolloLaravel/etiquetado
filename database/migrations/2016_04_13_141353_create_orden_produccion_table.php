@@ -21,9 +21,6 @@ class CreateOrdenProduccionTable extends Migration
             $table->date('orden_fecha_inicio');
             $table->date('orden_fecha_compromiso');
             $table->unsignedInteger('orden_cliente_id');
-            $table->unsignedInteger('orden_especie_id');
-            $table->unsignedInteger('orden_producto_id');
-            $table->unsignedInteger('orden_peso_estimado');
             $table->timestamps();
             $table->softDeletes();
         });

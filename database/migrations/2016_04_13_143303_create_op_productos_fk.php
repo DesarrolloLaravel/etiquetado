@@ -24,6 +24,11 @@ class CreateOpProductosFk extends Migration
                     ->references('producto_id')
                     ->on('producto')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
+
+            $table->foreign('op_producto_especie_id', 'op_producto_especie_id')
+                    ->references('especie_id')
+                    ->on('especie')
+                    ->onUpdate('NO ACTION')->onDelete('cascade');
         });
     }
 
@@ -39,6 +44,7 @@ class CreateOpProductosFk extends Migration
         {
             $table->dropForeign('op_producto_orden_id');
             $table->dropForeign('op_producto_producto_id');
+            $table->dropForeign('op_producto_especie_id');
         });
     }
 }

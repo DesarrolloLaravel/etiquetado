@@ -172,9 +172,14 @@ $(document).ready(function(){
     	}
     });
 
-    $('input-group .form-control').on('change', '#lote_id', function(){
-    		alert("asd");
+    $("#lote_id").change(function(){
+        alert("iujuuuu");
     });
+});
+
+
+
+    
 
 /*	$('#select_productos').on("select2:select", function() {
 
@@ -191,7 +196,6 @@ $(document).ready(function(){
 		}
 	});
 */
-});
 
 </script>
 <div class="row">

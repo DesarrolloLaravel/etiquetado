@@ -12,24 +12,15 @@ class OrdenProduccion extends Model
 
     protected $table = 'orden_produccion';
     protected $primaryKey = 'orden_id';
-    protected $fillable = [ 'orden_lote_id',
-    						'orden_descripcion',
+    protected $fillable = [ 'orden_descripcion',
     						'orden_fecha',
     						'orden_fecha_inicio',
     						'orden_fecha_compromiso',
-    						'orden_cliente_id',
-    						'orden_ciudad_id',
-    						'orden_provincia_id'];
+    						'orden_cliente_id'];
 
     protected $dates = ['deleted_at'];
 
-    public function lote()
-    {
-        return $this->belongsTo('App\Models\Lote',
-                                'orden_lote_id',
-                                'lote_id');
-    }
-
+    
     public function productos()
     {
         return $this->belongsToMany('App\Models\Producto',
