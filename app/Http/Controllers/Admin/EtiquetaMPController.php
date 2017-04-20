@@ -15,7 +15,7 @@ use App\Http\Requests\EtiquetaMP\UpdateRequest;
 
 use App\Models\Caja;
 use App\Models\Lote;
-use App\Models\EtiquetaMP;
+use App\Models\Etiqueta_MP;
 use App\Models\Producto;
 use App\Models\CajaPosicion;
 use App\Models\OrdenProduccion;
@@ -45,9 +45,9 @@ class EtiquetaMPController extends Controller
 
     }
 
-    public function print_etiqueta($id, $idioma)
+    public function print_etiqueta($id)
     {
-        $etiqueta = Etiqueta::findOrFail($id);
+        $etiqueta_mp = Etiqueta_MP::findOrFail($id);
 
         /*$created_at = new \Carbon\Carbon($etiqueta->created_at);
         $now = \Carbon\Carbon::now();
@@ -61,49 +61,26 @@ class EtiquetaMPController extends Controller
         else
         {*/
         //dd($etiqueta->caja->);
-        $caja = $etiqueta->caja;
-        //dd($caja->orden_producto);
-        $producto = $caja->orden_producto->producto;
-        $orden = $caja->orden_producto->orden;
-        $lote = $orden->lote;
 
-        $condicion = \Config::get('producto.condicion')[$producto->producto_condicion_id];
-        if($condicion == "Fz"){
-            if(\Config::get('options.idioma')[$idioma] == "Español")
-                $data['condicion'] = "Congelado";
-            else
-                $data['condicion'] = "Frozen";
-        }
-        elseif ($condicion == "Fs"){
-            if(\Config::get('options.idioma')[$idioma] == "Español")
-                $data['condicion'] = "Fresco";
-            else
-                $data['condicion'] = "Fresh";
-        }
-        else
-            $data['condicion'] = "";
 
-        $data['fecha_produccion'] = \Carbon\Carbon::createFromFormat('Y-m-d', $etiqueta->etiqueta_fecha)->format('d-m-Y');
+        $lote = $etiqueta_mp->lote;
+        $producto= $etiqueta_mp->producto;
+
+
+        $data['fecha_produccion'] = \Carbon\Carbon::createFromFormat('Y-m-d', $etiqueta_mp->etiqueta_mp_fecha)->format('d-m-Y');
         $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d-m-Y');
         $data['especie_comercial_name'] = $producto->especie->especie_comercial_name;
-        $data['producto'] = $producto->getFullName(\Config::get('options.idioma')[$idioma]);
+        $data['producto'] = $producto->getFullName("Español");
         $data['calibre'] = $producto->calibre->calibre_nombre;
         $data['calidad'] = $producto->calidad->calidad_nombre;
-        $data['piezas'] = round($caja->caja_unidades);
-        $data['peso_neto'] = $caja->caja_peso_real;
-        $data['caja_number'] = $number = str_pad($caja->caja_id, 6, 0, STR_PAD_LEFT);
-        $data['barcode'] = \DNS1D::getBarcodePNG($etiqueta->etiqueta_barcode, "C128");
-        $data['code'] = $etiqueta->etiqueta_barcode;
+        $data['piezas'] = round($etiqueta_mp->etiqueta_mp_cantidad_cajas);
+        $data['peso_neto'] = $etiqueta_mp->etiqueta_mp_peso;
+        $data['pallet_number'] = $etiqueta_mp->etiqueta_mp_id;
+        $data['barcode'] = \DNS1D::getBarcodePNG($etiqueta_mp->etiqueta_mp_barcode, "C128");
+        $data['code'] = $etiqueta_mp->etiqueta_mp_barcode;
         $data['lote_number'] = $lote->lote_id;
 
-        if(\Config::get('options.idioma')[$idioma] == "Español")
-            $view =  \View::make('admin.etiqueta.invoice_es',
-                compact('data'))->render();
-        elseif (\Config::get('options.idioma')[$idioma] == "Inglés")
-            $view =  \View::make('admin.etiqueta.invoice',
-                compact('data'))->render();
-        else
-            $view =  \View::make('admin.etiqueta.invoice',
+            $view =  \View::make('admin.etiqueta_mp.invoice_es',
                 compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
@@ -246,45 +223,36 @@ class EtiquetaMPController extends Controller
     public function store(CreateRequest $request)
     {
         //
-        \DB::beginTransaction();
 
-        try{
-            $lote = Lote::find($request->lote_id);
+            $barcode = 'AF0'.$request->etiqueta_fecha.'0'.$request->lote_id.'0'.'P';
 
-            $info_pallet = array(
-                'pallet_op_producto_id' => $orden_producto_id,
-                'pallet_peso_real' => $request->peso_real,
-                'pallet_unidades' => $request->unidades
+            $info_etiqueta_mp = array(
+                'etiqueta_mp_lote_id'           => $request->lote_id,
+                'etiqueta_mp_producto_id'       => $request->orden_productos_id,
+                'etiqueta_mp_fecha'             => \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha),
+                'etiqueta_mp_barcode'           => $barcode,
+                'etiqueta_mp_peso'              => $request->peso_real,
+                'etiqueta_mp_cantidad_cajas'    => $request->unidades
             );
 
-            
+            $etiqueta_mp_id=Etiqueta_MP::create($info_etiqueta_mp);
+            $etiqueta_mp= Etiqueta_MP::findOrFail($etiqueta_mp_id->etiqueta_mp_id);
 
-            
+            $barcode = 'AF0'.$request->lote_id.'0'.$etiqueta_mp_id->etiqueta_mp_id.'0P';
 
-            $lote_number = $lote->lote_id < 10 ? "0".$lote->lote_id : $lote->lote_id;
-
-            $barcode = 'AF0'.$request->etiqueta_year.'0'.
-                        $lote_number.'0'.
-                        $number.'P';
-
-            $info_etiqueta = array(
-                'etiqueta_caja_id' => $caja->caja_id,
-                'etiqueta_barcode' => $barcode,
-                'etiqueta_fecha'   => \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha)
+            $info_etiqueta_mp = array(
+                'etiqueta_mp_lote_id'           => $request->lote_id,
+                'etiqueta_mp_producto_id'       => $request->orden_productos_id,
+                'etiqueta_mp_fecha'             => \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha),
+                'etiqueta_mp_barcode'           => $barcode,
+                'etiqueta_mp_peso'              => $request->peso_real,
+                'etiqueta_mp_cantidad_cajas'    => $request->unidades
             );
 
-            $etiqueta = Etiqueta::create($info_etiqueta);
+            $etiqueta_mp -> fill($info_etiqueta_mp);
+            $etiqueta_mp->save();
 
-            $resp = ["estado" => "ok",
-                    "etiqueta_id" => $etiqueta->etiqueta_id];
-
-        }
-        catch ( Exception $e ){
-            \DB::rollback();
-            $resp = ["estado" => "nok"];
-        }
-
-        \DB::commit();
+            $resp = ["estado" => "ok","etiqueta_mp_id" =>$etiqueta_mp_id->etiqueta_mp_id];
 
         return response()->json($resp);
     }

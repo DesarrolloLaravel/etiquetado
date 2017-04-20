@@ -47,6 +47,8 @@ return array(
     'CreateEnvasesTable' => $baseDir . '/database/migrations/2016_09_30_132714_create_envases_table.php',
     'CreateEspecieTable' => $baseDir . '/database/migrations/2016_04_04_204845_create_especie_table.php',
     'CreateEtiquetaFk' => $baseDir . '/database/migrations/2016_04_15_112228_create_etiqueta_fk.php',
+    'CreateEtiquetaMPsFk' => $baseDir . '/database/migrations/2017_04_18_013728_create_etiqueta__m_ps_fk.php',
+    'CreateEtiquetaMPsTable' => $baseDir . '/database/migrations/2017_04_17_205533_create_etiqueta__m_ps_table.php',
     'CreateEtiquetaTable' => $baseDir . '/database/migrations/2016_04_15_112007_create_etiqueta_table.php',
     'CreateFormatosTable' => $baseDir . '/database/migrations/2016_09_29_191901_create_formatos_table.php',
     'CreateFrigorificoTable' => $baseDir . '/database/migrations/2016_04_26_144405_create_frigorifico_table.php',

@@ -58,6 +58,8 @@ $(document).ready(function(){
 
 		$('.alert').hide();
 
+
+
 		var form = $("#form-add");
         //obtengo url
         var url = form.attr('action');
@@ -73,28 +75,26 @@ $(document).ready(function(){
 		$.post(url, data,
 			function(data){
 				if(data['estado'] == "ok")
-				{
+				{	
 					/*$.get("print/"+data['etiqueta_id'],function(data){
 						var win = window.open('', '_blank');
     					win.location.href = data;
 					});*/
-					var printPage = window.open('{{ url("admin/etiqueta/print") }}'+'/'+data['etiqueta_id']+'/'+$("#idioma").val(), '');
+					var printPage = window.open('{{ url("admin/etiqueta_mp/print") }}'+'/'+data['etiqueta_mp_id'], '');
 					//printPage.close();
 					//printPage.print({bUI: false, bSilent: true,bShrinkToFit: true});
 					//$("#caja_number").val(parseInt($("#caja_number").val())+1);
-					
-					$.get("../lote/show",
-		    			{lote_id : lote_id},
-		    			function(data){
-				    		$("#caja_number").val(data.caja_number);
-    				});
-    				
-					$("#peso_bruto").val("");
+
+					$('#lote_id').val("");
+					$('#especie').val("");
+                	$('#producto_ide').empty()
+                	$('#producto_ide').append("<option value=''>Ninguno</option>");
+					$('#cajas').val("");
 					$("#peso_real").val("");
 				}
 				else
 				{
-					alert("Ha ocurrido un error. Inténtalo más tarde.")
+					alert("Ha ocurrido un error. Inténtalo más tarde.");
 				}
 			
 		}).fail(function(resp){
@@ -104,8 +104,11 @@ $(document).ready(function(){
             {
                 html += resp.responseJSON[key][0] + "<br>";
             }
+
             $(".alert-success").hide()
             $(".alert-danger").html(html).show();
+
+            alert.error(html);
         });
 	});
 
@@ -177,7 +180,6 @@ $(document).ready(function(){
             	{especie_id:especie_id},
             	function(data){
                 $.each(data, function(key, element) {
-
                     $('#producto_ide').append("<option value='" + key +"'>" + element + "</option>");
                 });
             });

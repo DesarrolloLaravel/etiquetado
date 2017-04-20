@@ -41,6 +41,14 @@ class Producto extends Model
             ->withTimestamps();
     }
 
+
+    public function etiqueta_mp(){
+        return $this->hasOne('App\Models\Etiqueta_MP',
+                             'etiqueta_mp_producto_id',
+                             'producto_id');
+    }
+
+
     public function cajas()
     {
         return $this->hasManyThrough('App\Models\Caja',

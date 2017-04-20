@@ -4,7 +4,7 @@
 				{!! Form::label('etiqueta_lote_id', 'Lote',
 					['class' => 'control-label']) !!}
 				<div class="input-group">
-					<input name="lote_id" id="lote_id" type="text" class="form-control"  >
+					<input name="lote_id" id="lote_id" type="text" class="form-control" disabled>
 					<span class="input-group-btn">
 						<button id="lote_search" class="btn btn-secondary" type="button">
 							<i class="fa fa-search"></i>

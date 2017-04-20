@@ -25,9 +25,9 @@ class CreateRequest extends Request
     {
         return [
 
-            'lote_id'               => 'required|exists:lote,lote_id',
+            'lote_id'               => 'required',
             'etiqueta_fecha'        => 'required|date_format:d-m-Y',
-            'orden_productos_id'    => 'required|exists:producto,producto_id',
+            'orden_productos_id'    => 'required',
             'peso_real'             => 'required',
             'unidades'              => 'required|integer|min:1'
         ];

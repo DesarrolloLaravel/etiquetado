@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Etiqueta</title>
+    <title>Etiqueta MAteria Prima</title>
     <style type="text/css"></style>
 </head>
 <style type="text/css">
@@ -43,14 +43,12 @@
                 <p style="font-size: 13px">{{ $data['producto'] }}</p>
             </td>
             <td colspan="2">
-                <p>Caja</p>
-                {{ $data['caja_number']  }}
+                <p>Pallet</p>
+                {{ $data['pallet_number']  }}
             </td>
         </tr>
         <tr class="with-border">
             <td colspan="4">
-                <p>Conservaci&oacute;n</p>
-                {{ $data['condicion'] }}
             </td>
             <td colspan="5">
                 <p>Calidad</p>
@@ -63,7 +61,7 @@
         </tr>
         <tr class="with-border">
             <td colspan="4">
-                <p style="font-size: 10px">Fecha Empaque
+                <p style="font-size: 10px">Fecha Ingreso
                     <br>(dd-mm-yyyy):</p>
                 <p style="font-size: 10px">Fecha Expiraci&oacute;n
                     <br>(dd-mm-yyyy):</p>
@@ -77,11 +75,11 @@
                 {{ $data['lote_number'] }}
             </td>
             <td colspan="2">
-                <p>Peso Neto</p>
+                <p>Peso Total</p>
                 {{ $data['peso_neto'] }}
             </td>
             <td colspan="1">
-                <p>Piezas</p>
+                <p>Cantidad Cajas</p>
                 {{ $data['piezas'] }}
             </td>
         </tr>

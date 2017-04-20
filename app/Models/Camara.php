@@ -30,6 +30,12 @@ class Camara extends Model
                                 'frigorifico_id');
     }
 
+    public function etiqueta_mp(){
+        return $this->hasOne('App\Models\Etiqueta_MP',
+                             'etiqueta_mp_posicion',
+                             'camara_id');
+    }
+
     public function cajas()
     {
         return $this->hasManyThrough('App\Models\CajaPosicion',
