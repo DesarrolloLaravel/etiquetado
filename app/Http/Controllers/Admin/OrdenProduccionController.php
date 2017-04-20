@@ -28,12 +28,21 @@ class OrdenProduccionController extends Controller
     {
         //
         
+
         $productos = Producto::orderBy('producto_nombre','ASC')
                 ->where('producto_especie_id',$request->especie_id)
                 ->lists('producto_nombre','producto_id')
                 ->all();
 
-        return $productos;    
+        return $productos; 
+    }
+
+    public function kilos_def(Request $request)
+    {
+        //
+        $kilos = Producto::select('producto_peso')->where('producto_id',$request->product_id)->first();
+        
+        return $kilos;
     }
 
     public function index(Request $request)
@@ -131,28 +140,19 @@ class OrdenProduccionController extends Controller
         $orden_fecha_compromiso = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_compromiso);
 
         $info = array(
-            'orden_lote_id'         => $request->orden_lote_id,
-            'orden_number'          => $request->orden_number,
+            'orden_id'          => $request->orden_id,
             'orden_descripcion'     => $request->orden_descripcion,
             'orden_fecha'           => $orden_fecha,
             'orden_fecha_inicio'    => $orden_fecha_inicio,
             'orden_fecha_compromiso'=> $orden_fecha_compromiso,
-            'orden_cliente_id'      => $request->orden_cliente_id,
-            'orden_ciudad_id'       => $request->orden_ciudad_id,
-            'orden_provincia_id'    => $request->orden_provincia_id
+            'orden_cliente_id'      => $request->orden_cliente_id
         );
 
-        \DB::beginTransaction();
+        
 
-        try{
-            $orden = OrdenProduccion::create($info);
-            $orden->productos()->attach(explode(",", $request->productos));
-        }
-        catch ( Exception $e ){
-            \DB::rollback();
-        }
-
-        \DB::commit();
+        $orden = OrdenProduccion::create($info);
+        $orden->productos()->attach(explode(",", $request->productos));
+        
         //envio respuesta al cliente
         return response()->json([
             "ok"

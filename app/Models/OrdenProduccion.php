@@ -23,10 +23,11 @@ class OrdenProduccion extends Model
     
     public function productos()
     {
-        return $this->belongsToMany('App\Models\Producto',
+        return $this->belongsToMany('App\Models\OrdenProduccionProducto',
         							'op_producto',
         							'op_producto_orden_id',
-        							'op_producto_producto_id')
+        							'op_producto_producto_id',
+                                    'op_producto_kilos_declarados')
                 ->withPivot('op_producto_id')
                 ->withTimestamps();
     }

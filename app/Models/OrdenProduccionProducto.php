@@ -14,24 +14,9 @@ class OrdenProduccionProducto extends Model
     protected $primaryKey = 'op_producto_id';
     protected $fillable = [ 'op_producto_orden_id',
     						'op_producto_producto_id',
-                            'op_producto_especie_id',
                             'op_producto_kilos_declarados'];
 
     protected $dates = ['deleted_at'];
-
-    public function producto()
-    {
-        return $this->belongsTo('App\Models\Producto',
-                                'op_producto_producto_id',
-                                'producto_id');
-    }
-
-    public function especie()
-    {
-        return $this->belongsTo('App\Models\Especie',
-                                'op_producto_especie_id',
-                                'especie_id');
-    }
 
     public function producto()
     {

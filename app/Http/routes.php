@@ -139,6 +139,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('ordenproduccion/edit', 'OrdenProduccionController@edit');
 	Route::post('ordenproduccion/store', 'OrdenProduccionController@store');
 	Route::post('ordenproduccion/update', 'OrdenProduccionController@update');
+	Route::get('ordenproduccion/kilos_def', 'OrdenProduccionController@kilos_def');
 
 	Route::get('producto', 'ProductoController@index');
 	Route::post('producto/store', 'ProductoController@store');
