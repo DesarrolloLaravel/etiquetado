@@ -311,6 +311,7 @@
         $(document).on('click','#add_product',function(event){
 
             product_id = $("#producto_ide").val();
+
             if(product_id != '')
             {
                 in_array = false;
@@ -326,11 +327,20 @@
                 }
                 else
                 {
-                    table_products.row.add( [
-                        product_id,
-                        $("#producto_ide option:selected").text()
-                    ] ).draw( false );
-                    arr_products.push(product_id);
+                    $.get('ordenproduccion/kilos_def',{product_id : product_id},function(data){
+                    
+                        var def = 0;
+                        def = (data.producto_peso - $("#kilos_id").val());
+                        table_products.row.add( [
+                            product_id,
+                            $("#especie_id option:selected").text(),
+                            $("#producto_ide option:selected").text(),
+                            $("#kilos_id").val(),
+                            data.producto_peso,
+                            def
+                        ] ).draw( false );
+                        arr_products.push(product_id,$("#kilos_id").val());
+                    });
                 }
             }
             else

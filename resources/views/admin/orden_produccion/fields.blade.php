@@ -69,7 +69,7 @@
 		{!! Form::label('kilos', 'Kilos Declarados',
 				['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-2">
-			{!! Form::number('orden_kilos_declarados', null, ['class' => 'form-control', 'min' => 0]) !!}	
+			{!! Form::number('orden_kilos_declarados', null, ['class' => 'form-control', 'min' => 0, 'id'=> 'kilos_id']) !!}	
 		</div>
 
 		<div class="col-sm-2">
