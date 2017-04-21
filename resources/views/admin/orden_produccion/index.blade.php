@@ -56,6 +56,7 @@
     var table;
     var table_products;
     var arr_products = [];
+    var arr_kilos = [];
 
     $(document).ready(function(){
 
@@ -124,6 +125,7 @@
         $('#table-ordenes tbody').on( 'click', '#edit', function ()
         {
             arr_products = [];
+            arr_kilos =[];
             if(table_products != undefined)
             {
                 table_products.destroy();
@@ -181,6 +183,7 @@
         $("#add").click(function(){
 
             arr_products = [];
+            arr_kilos = [];
 
             if(table_products != undefined)
             {
@@ -213,7 +216,10 @@
                     $('#table-products tbody').on('click', '#delete_product', function () {
                         product_id = $(this).parents('tr').data('id');
 
-                        arr_products.splice(arr_products.indexOf(product_id));
+                        var index = arr_products.indexOf(product_id);
+
+                        arr_products.splice(index);
+                        arr_kilos.splice(index);
 
                         table_products.row( $(this).parents('tr') )
                             .remove()
@@ -236,7 +242,7 @@
             var url = form.attr('action');
             //obtengo la informacion del formulario
 
-            var data = form.serialize()+ '&productos=' + arr_products;
+            var data = form.serialize()+ '&productos=' + arr_products+ '&kilos='+arr_kilos;
 
             $.post(url, data, function(resp)
             {
@@ -252,6 +258,7 @@
                     table_products.destroy();
                     console.log(table_products);
                     arr_products = [];
+                    arr_kilos = [];
 
                     table.ajax.reload();
                 }
@@ -275,7 +282,7 @@
             var url = form.attr('action');
             //obtengo la informacion del formulario
             $("#form-edit #orden_id").attr("disabled", false);
-            var data = form.serialize()+ '&productos=' + arr_products;
+            var data = form.serialize()+ '&productos=' + arr_products + '&kilos='+ arr_kilos;
             $("#form-edit #orden_id").attr("disabled", true);
 
             $.post(url, data, function(resp)
@@ -291,6 +298,7 @@
 
                     table_products.destroy();
                     arr_products = [];
+                    arr_kilos = [];
 
                     table.ajax.reload();
                 }
@@ -339,7 +347,14 @@
                             data.producto_peso,
                             def
                         ] ).draw( false );
-                        arr_products.push(product_id,$("#kilos_id").val());
+
+                        
+
+                        var kilos = $("#kilos_id").val();
+                        var producto_ides = product_id;
+
+                        arr_products.push(producto_ides);
+                        arr_kilos.push(kilos);
                     });
                 }
             }
@@ -390,10 +405,9 @@
         for (var i = 0; i < data.productos.length; i++) {
             console.log(data.productos[i]);
             table_products.row.add( [
-                data.productos[i].producto_id,
-                data.productos[i].fullName
+                data.productos[i].op_producto_producto_id
             ] ).draw( false );
-            arr_products.push(data.productos[i].producto_id);
+            arr_products.push(data.productos[i].op_producto_producto_id);
         };
         
     }

@@ -13,8 +13,9 @@ use App\Http\Requests\OrdenProduccion\UpdateRequest;
 
 use App\Models\OrdenProduccion;
 use App\Models\Producto;
-use App\Models\Lote;
 use App\Models\Especie;
+use App\Models\OrdenProduccionProducto;
+
 
 class OrdenProduccionController extends Controller
 {
@@ -135,10 +136,11 @@ class OrdenProduccionController extends Controller
     public function store(CreateRequest $request)
     {
         //
+
         $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
         $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_inicio);
         $orden_fecha_compromiso = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_compromiso);
-
+       
         $info = array(
             'orden_id'          => $request->orden_id,
             'orden_descripcion'     => $request->orden_descripcion,
@@ -148,11 +150,23 @@ class OrdenProduccionController extends Controller
             'orden_cliente_id'      => $request->orden_cliente_id
         );
 
-        
-
+       
         $orden = OrdenProduccion::create($info);
-        $orden->productos()->attach(explode(",", $request->productos));
+
+        $op = new OrdenProduccionProducto;     
+
+        $prod = (array) $request->productos;
+        $peso = (array) $request->kilos;
+
+        foreach ( $prod as $p ) {
         
+            $key = array_search($p,$prod);
+            $op->op_producto_orden_id = $orden->orden_id;            
+            $op->op_producto_producto_id = $p;
+            $op->op_producto_kilos_declarados = $peso[$key];
+            $op->save();
+        }
+
         //envio respuesta al cliente
         return response()->json([
             "ok"
@@ -168,20 +182,21 @@ class OrdenProduccionController extends Controller
     public function show(Request $request)
     {
         //
-        $orden = OrdenProduccion::with('productos','lote')->findOrFail($request->orden_id);
+        $orden = OrdenProduccion::findOrFail($request->orden_id);
 
         if($request->ajax())
         {
             $resp = [];
 
             $resp['orden_id'] = $orden->orden_id;
-            $resp['orden_lote_id'] = $orden->lote->lote_id;
             $resp['orden_descripcion'] = $orden->orden_descripcion;
             $resp['orden_fecha'] = $orden->orden_fecha;
 
-            $productos = $orden->productos->sortBy('producto_nombre')->lists('producto_id','fullName');
+            $producto = OrdenProduccionProducto::where('op_producto_orden_id',$request->orden_id)
+            ->get('op_producto_id');
 
-            $resp['orden_productos'] = $productos;
+
+            $resp['orden_productos'] = $producto;
 
             return response()->json($resp);
         }
@@ -200,17 +215,7 @@ class OrdenProduccionController extends Controller
 
         if($request->ajax())
         {
-            $lotes = [''=>'Ninguno'] + 
-                        Lote::where('lote_produccion', 'SI')
-                            ->get()
-                            ->lists('lote_id', 'lote_id')
-                            ->all();
-
-            $productos = [''=>'Ninguno'] + 
-                        Producto::orderBy('producto_nombre', 'ASC')
-                        ->get()
-                        ->lists('fullName','producto_id')
-                        ->all();
+            $productos = [''=>'Ninguno'];
 
             $clientes = [''=>'Ninguno'] +
                 Cliente::orderBy('cliente_nombre', 'ASC')
@@ -218,20 +223,29 @@ class OrdenProduccionController extends Controller
                     ->lists('cliente_nombre','cliente_id')
                     ->all();
 
-            $orden->productos;
+             $especies =[''=>'Ninguno'] +
+                Especie::orderBy('especie_name','ASC')
+                    ->get()
+                    ->lists('especie_name','especie_id')
+                    ->all();
+
+            $op = OrdenProduccionProducto::where('op_producto_orden_id',$request->orden_id)
+                ->getAll()
+                ->lists('op_producto_producto_id','op_producto_kilos_declarados');
+
 
             $orden_fecha = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha)->format('d-m-Y');
             $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha_inicio)->format('d-m-Y');
             $orden_fecha_compromiso = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha_compromiso)->format('d-m-Y');
 
             $view = \View::make('admin.orden_produccion.fields')
-                    ->with('productos', $productos)
                     ->with('clientes', $clientes)
-                    ->with('lotes', $lotes)
                     ->with('proxima_orden', $orden->orden_id)
                     ->with('orden_fecha', $orden_fecha)
                     ->with('orden_fecha_inicio', $orden_fecha_inicio)
-                    ->with('orden_fecha_compromiso', $orden_fecha_compromiso);
+                    ->with('orden_fecha_compromiso', $orden_fecha_compromiso)
+                    ->with('especies',$especies)
+                    ->with('productos',$op);
 
             $sections = $view->renderSections();
 

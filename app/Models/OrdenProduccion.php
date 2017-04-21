@@ -13,37 +13,35 @@ class OrdenProduccion extends Model
     protected $table = 'orden_produccion';
     protected $primaryKey = 'orden_id';
     protected $fillable = [ 'orden_descripcion',
-    						'orden_fecha',
-    						'orden_fecha_inicio',
-    						'orden_fecha_compromiso',
-    						'orden_cliente_id'];
+                            'orden_fecha',
+                            'orden_fecha_inicio',
+                            'orden_fecha_compromiso',
+                            'orden_cliente_id'];
 
     protected $dates = ['deleted_at'];
 
     
-    public function productos()
+    public function ordenProductos()
     {
-        return $this->belongsToMany('App\Models\OrdenProduccionProducto',
-        							'op_producto',
-        							'op_producto_orden_id',
-        							'op_producto_producto_id',
-                                    'op_producto_kilos_declarados')
-                ->withPivot('op_producto_id')
-                ->withTimestamps();
+        return $this->hasMany('etiquetado\Models\OrdenProduccionProducto',
+                                    'op_producto',
+                                    'op_producto_orden_id',
+                                    'op_producto_producto_id',
+                                    'op_producto_kilos_declarados');
     }
 
     public function cajas()
     {
-        return $this->hasManyThrough('App\Models\Caja',
-                                    'App\Models\OrdenProduccionProducto',
+        return $this->hasManyThrough('etiquetado\Models\Caja',
+                                    'etiquetado\Models\OrdenProduccionProducto',
                                     'op_producto_orden_id',
                                     'caja_op_producto_id');
     }
 
     public function historyCajas()
     {
-        return $this->hasManyThrough('App\Models\Caja',
-            'App\Models\OrdenProduccionProducto',
+        return $this->hasManyThrough('etiquetado\Models\Caja',
+            'etiquetado\Models\OrdenProduccionProducto',
             'op_producto_orden_id',
             'caja_op_producto_id')
             ->withTrashed();
@@ -51,7 +49,7 @@ class OrdenProduccion extends Model
 
     public function cliente()
     {
-        return $this->belongsTo('App\Models\Cliente',
+        return $this->belongsTo('etiquetado\Models\Cliente',
             'orden_cliente_id',
             'cliente_id');
     }
