@@ -95,6 +95,11 @@ return array(
 		'2' => 'DESPACHO',
 		'3' => 'DESPACHADO'
 	],
+	'estado_etiqueta' => [
+		'1' => 'NO RECEPCIONAdO',
+		'2' => 'RECEPCIONADO',
+		'3' => 'PRODUCCIÓN'
+	],
     'idioma' => [
         '1' => 'Español',
         '2' => 'Inglés'

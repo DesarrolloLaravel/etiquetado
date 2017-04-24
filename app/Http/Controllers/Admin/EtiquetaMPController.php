@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Frigorifico;
 use Illuminate\Http\Request;
 use Illuminate\Console\Command;
 
@@ -18,6 +17,8 @@ use App\Models\Lote;
 use App\Models\Etiqueta_MP;
 use App\Models\Producto;
 use App\Models\CajaPosicion;
+use App\Models\Camara;
+use App\Models\Frigorifico;
 use App\Models\OrdenProduccion;
 
 class EtiquetaMPController extends Controller
@@ -165,12 +166,10 @@ class EtiquetaMPController extends Controller
         //
         if($request->ajax())
         {
-            $etiquetas = Etiqueta::has('caja.orden_producto.orden.lote')
-                ->with('caja.orden_producto.orden.lote')
-                ->where('etiqueta_estado', 'NO RECEPCIONADA')
-                ->get();
+            $etiquetas_mp = Etiqueta_MP::all();
 
-            if($etiquetas->count() == 0)
+
+            if($etiquetas_mp->count() == 0)
             {
                 return '{"data":[]}';
             }
@@ -178,15 +177,16 @@ class EtiquetaMPController extends Controller
             $dt_json = '{ "data" : [';
 
             //para cada compañia
-            foreach ($etiquetas as $etiqueta) {
+            foreach ($etiquetas_mp as $etiqueta_mp) {
                 //completo el json
-                $dt_json .= '["'.$etiqueta->etiqueta_id.'","'
-                                .$etiqueta->caja->orden_producto->orden->lote->lote_id.'","'
-                                .$etiqueta->caja->caja_id.'","'
-                                .$etiqueta->etiqueta_barcode.'","'
-                                .$etiqueta->etiqueta_estado.'","'
-                                .\Carbon\Carbon::createFromFormat('Y-m-d',$etiqueta->etiqueta_fecha)->format('d-m-Y').'"],';
+                $dt_json .= '["'.$etiqueta_mp->etiqueta_mp_id.'","'
+                                .$etiqueta_mp->lote->lote_id.'","'
+                                .$etiqueta_mp->producto->getFullName().'","'
+                                .$etiqueta_mp->etiqueta_mp_barcode.'","'
+                                .$etiqueta_mp->etiqueta_mp_estado.'","'                                          
+                                .\Carbon\Carbon::createFromFormat('Y-m-d',$etiqueta_mp->etiqueta_mp_fecha)->format('d-m-Y').'"],';
             }
+
             //elimino la ultima coma del json
             $dt_json = substr($dt_json, 0, -1);
             //se cierra el json
@@ -196,7 +196,7 @@ class EtiquetaMPController extends Controller
         }
         else
         {
-            return view('admin.etiqueta.index');
+            return view('admin.etiqueta_mp.index');
         }
     }
 
@@ -228,6 +228,7 @@ class EtiquetaMPController extends Controller
 
             $info_etiqueta_mp = array(
                 'etiqueta_mp_lote_id'           => $request->lote_id,
+                'etiqueta_mp_estado'            => '1',
                 'etiqueta_mp_producto_id'       => $request->orden_productos_id,
                 'etiqueta_mp_fecha'             => \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha),
                 'etiqueta_mp_barcode'           => $barcode,
@@ -242,6 +243,7 @@ class EtiquetaMPController extends Controller
 
             $info_etiqueta_mp = array(
                 'etiqueta_mp_lote_id'           => $request->lote_id,
+                'etiqueta_mp_estado'            =>  '1',                
                 'etiqueta_mp_producto_id'       => $request->orden_productos_id,
                 'etiqueta_mp_fecha'             => \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha),
                 'etiqueta_mp_barcode'           => $barcode,
@@ -291,31 +293,32 @@ class EtiquetaMPController extends Controller
         //
         if($request->ajax())
         {
-            $etiqueta = Etiqueta::where('etiqueta_barcode', $request->etiqueta_barcode)->first();
+            $etiqueta_mp = Etiqueta_MP::where('etiqueta_mp_barcode', $request->etiqueta_barcode)->first();
 
-            if($etiqueta->etiqueta_estado == 'RECEPCIONADA')
+            if($etiqueta_mp->etiqueta_mp_estado == 'RECEPCIONADO' )
             {
-                return response()->json(["nok","Esta etiqueta ya fue recepcionada."]);
+                return response()->json(["nok","Este Pallet ya fue recepcionado."]);
+
+            }else if ( $etiqueta_mp->etiqueta_mp_estado == 'PRODUCCIÓN'){
+
+                return response()->json(["nok","Este Pallet está en producción."]);
+
             }
 
             \DB::beginTransaction();
 
             try{
                 //se pasa la información a la compañia encontrada
-                $etiqueta->etiqueta_estado = 'RECEPCIONADA';
+                $etiqueta_mp->etiqueta_mp_estado = 'RECEPCIONADO';
+                $etiqueta_mp->etiqueta_mp_posicion = $request->select_camara;
                 //se guardan los cambios en la base de datos
-                $etiqueta->save();
+                $etiqueta_mp->save();
 
-                $caja = $etiqueta->caja;
-                $caja->caja_posicion()->attach($request->select_posicion);
-                $caja->input_output()->attach($request->select_posicion,
-                    ['io_tipo' => 'ENTRADA', 'io_proceso' => 'PRODUCCION']);
-
-                $resp = ["ok"];
+                $resp = ["ok","Pallet recepcionado exitosamente."];
             }
             catch ( Exception $e ){
                 \DB::rollback();
-                $resp = ["nok","Esta etiqueta ya fue recepcionada."];
+                $resp = ["nok","Este Pallet ya fue recepcionado."];
             }
 
             \DB::commit();

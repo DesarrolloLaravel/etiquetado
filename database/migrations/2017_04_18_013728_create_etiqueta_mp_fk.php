@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEtiquetaMPsFk extends Migration
+class CreateEtiquetaMPFk extends Migration
 {
     /**
      * Run the migrations.

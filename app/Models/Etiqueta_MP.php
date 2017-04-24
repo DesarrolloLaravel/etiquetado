@@ -14,6 +14,7 @@ class Etiqueta_MP extends Model
     protected $table = 'etiqueta_mp';
     protected $primaryKey = 'etiqueta_mp_id';
     protected $fillable = [ 'etiqueta_mp_lote_id',
+                            'etiqueta_mp_estado',
     						'etiqueta_mp_producto_id',
     						'etiqueta_mp_barcode',
     						'etiqueta_mp_fecha',

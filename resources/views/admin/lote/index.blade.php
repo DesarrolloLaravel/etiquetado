@@ -75,7 +75,11 @@
                 "data": null,
                 "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
                     <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
-            }],
+            },
+            {
+                    "targets" : 0,
+                    "visible" : false
+                }],
             "order": [[ 1, 'desc' ]],
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
                 $(nRow).find('td:first').addClass('details-control');

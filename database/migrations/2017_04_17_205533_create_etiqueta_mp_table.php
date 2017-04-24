@@ -14,6 +14,7 @@ class CreateEtiquetaMPTable extends Migration
     {
         Schema::create('etiqueta_mp', function (Blueprint $table) {
             $table->increments('etiqueta_mp_id');
+            $table->enum('etiqueta_mp_estado',\Config::get('options.estado_etiqueta'));
             $table->unsignedInteger('etiqueta_mp_lote_id')->index();
             $table->unsignedInteger('etiqueta_mp_producto_id')->index();
             $table->date('etiqueta_mp_fecha');
