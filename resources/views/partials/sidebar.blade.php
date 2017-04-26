@@ -22,6 +22,7 @@
                     <a href="#"><i class='fa fa-gear '></i> <span>Ordenes</span><i class="fa fa-angle-right pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a href="{{ url('/admin/ordenproduccion') }}"><i class='fa fa-circle-o'></i>Producci&oacute;n</a></li>
+                         <li><a href="{{ url('/admin/ordentrabajo') }}"><i class='fa fa-circle-o'></i>Trabajo</a></li>
                     </ul>
                 </li>
                 <li class="treeview {{ areActiveRoutes(['admin/etiqueta/create','admin/etiqueta', 'admin/nordic/create', 'admin/etiqueta/all']) }}">

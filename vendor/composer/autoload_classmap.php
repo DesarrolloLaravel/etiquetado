@@ -60,6 +60,8 @@ return array(
     'CreateOrdenDespachoTable' => $baseDir . '/database/migrations/2016_05_10_160529_create_orden_despacho_table.php',
     'CreateOrdenProduccionFk' => $baseDir . '/database/migrations/2016_04_13_154758_create_orden_produccion_fk.php',
     'CreateOrdenProduccionTable' => $baseDir . '/database/migrations/2016_04_13_141353_create_orden_produccion_table.php',
+    'CreateOrdenTrabajoTable' => $baseDir . '/database/migrations/2017_04_24_195623_create_orden_trabajo_table.php',
+    'CreateOtProductoTable' => $baseDir . '/database/migrations/2017_04_24_190821_create_ot_producto_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePosicionFk' => $baseDir . '/database/migrations/2016_04_26_150701_create_posicion_fk.php',
     'CreatePosicionTable' => $baseDir . '/database/migrations/2016_04_26_145357_create_posicion_table.php',

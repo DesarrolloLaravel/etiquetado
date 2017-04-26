@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -11,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrdenProduccion\CreateRequest;
 use App\Http\Requests\OrdenProduccion\UpdateRequest;
 
+use App\Models\Cliente;
 use App\Models\OrdenProduccion;
 use App\Models\Producto;
 use App\Models\Especie;

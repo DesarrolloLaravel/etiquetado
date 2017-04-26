@@ -163,5 +163,4 @@ class Producto extends Model
             'producto_condicion_id',
             'condicion_id');
     }
-
 }

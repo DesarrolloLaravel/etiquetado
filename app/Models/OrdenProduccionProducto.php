@@ -20,14 +20,14 @@ class OrdenProduccionProducto extends Model
 
     public function producto()
     {
-        return $this->belongsTo('etiquetado\Models\Producto',
+        return $this->belongsTo('App\Models\Producto',
                                 'op_producto_producto_id',
                                 'producto_id');
     }
 
     public function orden()
     {
-        return $this->belongsTo('etiquetado\Models\OrdenProduccion',
+        return $this->belongsTo('App\Models\OrdenProduccion',
                                 'op_producto_orden_id',
                                 'orden_id');
     }

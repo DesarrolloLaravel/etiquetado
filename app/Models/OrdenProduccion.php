@@ -23,25 +23,31 @@ class OrdenProduccion extends Model
     
     public function ordenProductos()
     {
-        return $this->hasMany('etiquetado\Models\OrdenProduccionProducto',
+        return $this->hasMany('App\Models\OrdenProduccionProducto',
                                     'op_producto',
                                     'op_producto_orden_id',
                                     'op_producto_producto_id',
                                     'op_producto_kilos_declarados');
     }
 
+    public function ordenTrabajo()
+    {
+        return $this->hasMany('App\Models\OrdenTrabajo','orden_id',
+                                    'orden_trabajo_orden_produccion');
+    }
+
     public function cajas()
     {
-        return $this->hasManyThrough('etiquetado\Models\Caja',
-                                    'etiquetado\Models\OrdenProduccionProducto',
+        return $this->hasManyThrough('App\Models\Caja',
+                                    'App\Models\OrdenProduccionProducto',
                                     'op_producto_orden_id',
                                     'caja_op_producto_id');
     }
 
     public function historyCajas()
     {
-        return $this->hasManyThrough('etiquetado\Models\Caja',
-            'etiquetado\Models\OrdenProduccionProducto',
+        return $this->hasManyThrough('App\Models\Caja',
+            'App\Models\OrdenProduccionProducto',
             'op_producto_orden_id',
             'caja_op_producto_id')
             ->withTrashed();
@@ -49,7 +55,7 @@ class OrdenProduccion extends Model
 
     public function cliente()
     {
-        return $this->belongsTo('etiquetado\Models\Cliente',
+        return $this->belongsTo('App\Models\Cliente',
             'orden_cliente_id',
             'cliente_id');
     }

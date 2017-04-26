@@ -417,6 +417,8 @@ class ComposerStaticInit292d320630d46996cb5a01d80e547381
         'CreateOrdenDespachoTable' => __DIR__ . '/../..' . '/database/migrations/2016_05_10_160529_create_orden_despacho_table.php',
         'CreateOrdenProduccionFk' => __DIR__ . '/../..' . '/database/migrations/2016_04_13_154758_create_orden_produccion_fk.php',
         'CreateOrdenProduccionTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_13_141353_create_orden_produccion_table.php',
+        'CreateOrdenTrabajoTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_24_195623_create_orden_trabajo_table.php',
+        'CreateOtProductoTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_24_190821_create_ot_producto_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreatePosicionFk' => __DIR__ . '/../..' . '/database/migrations/2016_04_26_150701_create_posicion_fk.php',
         'CreatePosicionTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_26_145357_create_posicion_table.php',

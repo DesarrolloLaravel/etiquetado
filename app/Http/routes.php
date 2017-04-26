@@ -31,10 +31,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('lote/anulados','LoteController@anulados');
 	Route::post('lote/delete','LoteController@destroy');
 
-
 	Route::get('anulados','AnuladosController@index');
 	
-
 	Route::get('procesador','ProcesadorController@index');
 	Route::get('procesador/edit','ProcesadorController@edit');
 	Route::post('procesador/store','ProcesadorController@store');
@@ -131,7 +129,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('etiqueta_mp/destroy', 'EtiquetaMPController@destroy');
 	Route::get('etiqueta_mp/reprint','EtiquetaMPController@reprint');
 
-	
 	Route::get('ordenproduccion', 'OrdenProduccionController@index');
 	Route::get('ordenproduccion/create', 'OrdenProduccionController@create');
 	Route::get('ordenproduccion/cargar_producto', 'OrdenProduccionController@cargar_producto');
@@ -140,6 +137,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('ordenproduccion/store', 'OrdenProduccionController@store');
 	Route::post('ordenproduccion/update', 'OrdenProduccionController@update');
 	Route::get('ordenproduccion/kilos_def', 'OrdenProduccionController@kilos_def');
+
+	Route::get('ordentrabajo', 'OrdenTrabajoController@index');
+	Route::get('ordentrabajo/create', 'OrdenTrabajoController@create');
+	Route::get('ordentrabajo/show', 'OrdenTrabajoController@show');
+	Route::get('ordentrabajo/edit', 'OrdenTrabajoController@edit');
+	Route::post('ordentrabajo/store', 'OrdenTrabajoController@store');
+	Route::post('ordentrabajo/update', 'OrdenTrabajoController@update');
 
 	Route::get('producto', 'ProductoController@index');
 	Route::post('producto/store', 'ProductoController@store');
