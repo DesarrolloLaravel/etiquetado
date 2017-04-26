@@ -3,12 +3,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Recepción Etiqueta</h4>
+                <h4 class="modal-title">Recepción Pallet Materia Prima</h4>
                 <p class="alert alert-success" id="alert-success-modal"></p>
                 <p class="alert alert-danger" id="alert-danger-modal"></p>
             </div>
             <div class="modal-body">
-                {!! Form::open(['url' => 'admin/etiqueta/update',
+                {!! Form::open(['url' => 'admin/etiqueta_mp/update',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
                   'id' => 'form-edit']) !!}
@@ -29,13 +29,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    {!! Form::label('posicion', 'Posición',
-                    ['class' => 'col-sm-3 control-label']) !!}
-                    <div class="col-sm-7">
-                    {!! Form::select('select_posicion', [], null,['class' => 'form-control','id' => 'select_posicion']) !!}
-                    </div>
-                </div>
 
                 <div class="form-group">
                     {!! Form::label('nombre', 'Código',

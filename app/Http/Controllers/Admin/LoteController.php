@@ -127,8 +127,7 @@ class LoteController extends Controller
             }
             else if($request->q == "etiquetamp")
             {
-                $lotes = Lote::where('lote_produccion', 'SI')
-                            ->with('procesador','productor','especie')->get();
+                $lotes = Lote::with('procesador','productor','especie')->get();
             }
             else if($request->q == "despacho")
             {

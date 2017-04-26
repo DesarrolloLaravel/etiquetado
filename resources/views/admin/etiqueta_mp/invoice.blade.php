@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Etiqueta</title>
+    <title>Etiqueta Materia Prima</title>
     <style type="text/css"></style>
   </head>
   <style type="text/css">

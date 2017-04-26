@@ -16,6 +16,7 @@
                         <li><a href="{{ url('/admin/lote/create') }}"><i class='fa fa-circle-o'></i>Crear</a></li>
                         <li><a href="{{ url('/admin/lote') }}"><i class='fa fa-circle-o'></i>Listar</a></li>
                         <li><a href="{{ url('/admin/etiqueta_mp/create') }}"><i class='fa fa-circle-o'></i>Etiqueta Pallet</a></li>
+                        <li><a href="{{ url('/admin/etiqueta_mp') }}"><i class='fa fa-circle-o'></i>Recepci&oacute;n Pallet</a></li>
                     </ul>
                 </li>
                 <li class="treeview {{ areActiveRoutes(['admin/ordenproduccion']) }}">

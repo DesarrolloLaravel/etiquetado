@@ -1,11 +1,11 @@
 @extends('app')
 
 @section('htmlheader_title')
-    Etiquetas
+    Etiquetas Materia Prima
 @endsection
 
 @section('contentheader_title')
-    Lista de Etiquetas
+    Lista de Etiquetas MP
 @endsection
 
 @section('main-content')
@@ -15,11 +15,11 @@
 <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 <script type="text/javascript">
 
-	var table, barcode = '';
+    var table, barcode = '';
     var pressed = false; 
     var chars = [];
-    var frigorifico_id, camara_id, posicion_id;
-    var etiqueta_id;
+    var frigorifico_id, camara_id;
+    var etiqueta_mp_id;
 
     $(document).ready(function(){
 
@@ -41,7 +41,7 @@
                         var barcode = chars.join("");
                         console.log("Barcode Scanned: " + barcode);
                         // assign value to some input (or do whatever you want)
-                        $("#etiqueta_barcode").val(barcode);
+                        $("#etiqueta_mp_barcode").val(barcode);
                         $("#update").trigger('click');
                     }
                     clearTimeout(t);
@@ -60,8 +60,8 @@
 
         $(".alert").hide();
 
-        table = $('#table-etiquetas').DataTable({
-            "ajax" : "etiqueta",
+        table = $('#table-etiquetas-mp').DataTable({
+            "ajax" : "etiqueta_mp",
             "language": {
                 "url": "../../plugins/datatables/es_ES.txt"
             },
@@ -73,57 +73,59 @@
                     <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
             },
                 {
-                    "targets" : 0,
+                    "targets" : -1,
                     "visible" : false
                 }],
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
                 $(nRow).attr('data-id', aData[0]);
+
             }
+
         });
 
-        $("#reprint_final").click(function(){
+        // $("#reprint_final").click(function(){
 
-            var idioma = $("#idioma").val();
+        //     var idioma = $("#idioma").val();
 
-            console.log(idioma);
+        //     console.log(idioma);
 
-            $.get('etiqueta/reprint',
-                {etiqueta_id : etiqueta_id},
-                function(data){
-                    if(data[0] == "ok")
-                    {
-                        $("#modal_idioma").modal('hide');
-                        var printPage = window.open('{{ url("admin/etiqueta/print") }}'+'/'+etiqueta_id+'/'+idioma, '');
-                        printPage.print();
-                    }
-                    else
-                    {
-                        $(".alert-danger").html(data[1]).show();
-                    }
-            }).fail(function(resp){
-                alert("Ha ocurrido un error. Inténtalo más tarde.")
-            });
-        });
+        //     $.get('etiqueta/reprint',
+        //         {etiqueta_id : etiqueta_id},
+        //         function(data){
+        //             if(data[0] == "ok")
+        //             {
+        //                 $("#modal_idioma").modal('hide');
+        //                 var printPage = window.open('{{ url("admin/etiqueta_mp/print") }}'+'/'+etiqueta__id+'/'+idioma, '');
+        //                 printPage.print();
+        //             }
+        //             else
+        //             {
+        //                 $(".alert-danger").html(data[1]).show();
+        //             }
+        //     }).fail(function(resp){
+        //         alert("Ha ocurrido un error. Inténtalo más tarde.")
+        //     });
+        // });
 
-        $('#table-etiquetas tbody').on( 'click', '#reprint', function (){
+        $('#table-etiquetas-mp tbody').on( 'click', '#reprint', function (){
 
             $(".alert").hide();
 
-            etiqueta_id = $(this).parents('tr').data('id');
+            etiqueta_mp_id = $(this).parents('tr').data('id');
 
-            $("#modal_idioma").modal('show');
+
 
         });
 
-        $('#table-etiquetas tbody').on( 'click', '#delete', function (){
+        $('#table-etiquetas-mp tbody').on( 'click', '#delete', function (){
 
-            etiqueta_id = $(this).parents('tr').data('id');
-            etiqueta_barcode = $(this).parents('tr').find('td:eq(2)').text();
+            etiqueta_mp_id = $(this).parents('tr').data('id');
+            etiqueta_mp_barcode = $(this).parents('tr').find('td:eq(2)').text();
 
             $('#modal_cancel').modal('show');
 
-            $("#form-delete input[name='etiqueta_id']").val(etiqueta_id);
-            $("#form-delete #etiqueta_barcode").val(etiqueta_barcode);
+            $("#form-delete input[name='etiqueta_mp_id']").val(etiqueta_mp_id);
+            $("#form-delete #etiqueta_mp_barcode").val(etiqueta_mp_barcode);
         });
 
         $("#recepcion2").click(function(){
@@ -155,7 +157,6 @@
                     {frigorifico_id : frigorifico_id},
                     function(data){
                         $('#select_camara').empty();
-                        $('#select_posicion').empty();
                         $.each(data, function(key, element) {
                             $('#select_camara').append("<option value='" + key + "'>" + element + "</option>");
                         });
@@ -172,38 +173,17 @@
             else
             {
                 camara_id = $("#select_camara").val();
-                posicion_id = undefined;
-                $.get('posicion?q=select',
-                    {camara_id : camara_id},
-                    function(data){
-                        console.log(data);
-                        $('#select_posicion').empty();
-                        $.each(data, function(key, element) {
-                            $('#select_posicion').append("<option value='" + key + "'>" + element + "</option>");
-                        });
-                });
+                
             }
         });
 
-        $("#select_posicion").click(function(){
-
-            if($("#select_posicion").val() == "")
-            {
-                alert("Ha ocurrido un error. Inténtalo más tarde.")
-            }
-            else
-            {
-                posicion_id = $("#select_posicion").val();
-            }
-        });
 
         $("#update").click(function(){
 
             if(frigorifico_id == undefined || 
-                camara_id == undefined ||
-                posicion_id == undefined){
+                camara_id == undefined){
 
-                    $("#alert-danger-modal").html("La CAJA no ha podido ser recepcionada debido a que falta información. Debes completar el formulario y volver a escanear la CAJA.").show();
+                    $("#alert-danger-modal").html("El PALLET no ha podido ser recepcionado debido a que falta información. Debes completar el formulario y volver a escanear el PALLET.").show();
                 }
                 else
                 {
@@ -218,7 +198,7 @@
                     {
                         if(resp[0] == "ok")
                         {
-                            $(".alert-success").html("La etiqueta "+$("#etiqueta_barcode").val()+" fue recepcionada exitosamente").show();
+                            $(".alert-success").html("El Pallet "+$("#etiqueta_mp_barcode").val()+" fue recepcionado exitosamente").show();
                             $(".alert-danger").hide();
                             //reseteo el formulario
                             $("#etiqueta_barcode").val("");
@@ -290,8 +270,8 @@
                 $(".alert-danger").html(html).show();
             });
         });
-
     });
+    
 
 </script>
     <div class="row">
@@ -300,32 +280,32 @@
                 <div class="box-body">
                     <a class="btn btn-primary" id="recepcion2">
                         <i class="fa fa-check"></i>
-                        Recepcionar Caja Frigorifico
+                        Recepcionar Pallet Frigorifico
                     </a>
                     <br><br>
                     <p class="alert alert-success"></p>
                     <p class="alert alert-danger"></p>
-                    <table class="table table-bordered" id="table-etiquetas" width="100%">
+                    <table class="table table-bordered" id="table-etiquetas-mp" width="100%">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Lote</th>
-                                <th>Caja</th>
+                                <th>Producto</th>
                                 <th>C&oacute;digo</th>
-                                <th>Estado</th>
+                                <th>Posici&oacute;n</th>
                                 <th>Fecha</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{--@foreach ($etiquetas as $etiqueta)
-                            <tr role="row" data-id="{{ $etiqueta->etiqueta_id }}">
-                                <td>{{ $etiqueta->etiqueta_id }}</td>
-                                <td>{{ $etiqueta->caja->orden_producto->orden->lote->lote_id }}</td>
-                                <td>{{ $etiqueta->caja->caja_id }}</td>
-                                <td>{{ $etiqueta->etiqueta_barcode }}</td>
-                                <td>{{ $etiqueta->etiqueta_estado }}</td>
-                                <td>{{ $etiqueta->etiqueta_fecha }}</td>
+                            {{--@foreach ($etiquetas_mp as $etiqueta_mp)
+                            <tr role="row" data-id="{{ $etiqueta_mp->etiqueta_mp_id }}">
+                                <td>{{ $etiqueta_mp->etiqueta_mp_id }}</td>
+                                <td>{{ $etiqueta_mp->producto }}</td>
+                                <td>{{ $etiqueta_mp->lote->lote_id }}</td>
+                                <td>{{ $etiqueta_mp->etiqueta_mp_barcode }}</td>
+                                <td>{{ $etiqueta_mp->etiqueta_mp_estado }}</td>
+                                <td>{{ $etiqueta_mp->etiqueta_mp_fecha }}</td>
                                 <td></td>
                             </tr>
                             @endforeach--}}
@@ -334,9 +314,9 @@
                             <tr>
                                 <th>#</th>
                                 <th>Lote</th>
-                                <th>Caja</th>
+                                <th>Producto</th>
                                 <th>C&oacute;digo</th>
-                                <th>Estado</th>
+                                <th>Posici&oacute;n</th>                                
                                 <th>Fecha</th>
                                 <th>Opciones</th>
                             </tr>
@@ -347,8 +327,7 @@
         </div>
     </div>
 
-@include('admin.etiqueta.modalrecepcion')
-@include('admin.etiqueta.modalcancel')
-@include('admin.etiqueta.modalidioma')
+@include('admin.etiqueta_mp.modalrecepcion')
+@include('admin.etiqueta_mp.modalcancel')
 
 @endsection

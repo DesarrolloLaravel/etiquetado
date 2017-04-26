@@ -7,18 +7,18 @@
                 <p class="alert alert-danger"></p>
             </div>
             <div class="modal-body">
-                {!! Form::open(['url' => 'admin/etiqueta/destroy',
+                {!! Form::open(['url' => 'admin/etiqueta_mp/destroy',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
                   'id' => 'form-delete']) !!}
 
-                  {!! Form::hidden('etiqueta_id', null) !!}
+                  {!! Form::hidden('etiqueta_mp_id', null) !!}
                   
                   <div class="form-group">
                     {!! Form::label('nombre', 'Código',
                     ['class' => 'col-sm-3 control-label']) !!}
                     <div class="col-sm-7">
-                    {!! Form::text('etiqueta_barcode', null, ['class' => 'form-control', 'id' => 'etiqueta_barcode', 'disabled']) !!}
+                    {!! Form::text('etiqueta_mp_barcode', null, ['class' => 'form-control', 'id' => 'etiqueta_mp_barcode', 'disabled']) !!}
                     </div>
                   </div>
 

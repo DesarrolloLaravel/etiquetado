@@ -404,6 +404,8 @@ class ComposerStaticInit292d320630d46996cb5a01d80e547381
         'CreateEnvasesTable' => __DIR__ . '/../..' . '/database/migrations/2016_09_30_132714_create_envases_table.php',
         'CreateEspecieTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_04_204845_create_especie_table.php',
         'CreateEtiquetaFk' => __DIR__ . '/../..' . '/database/migrations/2016_04_15_112228_create_etiqueta_fk.php',
+        'CreateEtiquetaMPsFk' => __DIR__ . '/../..' . '/database/migrations/2017_04_18_013728_create_etiqueta__m_ps_fk.php',
+        'CreateEtiquetaMPsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_17_205533_create_etiqueta__m_ps_table.php',
         'CreateEtiquetaTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_15_112007_create_etiqueta_table.php',
         'CreateFormatosTable' => __DIR__ . '/../..' . '/database/migrations/2016_09_29_191901_create_formatos_table.php',
         'CreateFrigorificoTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_26_144405_create_frigorifico_table.php',

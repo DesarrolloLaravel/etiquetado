@@ -122,7 +122,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 
 	Route::get('etiqueta_mp','EtiquetaMPController@index');
     Route::get('etiqueta_mp/all','EtiquetaMPController@indexAll');
-	Route::get('etiqueta_mp/print/{id}/{idioma}', 'EtiquetaMPController@print_etiqueta');
+	Route::get('etiqueta_mp/print/{id}', 'EtiquetaMPController@print_etiqueta');
 	Route::get('etiqueta_mp/create', 'EtiquetaMPController@create');
 	Route::post('etiqueta_mp/store', 'EtiquetaMPController@store');
 	Route::post('etiqueta_mp/update', 'EtiquetaMPController@update');

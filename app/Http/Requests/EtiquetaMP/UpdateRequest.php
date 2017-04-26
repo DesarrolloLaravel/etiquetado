@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Etiqueta;
+namespace App\Http\Requests\EtiquetaMP;
 
 use App\Http\Requests\Request;
 
@@ -27,8 +27,8 @@ class UpdateRequest extends Request
         //dd($this->request->all());
         return [
             //
-            'etiqueta_barcode' => 'required|exists:etiqueta,etiqueta_barcode',
-            'select_posicion' => 'required|exists:posicion,posicion_id'
+            'etiqueta_barcode' => 'required|exists:etiqueta_mp,etiqueta_mp_barcode',
+            'select_camara'    => 'required|exists:camara,camara_id'
         ];
     }
 
@@ -36,9 +36,10 @@ class UpdateRequest extends Request
     {
         return [
             'etiqueta_barcode.required' => 'El Código es obligatorio',
-            'etiqueta_barcode.exists' => 'El Código ingresado no existe. Verifica tu información.',
-            'select_posicion.required' => 'Debes completar el formulario para recepcionar una caja',
-            'select_posicion.exists' => 'Ha ocurrido un error. Inténtalo más tarde'
+            'etiqueta_barcode.required_if' =>'Este Pallet ya fue recivido',
+            'etiqueta_barcode.exists'   => 'El Código ingresado no existe. Verifica tu información.',
+            'select_camara.required'    => 'Debes completar el formulario para recepcionar un Pallet',
+            'select_camara.exists'      => 'Ha ocurrido un error. SInténtalo más tarde'
         ];
     }
 }

@@ -59,6 +59,13 @@ class Lote extends Model
             'calidad_id');
     }
 
+    public function etiqueta_mp(){
+        return $this->hasOne('App\Models\Etiqueta_MP',
+                             'etiqueta_mp_lote_id',
+                             'lote_id');
+    }
+
+
     public function especie()
     {
         return $this->belongsTo('App\Models\Especie',
