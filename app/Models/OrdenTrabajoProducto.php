@@ -13,8 +13,7 @@ class OrdenTrabajoProducto extends Model
     protected $primaryKey = 'ot_producto_id';
 
     protected $fillable = ['ot_producto_orden_trabajo',
-    						'ot_producto_codigo_pallet',
-    						'ot_producto_peso'];
+    						'ot_producto_etiqueta_pallet'];
 
 	protected $dates = ['deleted_at'];
 

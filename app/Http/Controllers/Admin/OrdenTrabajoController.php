@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Log;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -13,8 +14,11 @@ use App\Http\Requests\OrdenTrabajo\UpdateRequest;
 use App\Models\OrdenTrabajo;
 use App\Models\OrdenTrabajoProducto;
 use App\Models\Especie;
+use App\Models\Lote;
 use App\Models\Producto;
 use App\Models\OrdenProduccion;
+use App\Models\OrdenProduccionProducto;
+use App\Models\etiqueta_MP;
 
 class OrdenTrabajoController extends Controller
 {
@@ -23,6 +27,71 @@ class OrdenTrabajoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function cargar_especie(Request $request)
+    {
+        //
+        
+        $pro = OrdenProduccionProducto::where('op_producto_orden_id',$request->orden_prod)->with('producto')->get();
+
+        $especies = [];
+        $dat = [];
+
+        foreach ($pro as $pp) {
+            
+            $dat[$pp->producto->especie->especie_id] = $pp->producto->especie->especie_comercial_name;
+
+            Log::info($pp->producto->especie->especie_id);
+            Log::info($pp->producto->especie->especie_comercial_name);
+
+            Log::info($dat);
+        }
+
+        $especies = $dat;
+
+        Log::info($especies);
+        return $especies; 
+    }
+
+    public function cargar_producto(Request $request)
+    {
+        //
+        
+        $productos = Producto::orderBy('producto_nombre','ASC')
+                ->where('producto_especie_id',$request->especie_id)
+                ->lists('producto_nombre','producto_id')
+                ->all();
+
+        Log::info($productos);
+
+        return $productos; 
+    }
+
+    public function cargar_etiqueta(Request $request)
+    {
+        //
+        Log::info($request->producto_id);
+
+        $eti = Etiqueta_MP::where('etiqueta_mp_producto_id',$request->producto_id)->where('etiqueta_mp_estado','NO RECEPCIONAdO')->lists('etiqueta_mp_barcode','etiqueta_mp_id')->all();
+
+        Log::info($eti);
+
+        return $eti;
+         
+    }
+
+    public function kilos_eti(Request $request)
+    {
+        //
+        Log::info("Pallet: ".$request->etiqueta_pallet);
+
+        $kilos = Etiqueta_MP::where('etiqueta_mp_id',$request->etiqueta_pallet)->first();
+
+        Log::info($kilos);        
+        
+        return $kilos;
+    }
+
     public function index(Request $request)
     {
         //
@@ -82,6 +151,8 @@ class OrdenTrabajoController extends Controller
                 
             $productos =[''=>'Ninguno'];
 
+            $pallet =[''=>'Ninguno'];    
+
             $proxima_orden = OrdenTrabajo::all()->max('orden_trabajo_id')+1;
 
             $orden_fecha = \Carbon\Carbon::now()->format('d-m-Y');
@@ -91,6 +162,7 @@ class OrdenTrabajoController extends Controller
                     ->with('proxima_orden', $proxima_orden)
                     ->with('orden_trabajo_fecha', $orden_fecha)
                     ->with('especies',$especies)
+                    ->with('pallet',$pallet)
                     ->with('productos',$productos);
 
             $sections = $view->renderSections();
@@ -108,6 +180,40 @@ class OrdenTrabajoController extends Controller
     public function store(Request $request)
     {
         //
+        if($request->ajax()){
+
+            $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
+            
+            $info = array(
+                'orden_trabajo_orden_produccion'    => $request->orden_trabajo_orden_produccion,
+                'orden_trabajo_especie'           => $request->orden_trabajo_especie,
+                'orden_trabajo_producto'    => $request->orden_trabajo_producto,
+                'orden_trabajo_fecha'=> $orden_fecha,
+                'orden_trabajo_peso_total'      => $request->peso
+            );
+
+
+            $orden = OrdenTrabajo::create($info);
+
+            $prod = explode(',',$request->etiquetas);
+
+            for ($i=0; $i < count($prod) ; $i++) { 
+               
+               Log::info($prod[$i]);
+               $pp = array(
+                    'ot_producto_orden_trabajo' => $orden->orden_trabajo_id,
+                    'ot_producto_etiqueta_pallet' => $prod[$i]
+                );
+                
+                $opp = OrdenTrabajoProducto::create($pp);    
+            }
+            
+            //envio respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);   
+        }
+        
     }
 
     /**

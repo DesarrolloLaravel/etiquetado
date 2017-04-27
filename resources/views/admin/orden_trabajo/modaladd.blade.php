@@ -10,12 +10,12 @@
                 {!! Form::open(['url' => 'admin/ordentrabajo/store',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
-                  'id' => 'form-add']) !!}
+                  'id' => 'form-adds']) !!}
 
                 {!! Form::close() !!}
             </div>
             <div class="modal-footer">
-              <button id="save" type="button" class="btn btn-primary">Agregar</button>
+              <button id="guardar" type="button" class="btn btn-primary">Agregar</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div><!-- /.modal-content -->

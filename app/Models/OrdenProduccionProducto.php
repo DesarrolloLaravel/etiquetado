@@ -31,5 +31,6 @@ class OrdenProduccionProducto extends Model
                                 'op_producto_orden_id',
                                 'orden_id');
     }
+
 }
 

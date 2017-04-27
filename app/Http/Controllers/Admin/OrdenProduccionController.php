@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Log;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -29,11 +30,12 @@ class OrdenProduccionController extends Controller
     {
         //
         
-
         $productos = Producto::orderBy('producto_nombre','ASC')
                 ->where('producto_especie_id',$request->especie_id)
                 ->lists('producto_nombre','producto_id')
                 ->all();
+
+        Log::info($productos);
 
         return $productos; 
     }
@@ -150,23 +152,23 @@ class OrdenProduccionController extends Controller
             'orden_cliente_id'      => $request->orden_cliente_id
         );
 
-       
+
         $orden = OrdenProduccion::create($info);
 
-        $op = new OrdenProduccionProducto;     
+        $prod = explode(',',$request->productos);
+        $peso = explode(',',$request->kilos);
 
-        $prod = (array) $request->productos;
-        $peso = (array) $request->kilos;
-
-        foreach ( $prod as $p ) {
-        
-            $key = array_search($p,$prod);
-            $op->op_producto_orden_id = $orden->orden_id;            
-            $op->op_producto_producto_id = $p;
-            $op->op_producto_kilos_declarados = $peso[$key];
-            $op->save();
+        for ($i=0; $i < count($prod) ; $i++) { 
+           
+           $pp = array(
+                'op_producto_orden_id' => $orden->orden_id,
+                'op_producto_producto_id' => $prod[$i],
+                'op_producto_kilos_declarados' => $peso[$i]
+            );
+            
+            $opp = OrdenProduccionProducto::create($pp);    
         }
-
+            
         //envio respuesta al cliente
         return response()->json([
             "ok"

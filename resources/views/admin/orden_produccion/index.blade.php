@@ -158,7 +158,7 @@
                 });
         } );
 
-         $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#especie_id',function() {
+        $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#especie_id',function() {
 
 
             var especie_id = $(this).val();
@@ -168,13 +168,12 @@
 
                 $('#producto_ide').empty()
                 
-                
+                $('#producto_ide').append("<option value='#'> Ninguno </option>");
+
                 $.each(data, function(key, element) {
 
                     $('#producto_ide').append("<option value='" + key +"'>" + element + "</option>");
                 });
-
-                $('#producto_ide').append("<option value=' '">"Ninguno</option>");
             });
                     
         });
@@ -348,12 +347,9 @@
                             def
                         ] ).draw( false );
 
-                        
+                        var kilos = parseInt($("#kilos_id").val());
 
-                        var kilos = $("#kilos_id").val();
-                        var producto_ides = product_id;
-
-                        arr_products.push(producto_ides);
+                        arr_products.push(product_id);
                         arr_kilos.push(kilos);
                     });
                 }

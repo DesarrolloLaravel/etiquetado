@@ -144,6 +144,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('ordentrabajo/edit', 'OrdenTrabajoController@edit');
 	Route::post('ordentrabajo/store', 'OrdenTrabajoController@store');
 	Route::post('ordentrabajo/update', 'OrdenTrabajoController@update');
+	Route::get('ordentrabajo/cargar_especie', 'OrdenTrabajoController@cargar_especie');
+	Route::get('ordentrabajo/cargar_producto', 'OrdenTrabajoController@cargar_producto');
+	Route::get('ordentrabajo/cargar_etiqueta', 'OrdenTrabajoController@cargar_etiqueta');
+	Route::get('ordentrabajo/kilos_eti', 'OrdenTrabajoController@kilos_eti');
 
 	Route::get('producto', 'ProductoController@index');
 	Route::post('producto/store', 'ProductoController@store');

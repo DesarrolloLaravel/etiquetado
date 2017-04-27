@@ -51,7 +51,4 @@ class OrdenTrabajo extends Model
         return $this->hasManyThrough('App\Models\Lote','App\Models\Especie','especie_id','lote_especie_id');        
     }
 
-
-
-    
 }

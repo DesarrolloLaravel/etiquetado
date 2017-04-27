@@ -26,8 +26,8 @@
 	<div class="form-group">
 
 		{!! Form::label('especie', 'Especie',
-			['class' => 'col-sm-1 control-label']) !!}
-		<div class="col-sm-2">
+			['class' => 'col-sm-2 control-label']) !!}
+		<div class="col-sm-4">
 			{!! Form::select('orden_trabajo_especie', 
 								$especies,
 								null, 
@@ -35,8 +35,8 @@
 		</div>
 
 		{!! Form::label('producto', 'Productos',
-			['class' => 'col-sm-1 control-label']) !!}
-		<div class="col-sm-2">
+			['class' => 'col-sm-2 control-label']) !!}
+		<div class="col-sm-4">
 			{!! Form::select('orden_trabajo_producto',$productos, 
 								null, 
 								['class' => 'form-control','id' => 'producto_ide']) !!}
@@ -47,9 +47,9 @@
 	<div class="form-group">
 		
 		{!! Form::label('etiqueta', 'Etiqueta Pallet',
-			['class' => 'col-sm-1 control-label']) !!}
+			['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
-			{!! Form::text('etiqueta_pallet', null, ['class' => 'form-control','id' => 'etiqueta_ide']) !!}
+			{!! Form::select('etiqueta_pallet',$pallet, null, ['class' => 'form-control','id' => 'etiqueta_ide']) !!}
 		</div>
 
 		<div class="col-sm-2">
@@ -66,7 +66,7 @@
 			<table id="table-pallet" cellspacing="0">
 		        <thead>
 		            <tr>
-		            	<th>#</th>
+		            	<th></th>
 		                <th>Número Lote</th>
 		                <th>Pallet</th>
 		                <th>Peso (KG)</th>
@@ -75,7 +75,7 @@
 		        </thead>
 		        <tfoot>
 		        	<tr>
-		            	<th></th>
+		        		<th></th>
 		                <th></th>
 		                <th>Peso Total (KG)</th>
 		                <th></th>

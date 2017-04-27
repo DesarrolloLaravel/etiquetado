@@ -22,5 +22,4 @@ class Especie extends Model
                                 'lote_especie_id',
                                 'especie_id');
     }
-
 }

@@ -55,7 +55,9 @@
 
     var table;
     var table_pallet;
-    var arr_products = [];
+    var arr_etiquetas = [];
+
+    var peso = 0;
    
     $(document).ready(function(){
 
@@ -90,7 +92,7 @@
     
         $("#add").click(function(){
 
-            arr_products = [];
+            arr_etiquetas = [];
 
             if(table_pallet != undefined)
             {
@@ -99,7 +101,7 @@
 
             $.get('ordentrabajo/create',function(data){
 
-                $('#modal_add .modal-dialog .modal-content .modal-body').find('#form-add').html(data['section']);
+                $('#modal_add .modal-dialog .modal-content .modal-body').find('#form-adds').html(data['section']);
                 $('#modal_add').modal('show');
 
                 $('.select2').select2();
@@ -112,15 +114,176 @@
                     "columnDefs": [{
                         "targets": -1,
                         "data": null,
-                        "defaultContent": "<a class='btn btn-xs btn-danger' id='delete_product'><i class='fa fa-close'></i></a>"
+                        "defaultContent": "<a class='btn btn-xs btn-danger' id='delete_pallet'><i class='fa fa-close'></i></a>"
                     }],
                     'fnCreatedRow': function (nRow, aData, iDataIndex) {
                         $(nRow).attr('data-id', aData[0]);
                     }
                 });
-            }); 
+
+                $('#table-pallet tbody').on('click', '#delete_pallet', function () {
+                        
+                    etiqueta_id = $(this).parents('tr').data('id');
+
+                    var index = arr_etiquetas.indexOf(etiqueta_id);
+
+                    arr_etiquetas.splice(index);
+
+                    table_pallet.row( $(this).parents('tr') )
+                        .remove()
+                        .draw();
+                }); 
+
+                $('.datepicker').datepicker({
+                        format : 'dd-mm-yyyy',
+                        autoclose: true,
+                        language : 'es'
+                    });
+
+            });
         });
 
+        $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#orden_prod',function() {
+
+
+            var orden_prod = $(this).val();
+
+            
+            $.get('ordentrabajo/cargar_especie',{orden_prod:orden_prod},function(data){
+
+                $('#especie_id').empty();
+                
+                $('#especie_id').append("<option value='#'> Ninguno </option>");
+
+                $.each(data, function(key, element) {
+
+                    $('#especie_id').append("<option value='" + key +"'>" + element + "</option>");
+                });
+                
+            });
+                    
+        });
+
+        $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#especie_id',function() {
+
+
+            var especie_id = $(this).val();
+
+            
+            $.get('ordentrabajo/cargar_producto',{especie_id:especie_id},function(data){
+
+                $('#producto_ide').empty();
+
+                $('#producto_ide').append("<option value='#'> Ninguno </option>");
+                
+                $.each(data, function(key, element) {
+
+                    $('#producto_ide').append("<option value='" + key +"'>" + element + "</option>");
+                });
+            });
+                    
+        });
+
+        $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#producto_ide',function() {
+
+
+            var producto_id = $(this).val();
+
+            
+            $.get('ordentrabajo/cargar_etiqueta',{producto_id:producto_id},function(data){
+
+                $('#etiqueta_ide').empty();
+
+                $('#etiqueta_ide').append("<option value='#'> Ninguno </option>");
+                
+                $.each(data, function(key, element) {
+
+                    $('#etiqueta_ide').append("<option value='" + key +"'>" + element + "</option>");
+                });
+            });
+                    
+        });
+
+        $(document).on('click','#add_pallet',function(event){
+
+            etiqueta_pallet = $("#etiqueta_ide").val();
+
+
+            if(etiqueta_pallet != '')
+            {
+                in_array = false;
+
+                if(arr_etiquetas.indexOf(etiqueta_pallet) >= 0)
+                {
+                    in_array = true;
+                }
+
+                if(in_array)
+                {
+                    alert("La etiqueta ya fue agregada a la lista.")
+                }
+                else
+                {
+                    $.get('ordentrabajo/kilos_eti',{etiqueta_pallet : etiqueta_pallet},function(data){
+                    
+                        table_pallet.row.add( [
+                            data.etiqueta_mp_id,
+                            data.etiqueta_mp_lote_id,
+                            $("#etiqueta_ide option:selected").text(),
+                            data.etiqueta_mp_peso
+                        ] ).draw( false );
+
+                        peso = peso + data.etiqueta_mp_peso;
+                        arr_etiquetas.push(etiqueta_pallet);
+                    });
+                }
+            }
+            else
+            {
+            alert("Debes seleccionar una Etiqueta");
+            }
+        });
+
+        $(document).on('click','#guardar',function(event){
+
+
+            var form = $("#form-adds");
+            //obtengo url
+            var url = form.attr('action');
+            
+            //obtengo la informacion del formulario
+            var data = form.serialize()  + '&etiquetas=' + arr_etiquetas +'&peso='+peso;          
+
+            $.post(url, data, function(resp)
+            {
+                if(resp[0] == "ok")
+                {
+                    $(".alert-success").html("El registro fue guardado exitosamente").show();
+                    $(".alert-danger").hide();
+                    //reseteo el formulario
+                    $('#form-adds').trigger("reset");
+
+                    $('#modal_add').modal('hide');
+                    console.log(table_pallet);
+                    table_pallet.destroy();
+                    console.log(table_pallet);
+                    arr_etiquetas = [];
+                    peso = 0;
+
+                    table.ajax.reload();
+                }
+
+            }).fail(function(resp){
+                $('#modal_add').animate({ scrollTop: 0 }, 'slow');
+                var html = "";
+                for(var key in resp.responseJSON)
+                {
+                    html += resp.responseJSON[key][0] + "<br>";
+                }
+                $(".alert-success").hide();
+                $(".alert-danger").html(html).show();
+            });
+        });
     });
 
 </script>
