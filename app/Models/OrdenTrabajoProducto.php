@@ -17,8 +17,9 @@ class OrdenTrabajoProducto extends Model
 
 	protected $dates = ['deleted_at'];
 
-	public function ordenTrabajo(){
-
-		return $this->belongsTo('App\Models\OrdenTrabajo','orden_trabajo_id','ot_producto_orden_trabajo');
+	public function etiqueta(){
+		return $this->belongsTo('App\Models\Etiqueta_MP',
+                                'ot_producto_etiqueta_pallet',
+                               	'etiqueta_mp_id');
 	}
 }

@@ -4,6 +4,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Agregar Orden de Trabajo</h4>
+                <br><br>
                 <p class="alert alert-danger"></p>
             </div>
             <div class="modal-body row">

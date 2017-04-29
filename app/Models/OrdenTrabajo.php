@@ -24,8 +24,7 @@ class OrdenTrabajo extends Model
 	public function ordenTrabajoProducto(){
 
 		return	$this->hasMany('App\Models\OrdenTrabajoProducto',
-			'orden_trabajo_id',
-			'ot_producto_orden_trabajo_id');
+			'ot_producto_orden_trabajo','orden_trabajo_id');
 	}
 
     public function ordenProduccion(){

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\OrdenProduccion;
+namespace App\Http\Requests\OrdenTrabajo;
 
 use App\Http\Requests\Request;
 
@@ -24,12 +24,11 @@ class CreateRequest extends Request
     public function rules()
     {
         return [
-            'orden_cliente_id'      => 'exists:cliente,cliente_id',
-            'orden_descripcion'     => 'required',
-            'orden_fecha'           => 'required|date_format:d-m-Y|before:orden_fecha_inicio',
-            'orden_fecha_inicio'    => 'required|date_format:d-m-Y|before:orden_fecha_compromiso',
-            'orden_fecha_compromiso'=> 'required|date_format:d-m-Y',
-            'productos'             => 'required'
+            'orden_trabajo_orden_produccion'    => 'required|exists:orden_produccion,orden_id',
+            'orden_trabajo_especie'     => 'required',
+            'orden_trabajo_fecha'           => 'required|date_format:d-m-Y',
+            'orden_trabajo_producto'    => 'required|date_format:d-m-Y|before:orden_fecha_compromiso',
+            'etiquetas'             => 'required'
         ];
     }
 
@@ -37,17 +36,11 @@ class CreateRequest extends Request
     {
         return [
             //
-            'orden_cliente_id.required'         => 'Debes seleccionar un Cliente',
-            'orden_descripcion.required'        => 'La Descripción es obligatoria',
-            'orden_fecha.required'              => 'Debes seleccionar una Fecha para la orden',
-            'orden_fecha.before'                => 'Fecha Orden debe ser anterior a Fecha Inicio',
-            'orden_fecha_inicio.required'       => 'Debes seleccionar una Fecha de inicio',
-            'orden_fecha_inicio.before'         => 'Fecha Inicio debe ser anterior a Fecha de Compromiso',
-            'orden_fecha_compromiso.required'   => 'Debes seleccionar una Fecha de compromiso',
-            'orden_fecha.date_format'           => 'La Fecha de orden tiene un formato incorrecto',
-            'orden_fecha_inicio.date_format'    => 'La Fecha de inicio tiene un formato incorrecto',
-            'orden_fecha_compromiso.date_format'=> 'La Fecha de compromiso tiene un formato incorrecto',
-            'productos.required'                => 'Debes seleccionar Productos'
+            'orden_trabajo_orden_produccion.required'   => 'Debes seleccionar una Orden de Producción',
+            'orden_trabajo_especie.required'        => 'La Especie es obligatoria',
+            'orden_trabajo_fecha.required'              => 'Debes seleccionar una Fecha para la orden',
+            'orden_trabajo_fecha.date_format'           => 'La Fecha de orden tiene un formato incorrecto',
+            'etiquetas.required'                => 'Debes seleccionar Productos'
         ];
     }
 }

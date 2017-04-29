@@ -132,6 +132,17 @@
                     table_pallet.row( $(this).parents('tr') )
                         .remove()
                         .draw();
+
+                    if(arr_etiquetas.length == 0){
+
+
+                        $( "#producto_ide" ).prop( "disabled", false );
+                        $( "#especie_id" ).prop( "disabled", false );
+                        $( "#orden_prod" ).prop( "disabled", false );
+
+                    }
+
+                   
                 }); 
 
                 $('.datepicker').datepicker({
@@ -184,29 +195,10 @@
                     
         });
 
-        $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#producto_ide',function() {
-
-
-            var producto_id = $(this).val();
-
-            
-            $.get('ordentrabajo/cargar_etiqueta',{producto_id:producto_id},function(data){
-
-                $('#etiqueta_ide').empty();
-
-                $('#etiqueta_ide').append("<option value='#'> Ninguno </option>");
-                
-                $.each(data, function(key, element) {
-
-                    $('#etiqueta_ide').append("<option value='" + key +"'>" + element + "</option>");
-                });
-            });
-                    
-        });
-
         $(document).on('click','#add_pallet',function(event){
 
             etiqueta_pallet = $("#etiqueta_ide").val();
+            producto_id = $("#producto_ide").val();
 
 
             if(etiqueta_pallet != '')
@@ -224,17 +216,32 @@
                 }
                 else
                 {
-                    $.get('ordentrabajo/kilos_eti',{etiqueta_pallet : etiqueta_pallet},function(data){
-                    
-                        table_pallet.row.add( [
-                            data.etiqueta_mp_id,
-                            data.etiqueta_mp_lote_id,
-                            $("#etiqueta_ide option:selected").text(),
-                            data.etiqueta_mp_peso
-                        ] ).draw( false );
+                    $.get('ordentrabajo/kilos_eti',{producto_id : producto_id,etiqueta_pallet : etiqueta_pallet},function(data){
 
-                        peso = peso + data.etiqueta_mp_peso;
-                        arr_etiquetas.push(etiqueta_pallet);
+                        if(data['estado'] == "nok"){
+
+                            $(".alert-success").hide();
+                            $(".alert-danger").html("La etiqueta no se encuentra registrada").show();    
+
+                        }else{
+
+                            $(".alert-danger").hide();
+                            table_pallet.row.add( [
+                                data['dato'].etiqueta_mp_id,
+                                data['dato'].etiqueta_mp_lote_id,
+                                $("#etiqueta_ide").val(),
+                                data['dato'].etiqueta_mp_peso
+                            ] ).draw( false );
+
+                            peso = peso + data['dato'].etiqueta_mp_peso;
+                            arr_etiquetas.push(etiqueta_pallet);
+
+
+                            $( "#producto_ide" ).prop( "disabled", true );
+                            $( "#especie_id" ).prop( "disabled", true );
+                            $( "#orden_prod" ).prop( "disabled", true );        
+
+                        }
                     });
                 }
             }
@@ -246,6 +253,10 @@
 
         $(document).on('click','#guardar',function(event){
 
+
+            $( "#producto_ide" ).prop( "disabled", false );
+            $( "#especie_id" ).prop( "disabled", false );
+            $( "#orden_prod" ).prop( "disabled", false );
 
             var form = $("#form-adds");
             //obtengo url
@@ -284,6 +295,44 @@
                 $(".alert-danger").html(html).show();
             });
         });
+
+        $('#table-trabajos tbody').on( 'click', '#edit', function ()
+        {   
+            alert("editar");
+
+            arr_etiquetas = [];
+            peso = 0;
+            if(table_pallet != undefined)
+            {
+                table_pallet.destroy();
+            }
+
+            $(".alert").hide();
+
+            orden_id = $(this).parents('tr').data('id');
+
+            $.get("ordentrabajo/edit",
+                {orden_id : orden_id},
+                function(data){
+                    if(data['estado'] == "ok")
+                    {
+                        $('#modal_edit .modal-dialog .modal-content .modal-body').find('#form-edit').html(data['section']);
+                        $('#modal_edit').modal('show');
+
+                        $('.select2').select2();
+
+                        setValues(data['orden'], 0);
+
+                        $('.datepicker').datepicker({
+                            format : 'dd-mm-yyyy',
+                            autoclose: true,
+                            language : 'es'
+                        });
+
+                    }
+
+                });
+        } );
     });
 
 </script>

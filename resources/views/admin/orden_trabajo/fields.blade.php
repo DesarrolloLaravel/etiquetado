@@ -49,7 +49,7 @@
 		{!! Form::label('etiqueta', 'Etiqueta Pallet',
 			['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
-			{!! Form::select('etiqueta_pallet',$pallet, null, ['class' => 'form-control','id' => 'etiqueta_ide']) !!}
+			{!! Form::text('etiqueta_pallet', null, ['class' => 'form-control','id' => 'etiqueta_ide']) !!}
 		</div>
 
 		<div class="col-sm-2">
