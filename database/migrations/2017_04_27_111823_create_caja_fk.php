@@ -15,9 +15,9 @@ class CreateCajaFk extends Migration
         //
         Schema::table('caja', function(Blueprint $table)
         {
-            $table->foreign('caja_op_producto_id', 'caja_op_producto_id')
-                    ->references('op_producto_id')
-                    ->on('op_producto')
+            $table->foreign('caja_ot_producto_id', 'caja_ot_producto_id')
+                    ->references('orden_trabajo_id')
+                    ->on('orden_trabajo')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
 
         });
@@ -33,7 +33,7 @@ class CreateCajaFk extends Migration
         //
         Schema::table('caja', function(Blueprint $table)
         {
-            $table->dropForeign('caja_op_producto_id');
+            $table->dropForeign('caja_ot_producto_id');
         });
     }
 }

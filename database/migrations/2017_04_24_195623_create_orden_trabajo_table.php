@@ -25,7 +25,7 @@ class CreateOrdenTrabajoTable extends Migration
             $table->softDeletes();
 
             $table->foreign('orden_trabajo_orden_produccion', 'orden_trabajo_orden_produccion')
-                    ->references('orden_produccion_id')
+                    ->references('orden_id')
                     ->on('orden_produccion')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
 

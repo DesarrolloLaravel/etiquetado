@@ -24,11 +24,8 @@ class CreateRequest extends Request
     public function rules()
     {
         return [
-            'etiqueta_year'         => 'required',
-            'lote_id'               => 'required|exists:lote,lote_id',
             'etiqueta_fecha'        => 'required|date_format:d-m-Y',
-            'orden_id'              => 'required|exists:orden_produccion,orden_id',
-            'orden_productos'       => 'required|exists:producto,producto_id',
+            'orden_id'              => 'required|exists:orden_trabajo,orden_trabajo_id',
             'peso_real'             => 'required',
             'peso_bruto'            => 'required',
             'unidades'              => 'required',

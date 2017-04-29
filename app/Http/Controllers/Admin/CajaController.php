@@ -126,6 +126,15 @@ class CajaController extends Controller
         })->export('xls');
     }
 
+    public function max()
+    {
+        $proxima_caja = Caja::withTrashed()->max('caja_id') + 1;
+        $resp = [];
+
+                $resp['proxima_caja'] = $proxima_caja;
+
+                return $resp;
+    }
     public function exportHistoryPacking($lote_id)
     {
         $lote = Lote::withTrashed()->findOrFail($lote_id);

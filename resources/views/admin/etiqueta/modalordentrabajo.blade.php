@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Buscar Orden de Producci&oacute;n</h4>
+                <h4 class="modal-title">Buscar Orden de Trabajo</h4>
                 <p class="alert alert-danger"></p>
             </div>
             <div class="modal-body">
@@ -12,8 +12,10 @@
                     <tr>
                         <th></th>
                         <th>N&uacute;mero Orden</th>
-                        <th>Lote</th>
-                        <th>Cliente</th>
+                        <th>Orden de Produccion</th>
+                        <th>Especie</th>
+                        <th>Producto</th>
+                        <th>Peso</th>
                         <th>Fecha Orden</th>
                     </tr>
                 </thead>
@@ -23,8 +25,10 @@
                     <tr>
                         <th></th>
                         <th>N&uacute;mero Orden</th>
-                        <th>Lote</th>
-                        <th>Cliente</th>
+                        <th>Orden de Produccion</th>
+                        <th>Especie</th>
+                        <th>Producto</th>
+                        <th>Peso</th>
                         <th>Fecha Orden</th>
                     </tr>
                 </tfoot>

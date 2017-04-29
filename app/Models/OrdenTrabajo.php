@@ -28,6 +28,15 @@ class OrdenTrabajo extends Model
 			'ot_producto_orden_trabajo_id');
 	}
 
+
+    public function orden_trabajo()
+    {
+        return $this->hasMany('App\Models\Caja',
+                                'caja_ot_producto_id',
+                                'orden_trabajo_id');
+    }
+
+
     public function ordenProduccion(){
         return $this->belongsTo('App\Models\OrdenProduccion',
                                 'orden_trabajo_orden_produccion',

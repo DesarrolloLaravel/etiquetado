@@ -16,7 +16,7 @@ class CreateCajaTable extends Migration
         Schema::create('caja', function (Blueprint $table) {
             
             $table->increments('caja_id');
-            $table->unsignedInteger('caja_op_producto_id')->index();
+            $table->unsignedInteger('caja_ot_producto_id')->index();
             $table->float('caja_peso_real');
             $table->float('caja_glaseado');
             $table->float('caja_peso_bruto');

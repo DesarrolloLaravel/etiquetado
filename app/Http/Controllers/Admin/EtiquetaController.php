@@ -17,6 +17,7 @@ use App\Models\Etiqueta;
 use App\Models\Producto;
 use App\Models\CajaPosicion;
 use App\Models\OrdenProduccion;
+use App\Models\OrdenTrabajo;
 
 class EtiquetaController extends Controller
 {
@@ -229,9 +230,7 @@ class EtiquetaController extends Controller
     public function create()
     {
         //
-        $etiqueta = Etiqueta::with('caja.orden_producto.orden.lote',
-            'caja.orden.productos', 'caja.orden_producto.producto')
-            ->orderBy('created_at', 'DESC')->limit(1)->first();
+/*        $etiqueta = Etiqueta::orderBy('created_at', 'DESC')->limit(1)->first();
 
         $orden = $etiqueta->caja->orden_producto->orden;
         $lote = $orden->lote;
@@ -248,7 +247,11 @@ class EtiquetaController extends Controller
         $caja_id = $etiqueta->caja->caja_id + 1;
 
         return view('admin.etiqueta.create', compact('lote_id', 'orden_id', 'producto_id',
-            'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));
+            'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
+        
+        $proxima_caja = Caja::withTrashed()->max('caja_id') + 1;
+
+        return view('admin.etiqueta.create',compact('proxima_caja'));
 
     }
 
@@ -264,16 +267,12 @@ class EtiquetaController extends Controller
         \DB::beginTransaction();
 
         try{
-            $lote = Lote::find($request->lote_id);
 
-            $orden = OrdenProduccion::findOrFail($request->orden_id);
+            $orden = OrdenTrabajo::findOrFail($request->orden_id);
 
-            $orden_producto_id = $orden->productos()
-                            ->where('op_producto_producto_id',$request->orden_productos)
-                            ->firstOrFail()->pivot->op_producto_id;
 
             $info_caja = array(
-                'caja_op_producto_id' => $orden_producto_id,
+                'caja_ot_producto_id' => $orden->orden_trabajo_id,
                 'caja_peso_real' => $request->peso_real,
                 'caja_glaseado' => $request->glaseado,
                 'caja_peso_bruto' => $request->peso_bruto,
@@ -284,9 +283,9 @@ class EtiquetaController extends Controller
 
             $number = str_pad($caja->caja_id, 6, 0, STR_PAD_LEFT);
 
-            $lote_number = $lote->lote_id < 10 ? "0".$lote->lote_id : $lote->lote_id;
+            $lote =  
 
-            $barcode = 'AF0'.$request->etiqueta_year.'0'.
+            $barcode = 'AF0'.\Carbon\Carbon::now()->year().'0'.
                         $lote_number.'0'.
                         $number;
 

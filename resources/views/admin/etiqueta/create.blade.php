@@ -20,13 +20,11 @@
 
 var table, table2;
 var lote_id;
-	
+
 $(document).ready(function(){
 
 	lote_id = $("#lote_id").val();
-
 	$('.alert').hide();
-	$('.select2').select2();
 
 	$('.datepicker').datepicker({
         format : 'dd-mm-yyyy',
@@ -37,20 +35,14 @@ $(document).ready(function(){
     $('.datepicker').datepicker('update', new Date());
 
     $("#refresh").click(function(){
-    	if($("#lote_id").val() == "")
-    	{
-    		alert("Debes elegir un Lote.")
-    	}
-    	else
-    	{
-    		$.get("../lote/show",
-				{lote_id : lote_id},
+    	
+    		$.get("../caja/max",
 				function(data){
-		    		$("#caja_number").val(data.caja_number);
+		    		$("#caja_number").val(data.proxima_caja);
 			}).fail(function(resp){
 				alert("Ha ocurrido un error. Inténtalo más tarde.");
 			});
-    	}
+    	
     });
 
 	$("#print").click(function(){
@@ -120,49 +112,22 @@ $(document).ready(function(){
 		$("#peso_bruto").val(peso_bruto);
 	});
 
-	$("#lote_search").click(function(){
-
-		$('.alert').hide();
-
-		if(table != undefined)
-		{
-			table.destroy();
-		}
-
-		table = $('#table-lotes').DataTable({
-	        "ajax" : "../lote?q=etiqueta",
-	        "language": {
-	            "url": "../../plugins/datatables/es_ES.txt"
-	        },
-	        "order": [[ 1, 'desc' ]],
-	        "columnDefs": [
-				{ "visible": false, "targets": 0 }
-			],
-	        'fnCreatedRow': function (nRow, aData, iDataIndex) {
-	            $(nRow).attr('data-id', aData[1]);
-	        }
-	    });
-
-		$("#modal_lote").modal('show');
-	});
+	
 
 	$("#orden_search").click(function(){
 
 		$('.alert').hide();
 
-		if(lote_id == undefined)
-		{
-			alert("Debes seleccionar un LOTE");
-		}
-		else
-		{
+
 			if(table2 != undefined)
 			{
 				table2.destroy();
 			}
 
+
+
 			table2 = $('#table-ordenes').DataTable({
-		        "ajax" : "../ordenproduccion?q=etiqueta&lote_id="+lote_id,
+		        "ajax" : "../ordentrabajo",
 		        "language": {
 		            "url": "../../plugins/datatables/es_ES.txt"
 		        },
@@ -172,11 +137,12 @@ $(document).ready(function(){
 				],
 		        'fnCreatedRow': function (nRow, aData, iDataIndex) {
 		            $(nRow).attr('data-id', aData[1]);
+		            $(nRow).attr('data-especie', aData[3]);
+		            $(nRow).attr('data-producto', aData[4]);
 		        }
 		    });
 
 			$("#modal_orden").modal('show');
-		}
 		
 	});
 
@@ -190,76 +156,67 @@ $(document).ready(function(){
         }
     } );
 
-	$('#table-lotes tbody').on( 'click', 'tr', function () {
+    $('#table-lotes tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
         else {
-            table.$('tr.selected').removeClass('selected');
+            table2.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
     } );
 
-    $("#select_orden").click(function(){
+	$("#lote_search").click(function(){
 
-    	if(table2.rows('tr.selected').data().length > 0)
-    	{
-    		orden_id = $("#table-ordenes").find('tbody tr.selected').data('id');
+		$('.alert').hide();
 
-    		$.get("../ordenproduccion/show?q=etiqueta",
-    			{orden_id : orden_id},
-    			function(data){
+		if($("#orden_id").val()==""){
+			alert("Debes seleccionar una Orden de Trabajo");
+		}else{
 
-    				console.log(data.orden_productos);
-    				var html_select = '';
-    				for (var key in data.orden_productos){
-			            html_select += '<option value="'+data.orden_productos[key]+'">'+
-			            				key+
-			                    		'</option>';
-			        }
-			        $("#select_productos").empty();
-			        $("#select_productos").append(html_select);
+		if(table != undefined)
+		{
+			table.destroy();
+		}
 
-					$('.select2').select2().select2("val", null);
+		table = $('#table-lotes').DataTable({
+	        "ajax" : "../lote?q=etiqueta&id="+$("#orden_id").val(),
+	        "language": {
+	            "url": "../../plugins/datatables/es_ES.txt"
+	        },
+	        "order": [[ 1, 'desc' ]],
+	        "columnDefs": [
+				{ "visible": false, "targets": 0 }
+			],
+	        'fnCreatedRow': function (nRow, aData, iDataIndex) {
+	            $(nRow).attr('data-id', aData[1]);
 
-			        $("#orden_detail").val(data.orden_descripcion);
-			        $("#orden_id").val(data.orden_id);
 
-			        $("#glaseado").val(1);
+	        }
+	    });
 
-    				$("#modal_orden").modal('hide');
+		$("#modal_lote").modal('show');
+		}
+	});
 
-    			});
-    	}
-    	else
-    	{
-    		alert("Debes seleccionar una ORDEN");
-    	}
-    });
-
-    $('#select_lote').click( function () {
+	$('#select_lote').click( function () {
 
     	if(table.rows('tr.selected').data().length > 0)
     	{
     		lote_id = $("#table-lotes").find('tbody tr.selected').data('id');
 
-    		$.get("../lote/show",
+    		$.get("../lote/show?q=etiquetamp",
     			{lote_id : lote_id},
     			function(data){
 
-			        $("#glaseado").val(1);
-			        
+
     				$("#modal_lote").modal('hide');
 		    		$("#lote_id").val(data.lote_id);
-		    		$("#caja_number").val(data.caja_number);
-
-		    		$("#orden_detail").val("");
-			        $("#orden_id").val("");
-			        $("#select_productos").html("");
-			        $("#peso_estandar").val("");
-    				$("#producto_detail").val("");
 
     			});
+
+           
+
     	}
     	else
     	{
@@ -267,20 +224,25 @@ $(document).ready(function(){
     	}
     });
 
-	$('#select_productos').on("select2:select", function() {
+    $("#select_orden").click(function(){
 
-		if($("#select_productos").select2('val') != "")
-		{
-			producto_id = $("#select_productos").select2('val');
+    	if(table2.rows('tr.selected').data().length > 0)
+    	{
+    		orden_id = $("#table-ordenes").find('tbody tr.selected').data('id');
+    		especie = $("#table-ordenes").find('tbody tr.selected').data('especie');
+    		producto = $("#table-ordenes").find('tbody tr.selected').data('producto');
 
-			$.get('../producto/show',
-					{producto_id : producto_id},
-					function(data){
-						$("#peso_estandar").val(data.producto_peso);
-						$("#producto_detail").val(data.producto_fullname);
-					});
-		}
-	});
+    		$("#orden_id").val(orden_id);
+    		$("#especie").val(especie);
+    		$("#producto_detail").val(producto);
+    		$("#modal_orden").modal('hide');
+    			
+    	}
+    	else
+    	{
+    		alert("Debes seleccionar una ORDEN");
+    	}
+    });
 
 });
 
@@ -319,6 +281,6 @@ $(document).ready(function(){
 </div>
 
 @include('admin.etiqueta.modallotes')
-@include('admin.etiqueta.modalordenproduccion')
+@include('admin.etiqueta.modalordentrabajo')
 
 @endsection

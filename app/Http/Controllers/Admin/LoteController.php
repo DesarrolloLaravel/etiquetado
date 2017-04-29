@@ -21,6 +21,12 @@ use App\Models\Destino;
 use App\Models\Lote;
 use App\Models\Caja;
 use App\Models\Cliente;
+use App\Models\OrdenTrabajo;
+use App\Models\OrdenTrabajoProducto;
+use App\Models\Etiqueta_MP;
+
+
+
 
 class LoteController extends Controller
 {
@@ -119,8 +125,16 @@ class LoteController extends Controller
         //
         if($request->ajax())
         {
-            if($request->q == "etiqueta")
+            if($request->q == "etiqueta" & $request->id == "")
             {
+                $lotes = Lote::where('lote_produccion', 'SI')
+                            ->has('orden_produccion')
+                            ->with('procesador','productor')->get();
+            }
+            else if($request->q == "etiqueta" & $request->id != "")
+            {
+
+
                 $lotes = Lote::where('lote_produccion', 'SI')
                             ->has('orden_produccion')
                             ->with('procesador','productor')->get();

@@ -12,7 +12,7 @@ class Caja extends Model
 
     protected $table = 'caja';
     protected $primaryKey = 'caja_id';
-    protected $fillable = [ 'caja_op_producto_id',
+    protected $fillable = [ 'caja_ot_producto_id',
                             'caja_peso_real',
                             'caja_peso_bruto',
                             'caja_glaseado',
@@ -30,9 +30,9 @@ class Caja extends Model
 
     public function orden_producto()
     {
-        return $this->belongsTo('App\Models\OrdenProduccionProducto',
-                                'caja_op_producto_id',
-                                'op_producto_id');
+        return $this->belongsTo('App\Models\OrdenTrabajo',
+                                'caja_ot_producto_id',
+                                'orden_trabajo_id');
     }
 
     public function etiqueta()

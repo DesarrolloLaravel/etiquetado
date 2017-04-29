@@ -158,6 +158,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 
 	Route::get('caja','CajaController@index');
 	Route::post('caja','CajaController@index');
+	Route::get('caja/max','CajaController@max');
 	Route::get('caja/lote_product','CajaController@getCajasByLoteOfProduct');
 	Route::get('caja/show','CajaController@show');
     Route::get('caja/export/{lote_id}','CajaController@exportTodayPacking');
