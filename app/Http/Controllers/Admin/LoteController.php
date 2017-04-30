@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Calidad;
 use App\Models\Formato;
 use Illuminate\Http\Request;
+use Log;
+
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -124,20 +126,56 @@ class LoteController extends Controller
     {
         //
         if($request->ajax())
-        {
-            if($request->q == "etiqueta" & $request->id == "")
+        {   
+
+            echo $request->id;
+            if($request->q == "etiqueta" & empty($request->orden_id) )
             {
                 $lotes = Lote::where('lote_produccion', 'SI')
                             ->has('orden_produccion')
                             ->with('procesador','productor')->get();
             }
-            else if($request->q == "etiqueta" & $request->id != "")
+            else if($request->q == "etiqueta" & !empty($request->orden_id))
             {
 
 
-                $lotes = Lote::where('lote_produccion', 'SI')
-                            ->has('orden_produccion')
-                            ->with('procesador','productor')->get();
+                $lotes = \DB::table('lote')
+                            ->join('procesador','lote.lote_procesador_id','=','procesador.procesador_id')
+                            ->join('productor','lote.lote_productor_id','=','productor.productor_id')
+                            ->join('etiqueta_mp','lote.lote_id','=','etiqueta_mp.etiqueta_mp_lote_id')
+                            ->join('ot_producto','etiqueta_mp.etiqueta_mp_id','=','ot_producto.ot_producto_etiqueta_pallet')
+                            ->join('orden_trabajo','ot_producto.ot_producto_orden_trabajo','=','orden_trabajo_id')
+                            ->select('lote.*','procesador.*','productor.*')
+                            ->where('orden_trabajo.orden_trabajo_id',$request->orden_id)
+                            ->distinct()
+                            ->get();  
+
+                if(empty($lotes))
+                    {
+                        return '{"data":[]}'; 
+                    }
+                    //inicializo el json
+                    $dt_json = '{ "data" : [';
+
+                    //para cada compañia
+                    foreach ($lotes as $lote) {
+                        //completo el json
+                        $dt_json .= '["","'
+                                        .$lote->lote_id.'","'
+                                        .$lote->lote_kilos_recepcion.'","'
+                                        .$lote->lote_n_documento.'","'
+                                        .$lote->procesador_name.'","'
+                                        .$lote->productor_name.'","'
+                                        .$lote->lote_djurada.'","'
+                                        .$lote->lote_produccion.'"],';
+                    }
+                    //elimino la ultima coma del json
+                    $dt_json = substr($dt_json, 0, -1);
+                    //se cierra el json
+                    $dt_json.= "] }";
+                    //envio respuesta al cliente
+                    return $dt_json;                      
+
             }
             else if($request->q == "etiquetamp")
             {

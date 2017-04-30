@@ -17,6 +17,7 @@ class CreateEtiquetaTable extends Migration
             
             $table->increments('etiqueta_id');
             $table->unsignedInteger('etiqueta_caja_id')->index();
+            $table->unsignedInteger('etiqueta_lote_id')->index();
             $table->string('etiqueta_barcode');
             $table->date('etiqueta_fecha');
             $table->enum('etiqueta_estado', ['RECEPCIONADA', 'NO RECEPCIONADA', 'ANULADA'])->default('NO RECEPCIONADA');

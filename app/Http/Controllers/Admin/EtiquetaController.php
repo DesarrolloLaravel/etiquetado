@@ -64,7 +64,7 @@ class EtiquetaController extends Controller
         //dd($caja->orden_producto);
         $producto = $caja->orden_producto->producto;
         $orden = $caja->orden_producto->orden;
-        $lote = $orden->lote;
+        $lote = $etiqueta->lote;
 
         $condicion = \Config::get('producto.condicion')[$producto->producto_condicion_id];
         if($condicion == "Fz"){
@@ -283,15 +283,16 @@ class EtiquetaController extends Controller
 
             $number = str_pad($caja->caja_id, 6, 0, STR_PAD_LEFT);
 
-            $lote =  
+            $lote_number =  $request->lote_id;
 
-            $barcode = 'AF0'.\Carbon\Carbon::now()->year().'0'.
+            $barcode = 'AF0'.\Carbon\Carbon::now()->year.'0'.
                         $lote_number.'0'.
                         $number;
 
             $info_etiqueta = array(
                 'etiqueta_caja_id' => $caja->caja_id,
                 'etiqueta_barcode' => $barcode,
+                'etiqueta_lote_id' => $request->lote_id,
                 'etiqueta_fecha'   => \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha)
             );
 

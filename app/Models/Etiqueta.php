@@ -14,10 +14,18 @@ class Etiqueta extends Model
     protected $primaryKey = 'etiqueta_id';
     protected $fillable = [ 'etiqueta_caja_id',
     						'etiqueta_barcode',
+                            'etiqueta_lote_id',
     						'etiqueta_fecha',
                             'etiqueta_estado'];
 
     protected $dates = ['deleted_at'];
+
+    public function lote()
+    {
+        return $this->belongsTo('App\Models\Lote',
+                                'etiqueta_lote_id',
+                                'lote_id');
+    }
 
     public function caja()
     {

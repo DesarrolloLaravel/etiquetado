@@ -179,8 +179,9 @@ $(document).ready(function(){
 			table.destroy();
 		}
 
-		table = $('#table-lotes').DataTable({
-	        "ajax" : "../lote?q=etiqueta&id="+$("#orden_id").val(),
+			orden_id=$("#orden_id").val();
+			table = $('#table-lotes').DataTable({
+	        "ajax" : "../lote?q=etiqueta&orden_id="+orden_id,
 	        "language": {
 	            "url": "../../plugins/datatables/es_ES.txt"
 	        },

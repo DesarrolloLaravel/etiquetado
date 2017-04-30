@@ -20,6 +20,14 @@ class CreateEtiquetaFk extends Migration
                     ->on('caja')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
         });
+
+        Schema::table('etiqueta', function(Blueprint $table)
+        {
+            $table->foreign('etiqueta_lote_id', 'etiqueta_lote_id')
+                    ->references('lote_id')
+                    ->on('lote')
+                    ->onUpdate('NO ACTION')->onDelete('cascade');
+        });
     }
 
     /**
@@ -33,6 +41,7 @@ class CreateEtiquetaFk extends Migration
         Schema::table('etiqueta', function(Blueprint $table)
         {
             $table->dropForeign('etiqueta_caja_id');
+            $table->dropForeign('etiqueta_lote_id');
         });
     }
 }
