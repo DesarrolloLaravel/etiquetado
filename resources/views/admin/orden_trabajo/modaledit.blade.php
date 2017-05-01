@@ -7,7 +7,7 @@
                 <p class="alert alert-danger"></p>
             </div>
             <div class="modal-body row">
-                {!! Form::open(['url' => 'admin/ordenproduccion/update',
+                {!! Form::open(['url' => 'admin/ordentrabajo/update',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
                   'id' => 'form-edit']) !!}

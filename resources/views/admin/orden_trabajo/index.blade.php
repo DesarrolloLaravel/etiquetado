@@ -80,7 +80,8 @@
             "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
+                "defaultContent": "<button class='btn btn-xs btn-warning' id='return'><i class='fa fa-reply'></i></button>\
+                    <button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
                     <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
             }],
 
@@ -152,6 +153,48 @@
                     });
 
             });
+        });
+
+        $(document).on('click','#update',function(event){
+
+            var form = $("#form-edit");
+            //obtengo url
+            var url = form.attr('action');
+            //obtengo la informacion del formulario
+            $("#form-edit #orden_trabajo_id").attr("disabled", false);
+
+             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas +'&peso='+peso;;
+            
+            $("#form-edit #orden_trabajo_id").attr("disabled", true);
+
+            $.post(url, data, function(resp)
+            {
+                if(resp[0] == "ok")
+                {
+                    $(".alert-success").html("El registro fue actualizado exitosamente").show();
+                    $(".alert-danger").hide();
+                    //reseteo el formulario
+                    $('#form-edit').trigger("reset");
+
+                    $('#modal_edit').modal('hide');
+
+                    table_pallet.destroy();
+                    arr_etiquetas = [];
+
+                    table.ajax.reload();
+                }
+
+            }).fail(function(resp){
+                $('#modal_edit').animate({ scrollTop: 0 }, 'slow');
+                var html = "";
+                for(var key in resp.responseJSON)
+                {
+                    html += resp.responseJSON[key][0] + "<br>";
+                }
+                $(".alert-success").hide();
+                $(".alert-danger").html(html).show();
+            });
+
         });
 
         $('#modal_add .modal-dialog .modal-content .modal-body').on('change','#orden_prod',function() {
@@ -298,7 +341,6 @@
 
         $('#table-trabajos tbody').on( 'click', '#edit', function ()
         {   
-            alert("editar");
 
             arr_etiquetas = [];
             peso = 0;
@@ -321,8 +363,41 @@
 
                         $('.select2').select2();
 
-                        setValues(data['orden'], 0);
+                        table_pallet = $('#table-pallet').DataTable({
+                            "language": {
+                                "url": "../../plugins/datatables/es_ES.txt"
+                            },
+                            "order": [[ 1, 'desc' ]],
+                            "columnDefs": [{
+                                "targets": -1,
+                                "data": null,
+                                "defaultContent": ""
+                            }],
+                            'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                                $(nRow).attr('data-id', aData[0]);
+                            }
+                        });
 
+                        for (var i = 0; i < data.pallet.length; i++) {
+                            
+                            table_pallet.row.add( [
+                                data.pallet[i].etiqueta_mp_id,
+                                data.pallet[i].etiqueta_mp_lote_id,
+                                data.pallet[i].etiqueta_mp_barcode,
+                                data.pallet[i].etiqueta_mp_peso
+                            ] ).draw( false );
+
+                            peso = peso + data.pallet[i].etiqueta_mp_peso;
+
+                            arr_etiquetas.push(data.pallet[i].etiqueta_mp_barcode);
+                        }
+
+                        $( "#producto_ide" ).prop( "disabled", true );
+                        $( "#especie_id" ).prop( "disabled", true );
+                        $( "#orden_prod" ).prop( "disabled", true );  
+                        $( "#orden_fecha" ).prop( "disabled", true );    
+                        
+                
                         $('.datepicker').datepicker({
                             format : 'dd-mm-yyyy',
                             autoclose: true,

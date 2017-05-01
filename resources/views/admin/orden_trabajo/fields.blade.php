@@ -17,7 +17,7 @@
 		{!! Form::label('fecha', 'Fecha Orden Trabajo',
 			['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-2">
-			{!! Form::text('orden_fecha', $orden_trabajo_fecha, ['class' => 'form-control datepicker']) !!}
+			{!! Form::text('orden_fecha', $orden_trabajo_fecha, ['class' => 'form-control datepicker', 'id' => 'orden_fecha']) !!}
 		</div>
 	</div>
 </div>
