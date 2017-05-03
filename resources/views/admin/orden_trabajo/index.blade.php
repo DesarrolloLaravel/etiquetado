@@ -56,8 +56,6 @@
     var table;
     var table_pallet;
     var arr_etiquetas = [];
-
-    var peso = 0;
    
     $(document).ready(function(){
 
@@ -86,7 +84,6 @@
             }],
 
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
-                $(nRow).find('td:first').addClass('details-control');
                 $(nRow).attr('data-id', aData[1]);
             }
         });
@@ -134,6 +131,7 @@
                         .remove()
                         .draw();
 
+
                     if(arr_etiquetas.length == 0){
 
 
@@ -143,19 +141,26 @@
 
                     }
 
-                   
                 }); 
 
                 $('.datepicker').datepicker({
-                        format : 'dd-mm-yyyy',
-                        autoclose: true,
-                        language : 'es'
-                    });
+                    format : 'dd-mm-yyyy',
+                    autoclose: true,
+                    language : 'es'
+                });
 
             });
         });
 
         $(document).on('click','#update',function(event){
+
+
+            if(arr_etiquetas.length == 0){
+
+                $('#modal_edit').modal('hide');
+                table.ajax.reload();
+            }
+
 
             var form = $("#form-edit");
             //obtengo url
@@ -163,7 +168,7 @@
             //obtengo la informacion del formulario
             $("#form-edit #orden_trabajo_id").attr("disabled", false);
 
-             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas +'&peso='+peso;;
+             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;
             
             $("#form-edit #orden_trabajo_id").attr("disabled", true);
 
@@ -276,7 +281,6 @@
                                 data['dato'].etiqueta_mp_peso
                             ] ).draw( false );
 
-                            peso = peso + data['dato'].etiqueta_mp_peso;
                             arr_etiquetas.push(etiqueta_pallet);
 
 
@@ -306,7 +310,7 @@
             var url = form.attr('action');
             
             //obtengo la informacion del formulario
-            var data = form.serialize()  + '&etiquetas=' + arr_etiquetas +'&peso='+peso;          
+            var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;          
 
             $.post(url, data, function(resp)
             {
@@ -322,7 +326,6 @@
                     table_pallet.destroy();
                     console.log(table_pallet);
                     arr_etiquetas = [];
-                    peso = 0;
 
                     table.ajax.reload();
                 }
@@ -343,7 +346,6 @@
         {   
 
             arr_etiquetas = [];
-            peso = 0;
             if(table_pallet != undefined)
             {
                 table_pallet.destroy();
@@ -387,15 +389,13 @@
                                 data.pallet[i].etiqueta_mp_peso
                             ] ).draw( false );
 
-                            peso = peso + data.pallet[i].etiqueta_mp_peso;
-
-                            arr_etiquetas.push(data.pallet[i].etiqueta_mp_barcode);
+                            //arr_etiquetas.push(data.pallet[i].etiqueta_mp_barcode);
                         }
 
                         $( "#producto_ide" ).prop( "disabled", true );
                         $( "#especie_id" ).prop( "disabled", true );
                         $( "#orden_prod" ).prop( "disabled", true );  
-                        $( "#orden_fecha" ).prop( "disabled", true );    
+                        $( "#orden_fecha" ).prop( "disabled", true );   
                         
                 
                         $('.datepicker').datepicker({
@@ -408,6 +408,142 @@
 
                 });
         } );
+
+        $('#table-trabajos tbody').on( 'click', '#return', function ()
+        {   
+
+            arr_etiquetas = [];
+
+            if(table_pallet != undefined)
+            {
+                table_pallet.destroy();
+            }
+
+            $(".alert").hide();
+
+            orden_id = $(this).parents('tr').data('id');
+
+            $.get("ordentrabajo/edit",
+                {orden_id : orden_id},function(data){
+                    
+                if(data['estado'] == "ok")
+                {
+                    $('#modal_return .modal-dialog .modal-content .modal-body').find('#form-return').html(data['section']);
+                    $('#modal_return').modal('show');
+
+                    $('.select2').select2();
+
+                    table_pallet = $('#table-pallet').DataTable({
+                        "language": {
+                            "url": "../../plugins/datatables/es_ES.txt"
+                        },
+                        "order": [[ 1, 'desc' ]],
+                        "columnDefs": [{
+                            "targets": -1,
+                            "data": null,
+                            "defaultContent": "<a class='btn btn-xs btn-danger' id='d_return'><i class='fa fa-close'></i></a>"
+                        }],
+                        'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                            $(nRow).attr('data-id', aData[0]);
+                        }
+                    });
+
+                    for (var i = 0; i < data.pallet.length; i++) {
+                        
+                        table_pallet.row.add( [
+                            data.pallet[i].etiqueta_mp_id,
+                            data.pallet[i].etiqueta_mp_lote_id,
+                            data.pallet[i].etiqueta_mp_barcode,
+                            data.pallet[i].etiqueta_mp_peso
+                        ] ).draw( false );
+
+                        //arr_etiquetas.push(data.pallet[i].etiqueta_mp_barcode);
+                    }
+
+                    $( "#producto_ide" ).prop( "disabled", true );
+                    $( "#especie_id" ).prop( "disabled", true );
+                    $( "#orden_prod" ).prop( "disabled", true );  
+                    $( "#orden_fecha" ).prop( "disabled", true ); 
+                    $( "#etiqueta_ide" ).prop( "disabled", true );   
+
+
+                    $('#table-pallet tbody').on('click', '#d_return', function () {
+                        
+                        etiqueta_id = $(this).parents('tr').data('id');
+
+                        arr_etiquetas.push(etiqueta_id);
+                        
+
+                        table_pallet.row( $(this).parents('tr') )
+                            .remove()
+                            .draw();
+                    });   
+                    
+            
+                    $('.datepicker').datepicker({
+                        format : 'dd-mm-yyyy',
+                        autoclose: true,
+                        language : 'es'
+                    });
+
+                }
+
+            });
+
+        });
+
+
+        $(document).on('click','#update_return',function(event){
+
+
+            if(arr_etiquetas.length == 0){
+
+                $('#modal_return').modal('hide');
+                table.ajax.reload();
+            }
+
+            var form = $("#form-return");
+            //obtengo url
+            var url = form.attr('action');
+            //obtengo la informacion del formulario
+
+            $("#form-return #orden_trabajo_id").attr("disabled", false);
+
+             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;
+            
+            $("#form-return #orden_trabajo_id").attr("disabled", true);
+
+            $.post(url, data, function(resp)
+            {
+                if(resp[0] == "ok")
+                {
+                    $(".alert-success").html("El registro fue actualizado exitosamente").show();
+                    $(".alert-danger").hide();
+                    //reseteo el formulario
+                    $('#form-return').trigger("reset");
+
+                    $('#modal_return').modal('hide');
+
+                    table_pallet.destroy();
+                    arr_etiquetas = [];
+
+                    table.ajax.reload();
+                }
+
+            }).fail(function(resp){
+                $('#modal_return').animate({ scrollTop: 0 }, 'slow');
+                var html = "";
+                for(var key in resp.responseJSON)
+                {
+                    html += resp.responseJSON[key][0] + "<br>";
+                }
+                $(".alert-success").hide();
+                $(".alert-danger").html(html).show();
+            });
+        });
+
+
+
     });
 
 </script>
@@ -456,5 +592,5 @@
 
 @include('admin.orden_trabajo.modaladd')
 @include('admin.orden_trabajo.modaledit')
-
+@include('admin.orden_trabajo.modalreturn')
 @endsection

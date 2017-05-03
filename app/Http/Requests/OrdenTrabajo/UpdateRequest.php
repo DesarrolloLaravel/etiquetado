@@ -24,8 +24,7 @@ class UpdateRequest extends Request
     public function rules()
     {
         return [
-            'etiquetas'             => 'required',
-            'peso' => 'required'
+            'etiquetas'             => 'required'
         ];
     }
 

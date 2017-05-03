@@ -181,22 +181,38 @@ class OrdenTrabajoController extends Controller
     public function store(CreateRequest $request)
     {
         //
+        Log::info($request->etiquetas);
+
         if($request->ajax()){
+
+            $peso = 0;
+
+            $prod = explode(',',$request->etiquetas);
 
             $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
             
+            for ($x=0; $x < count($prod) ; $x++) { 
+
+                $etiq = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$x])->firstOrFail();
+
+                Log::info($etiq);
+
+                $peso = $peso + $etiq->etiqueta_mp_peso;
+                
+                Log::info($peso);
+            }
+
             $info = array(
                 'orden_trabajo_orden_produccion'    => $request->orden_trabajo_orden_produccion,
                 'orden_trabajo_especie'           => $request->orden_trabajo_especie,
                 'orden_trabajo_producto'    => $request->orden_trabajo_producto,
                 'orden_trabajo_fecha'=> $orden_fecha,
-                'orden_trabajo_peso_total'      => $request->peso
+                'orden_trabajo_peso_total'      => $peso
             );
 
 
             $orden = OrdenTrabajo::create($info);
 
-            $prod = explode(',',$request->etiquetas);
 
             for ($i=0; $i < count($prod) ; $i++) { 
                
@@ -229,9 +245,10 @@ class OrdenTrabajoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        
+
     }
 
     /**
@@ -311,6 +328,7 @@ class OrdenTrabajoController extends Controller
         if($request->ajax())
         {
 
+            $peso = 0;
             $prod = explode(',',$request->etiquetas);
 
             for ($i=0; $i < count($prod) ; $i++) { 
@@ -319,12 +337,21 @@ class OrdenTrabajoController extends Controller
 
                 $etiq = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$i])->firstOrFail();
 
+                $peso = $peso + $etiq->etiqueta_mp_peso;
+
                 $pp = array(
                     'ot_producto_orden_trabajo' => $request->orden_number,
                     'ot_producto_etiqueta_pallet' => $etiq->etiqueta_mp_id
                 );
 
-                $opp = OrdenTrabajoProducto::create($pp);    
+                $opp = OrdenTrabajoProducto::create($pp);
+
+                $otp = OrdenTrabajo::where('orden_trabajo_id',$request->orden_number)->firstOrFail();
+
+                $inf = array('orden_trabajo_peso_total' =>$peso);
+
+                $otp->fill($inf);
+                $otp->save();
 
                 $etiqueta = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$i])->firstOrFail();
 
@@ -338,6 +365,51 @@ class OrdenTrabajoController extends Controller
                 "ok"
             ]);
         }
+    }
+
+    public function r_pallet(Request $request)
+    {
+        //
+
+        Log::info($request->etiquetas);
+        Log::info($request->orden_number);
+
+        $ot = OrdenTrabajo::where('orden_trabajo_id',$request->orden_number)->firstOrFail();
+
+        if($request->ajax())
+        {
+
+            $prod = explode(',',$request->etiquetas);
+
+            for ($i=0; $i < count($prod) ; $i++) { 
+               
+                Log::info($prod[$i]);
+
+                $opp = OrdenTrabajoProducto::where('ot_producto_orden_trabajo',$request->orden_number)->where('ot_producto_etiqueta_pallet',$prod[$i])->firstOrFail();
+
+                $opp->delete();       
+
+                $etiqueta = Etiqueta_MP::where('etiqueta_mp_id',$prod[$i])->firstOrFail();
+
+                $peso = $ot->orden_trabajo_peso_total - $etiqueta->etiqueta_mp_peso;
+
+                $sot = OrdenTrabajo::where('orden_trabajo_id',$request->orden_number)->firstOrFail();
+
+                $inf = array('orden_trabajo_peso_total' => $peso);
+                $sot->fill($inf);
+                $sot->save();
+
+                $info = array('etiqueta_mp_estado' => 'NO RECEPCIONADO');
+                $etiqueta->fill($info);
+                $etiqueta->save();   
+            }
+        
+            //envio respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
+
     }
 
     /**
