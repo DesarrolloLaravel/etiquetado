@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-4">
 			<div class="form-group">
 				{!! Form::label('fecha_etiqueta', 'Fecha Etiqueta',
 				['class' => 'control-label']) !!}
@@ -43,7 +43,7 @@
 				{!! Form::text('especie', null ,['class' => 'form-control','id' => 'especie', 'disabled']) !!}
 			</div>
 		</div>
-		<div class="col-sm-5">
+		<div class="col-sm-6">
 			<div class="form-group">
 				{!! Form::label('producto_detail', 'Detalle Producto',
 				['class' => 'control-label']) !!}

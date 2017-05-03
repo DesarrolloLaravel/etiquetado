@@ -26,6 +26,7 @@
         });
 
         $(".alert").hide();
+        alert = new Alert('#notifications');
         $("#form-summary").hide();
 
         $.get('frigorifico?q=select', function(data){
@@ -133,7 +134,7 @@
                 window.open(url, '_blank');
             }
             else
-                alert("Debes seleccionar un Lote para exportar");
+                alert.error("Debes seleccionar un Lote para exportar");
         });
 
         $("#packing_actual").click(function(){
@@ -142,7 +143,7 @@
                 window.open(url, '_blank');
             }
             else
-                alert("Debes seleccionar un Lote para exportar");
+                alert.error("Debes seleccionar un Lote para exportar");
         });
 
         $("#packing_historico").click(function(){
@@ -151,7 +152,7 @@
                 window.open(url, '_blank');
             }
             else
-                alert("Debes seleccionar un Lote para exportar");
+                alert.error("Debes seleccionar un Lote para exportar");
         });
 
     });

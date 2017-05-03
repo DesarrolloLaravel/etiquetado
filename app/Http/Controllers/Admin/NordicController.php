@@ -3,20 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Lote;
-use App\Models\OrdenProduccion;
+use App\Models\OrdenTrabajo;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+
+use App\Http\Requests\Nordic\CreateRequest;
+use App\Http\Requests\Nordic\UpdateRequest;
+
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class NordicController extends Controller
 {
-    public function print_etiqueta($orden_id, $producto_id, $fecha)
+    public function print_etiqueta($orden_id, $lote_id, $fecha)
     {
-        $orden = OrdenProduccion::findOrFail($orden_id);
-        $lote = $orden->lote;
-        $producto = Producto::findOrFail($producto_id);
+        $orden = OrdenTrabajo::findOrFail($orden_id);
+        $lote = Lote::findOrFail($lote_id);
+        $producto = Producto::findOrFail($orden->orden_trabajo_producto);
 
         $data['fecha_produccion'] = \Carbon\Carbon::createFromTimestamp($fecha)->format('d.m.Y');
         $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d.m.Y');
@@ -65,26 +69,23 @@ class NordicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
         \DB::beginTransaction();
 
         try{
-            $lote = Lote::find($request->lote_id);
+            $lote = Lote::findOrFail($request->lote_id);
 
-            $orden = OrdenProduccion::findOrFail($request->orden_id);
+            $orden = OrdenTrabajo::findOrFail($request->orden_id);
 
-            if($lote->lote_id != $orden->orden_lote_id)
-                return null;
-
-            $orden_producto_id = $orden->productos()
-                ->where('op_producto_producto_id',$request->orden_productos)
-                ->firstOrFail()->producto_id;
+            $orden_producto_id = $orden->orden_trabajo_producto;
+                
 
             $fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->etiqueta_fecha)->timestamp;
 
             $resp = ["estado" => "ok",
-                "orden_id" => $orden->orden_id,
+                "orden_id" => $orden->orden_trabajo_id,
+                "lote_id" => $request->lote_id,
                 "producto_id" => $orden_producto_id,
                 "fecha" => $fecha];
 

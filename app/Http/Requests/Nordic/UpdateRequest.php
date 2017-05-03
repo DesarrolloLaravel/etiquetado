@@ -28,7 +28,7 @@ class UpdateRequest extends Request
         return [
             //
             'etiqueta_barcode' => 'required|exists:etiqueta,etiqueta_barcode',
-            'select_camara' => 'required|exists:camara,camara_id'
+            'select_posicion' => 'required|exists:posicion,posicion_id'
         ];
     }
 
@@ -37,8 +37,8 @@ class UpdateRequest extends Request
         return [
             'etiqueta_barcode.required' => 'El Código es obligatorio',
             'etiqueta_barcode.exists' => 'El Código ingresado no existe. Verifica tu información.',
-            'select_camara.required' => 'Debes completar el formulario para recepcionar una caja',
-            'select_camara.exists' => 'Ha ocurrido un error. Inténtalo más tarde'
+            'select_posicion.required' => 'Debes completar el formulario para recepcionar una caja',
+            'select_posicion.exists' => 'Ha ocurrido un error. Inténtalo más tarde'
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Etiqueta;
+namespace App\Http\Requests\nordic;
 
 use App\Http\Requests\Request;
 
@@ -26,11 +26,7 @@ class CreateRequest extends Request
         return [
             'lote_id'               => 'required|exists:lote,lote_id',
             'etiqueta_fecha'        => 'required|date_format:d-m-Y',
-            'orden_id'              => 'required|exists:orden_trabajo,orden_trabajo_id',
-            'peso_real'             => 'required',
-            'peso_bruto'            => 'required',
-            'unidades'              => 'required',
-            'caja_number'           => 'required|unique:caja,caja_id'
+            'orden_id'              => 'required|exists:orden_trabajo,orden_trabajo_id'
         ];
     }
 

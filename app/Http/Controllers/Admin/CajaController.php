@@ -371,7 +371,7 @@ class CajaController extends Controller
         {
 
             $lotes = [''=>'Todos'] +
-                        Lote::withTrashed()->has('orden_produccion.historyCajas.caja_posicion')
+                        Lote::withTrashed()->has('etiqueta')
                             ->get()
                             ->lists('lote_id', 'lote_id')
                             ->all();

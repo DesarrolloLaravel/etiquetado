@@ -34,4 +34,11 @@ class Etiqueta extends Model
                                 'caja_id');
     }
 
+    public function etiqueta(){
+        return $this->belongsTo('App\Models\Etiqueta',
+                                'etiqueta_lote_id',
+                                'lote_id');
+    }
+
+
 }

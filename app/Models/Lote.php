@@ -65,6 +65,13 @@ class Lote extends Model
                              'lote_id');
     }
 
+    public function etiqueta(){
+        return $this->hasMany('App\Models\Etiqueta',
+                             'etiqueta_lote_id',
+                             'lote_id');
+    }
+
+
 
     public function especie()
     {

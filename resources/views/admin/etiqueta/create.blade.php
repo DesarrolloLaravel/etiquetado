@@ -25,6 +25,7 @@ $(document).ready(function(){
 
 	lote_id = $("#lote_id").val();
 	$('.alert').hide();
+	alert = new Alert('#notifications');
 
 	$('.datepicker').datepicker({
         format : 'dd-mm-yyyy',
@@ -40,7 +41,7 @@ $(document).ready(function(){
 				function(data){
 		    		$("#caja_number").val(data.proxima_caja);
 			}).fail(function(resp){
-				alert("Ha ocurrido un error. Inténtalo más tarde.");
+				alert.error("Ha ocurrido un error. Inténtalo más tarde.");
 			});
     	
     });
@@ -85,7 +86,7 @@ $(document).ready(function(){
 				}
 				else
 				{
-					alert("Ha ocurrido un error. Inténtalo más tarde.")
+					alert.error("Ha ocurrido un error. Inténtalo más tarde.")
 				}
 			
 		}).fail(function(resp){
@@ -171,7 +172,7 @@ $(document).ready(function(){
 		$('.alert').hide();
 
 		if($("#orden_id").val()==""){
-			alert("Debes seleccionar una Orden de Trabajo");
+			alert.error("Debes seleccionar una Orden de Trabajo");
 		}else{
 
 		if(table != undefined)
@@ -221,7 +222,7 @@ $(document).ready(function(){
     	}
     	else
     	{
-    		alert("Debes seleccionar un LOTE");
+    		alert.error("Debes seleccionar un LOTE");
     	}
     });
 
@@ -237,11 +238,12 @@ $(document).ready(function(){
     		$("#especie").val(especie);
     		$("#producto_detail").val(producto);
     		$("#modal_orden").modal('hide');
+    		$("#lote_id").val("");
     			
     	}
     	else
     	{
-    		alert("Debes seleccionar una ORDEN");
+    		alert.error("Debes seleccionar una ORDEN");
     	}
     });
 

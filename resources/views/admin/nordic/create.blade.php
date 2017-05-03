@@ -64,7 +64,7 @@
                 $.post(url, data,
                         function(data){
                             if(data['estado'] == "ok")
-                                var printPage = window.open('{{ url("admin/nordic/print") }}'+'/'+data['orden_id']+'/'+data['producto_id']+'/'+data['fecha'], '');
+                                var printPage = window.open('{{ url("admin/nordic/print") }}'+'/'+data['orden_id']+'/'+data['lote_id']+'/'+data['fecha'], '');
                             else
                                 alert.error("Ha ocurrido un error. Inténtalo más tarde.");
 
@@ -79,41 +79,22 @@
                 });
             });
 
-            $("#lote_search").click(function(){
+           $("#lote_search").click(function(){
 
-                if(table != undefined)
-                {
-                    table.destroy();
-                }
+                $('.alert').hide();
 
-                table = $('#table-lotes').DataTable({
-                    "ajax" : "../lote?q=etiqueta",
-                    "language": {
-                        "url": "../../plugins/datatables/es_ES.txt"
-                    },
-                    "order": [[ 1, 'desc' ]],
-                    "columnDefs": [
-                        { "visible": false, "targets": 0 }
-                    ],
-                    'fnCreatedRow': function (nRow, aData, iDataIndex) {
-                        $(nRow).attr('data-id', aData[1]);
+                    if($("#orden_id").val()==""){
+                        alert.error("Debes seleccionar una Orden de Trabajo");
+                    }else{
+
+                    if(table != undefined)
+                    {
+                        table.destroy();
                     }
-                });
 
-                $("#modal_lote").modal('show');
-            });
-
-            $("#orden_search").click(function(){
-
-                if(lote_id == undefined)
-                    alert.error("Debes seleccionar un LOTE");
-                else
-                {
-                    if(table2 != undefined)
-                        table2.destroy();
-
-                    table2 = $('#table-ordenes').DataTable({
-                        "ajax" : "../ordenproduccion?q=etiqueta&lote_id="+lote_id,
+                        orden_id=$("#orden_id").val();
+                        table = $('#table-lotes').DataTable({
+                        "ajax" : "../lote?q=etiqueta&orden_id="+orden_id,
                         "language": {
                             "url": "../../plugins/datatables/es_ES.txt"
                         },
@@ -123,13 +104,48 @@
                         ],
                         'fnCreatedRow': function (nRow, aData, iDataIndex) {
                             $(nRow).attr('data-id', aData[1]);
+
+
                         }
                     });
 
-                    $("#modal_orden").modal('show');
-                }
+                    $("#modal_lote").modal('show');
+                    }
+                });
 
-            });
+
+            $("#orden_search").click(function(){
+
+                    $('.alert').hide();
+
+
+                        if(table2 != undefined)
+                        {
+                            table2.destroy();
+                        }
+
+
+
+                        table2 = $('#table-ordenes').DataTable({
+                            "ajax" : "../ordentrabajo",
+                            "language": {
+                                "url": "../../plugins/datatables/es_ES.txt"
+                            },
+                            "order": [[ 1, 'desc' ]],
+                            "columnDefs": [
+                                { "visible": false, "targets": 0 }
+                            ],
+                            'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                                $(nRow).attr('data-id', aData[1]);
+                                $(nRow).attr('data-especie', aData[3]);
+                                $(nRow).attr('data-producto', aData[4]);
+                            }
+                        });
+
+                        $("#modal_orden").modal('show');
+                    
+                });
+            
 
             $('#table-ordenes tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {
@@ -156,72 +172,47 @@
                 if(table2.rows('tr.selected').data().length > 0)
                 {
                     orden_id = $("#table-ordenes").find('tbody tr.selected').data('id');
+                    especie = $("#table-ordenes").find('tbody tr.selected').data('especie');
+                    producto = $("#table-ordenes").find('tbody tr.selected').data('producto');
 
-                    $.get("../ordenproduccion/show?q=etiqueta",
-                            {orden_id : orden_id},
-                            function(data){
-
-                                console.log(data.orden_productos);
-                                var html_select = '';
-                                for (var key in data.orden_productos){
-                                    html_select += '<option value="'+data.orden_productos[key]+'">'+
-                                            key+
-                                            '</option>';
-                                }
-                                $("#select_productos").empty();
-                                $("#select_productos").append(html_select);
-
-                                $('.select2').select2().select2("val", null);
-
-                                $("#orden_detail").val(data.orden_descripcion);
-                                $("#orden_id").val(data.orden_id);
-
-                                $("#modal_orden").modal('hide');
-
-                            });
+                    $("#orden_id").val(orden_id);
+                    $("#especie").val(especie);
+                    $("#producto_detail").val(producto);
+                    $("#modal_orden").modal('hide');
+                    $("#lote_id").val("");
+                        
                 }
                 else
+                {
                     alert.error("Debes seleccionar una ORDEN");
+                }
             });
 
             $('#select_lote').click( function () {
 
-                if(table.rows('tr.selected').data().length > 0)
-                {
-                    lote_id = $("#table-lotes").find('tbody tr.selected').data('id');
+                    if(table.rows('tr.selected').data().length > 0)
+                    {
+                        lote_id = $("#table-lotes").find('tbody tr.selected').data('id');
 
-                    $.get("../lote/show",
+                        $.get("../lote/show?q=etiquetamp",
                             {lote_id : lote_id},
                             function(data){
 
+
                                 $("#modal_lote").modal('hide');
                                 $("#lote_id").val(data.lote_id);
-                                $("#caja_number").val(data.caja_number);
-                                $("#orden_detail").val("");
-                                $("#orden_id").val("");
-                                $("#select_productos").html("");
-                                $("#producto_detail").val("");
 
                             });
-                }
-                else
-                    alert.error("Debes seleccionar un LOTE");
-            });
 
-            $("#select_productos").on("select2:select", function(){
+                       
 
-                if($("#select_productos").select2('val') != "")
-                {
-                    producto_id = $("#select_productos").select2('val');
+                    }
+                    else
+                    {
+                        alert.error("Debes seleccionar un LOTE");
+                    }
+                });
 
-                    $.get('../producto/show',
-                            {producto_id : producto_id},
-                            function(data){
-                                $("#producto_detail").val(data.producto_fullname);
-                            });
-                }
-
-            });
 
         });
 
@@ -249,7 +240,7 @@
         </div>
     </div>
 
-    @include('admin.etiqueta.modallotes')
-    @include('admin.etiqueta.modalordenproduccion')
+    @include('admin.nordic.modallotes')
+    @include('admin.nordic.modalordentrabajo')
 
 @endsection

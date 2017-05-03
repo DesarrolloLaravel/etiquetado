@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Frigorifico;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -18,6 +18,9 @@ use App\Models\Producto;
 use App\Models\CajaPosicion;
 use App\Models\OrdenProduccion;
 use App\Models\OrdenTrabajo;
+use App\Models\Frigorifico;
+use App\Models\Posicion;
+use App\Models\Camara;
 
 class EtiquetaController extends Controller
 {
@@ -143,8 +146,8 @@ class EtiquetaController extends Controller
     {
         if($request->ajax())
         {
-            $etiquetas = Etiqueta::has('caja.orden_producto.orden.lote')
-                ->with('caja.orden_producto.orden.lote')
+            $etiquetas = Etiqueta::has('caja.orden_producto.lote')
+                ->with('caja.orden_producto.lote')
                 ->get();
 
             if($etiquetas->count() == 0)
@@ -158,7 +161,7 @@ class EtiquetaController extends Controller
             foreach ($etiquetas as $etiqueta) {
                 //completo el json
                 $dt_json .= '["'.$etiqueta->etiqueta_id.'","'
-                    .$etiqueta->caja->orden_producto->orden->lote->lote_id.'","'
+                    .$etiqueta->lote->lote_id.'","'
                     .$etiqueta->caja->caja_id.'","'
                     .$etiqueta->etiqueta_barcode.'","'
                     .$etiqueta->etiqueta_estado.'","'
@@ -187,8 +190,8 @@ class EtiquetaController extends Controller
         //
         if($request->ajax())
         {
-            $etiquetas = Etiqueta::has('caja.orden_producto.orden.lote')
-                ->with('caja.orden_producto.orden.lote')
+            $etiquetas = Etiqueta::has('caja.orden_producto.lote')
+                ->with('caja.orden_producto.lote')
                 ->where('etiqueta_estado', 'NO RECEPCIONADA')
                 ->get();
 
@@ -203,7 +206,7 @@ class EtiquetaController extends Controller
             foreach ($etiquetas as $etiqueta) {
                 //completo el json
                 $dt_json .= '["'.$etiqueta->etiqueta_id.'","'
-                                .$etiqueta->caja->orden_producto->orden->lote->lote_id.'","'
+                                .$etiqueta->lote->lote_id.'","'
                                 .$etiqueta->caja->caja_id.'","'
                                 .$etiqueta->etiqueta_barcode.'","'
                                 .$etiqueta->etiqueta_estado.'","'
@@ -361,9 +364,11 @@ class EtiquetaController extends Controller
                 //se guardan los cambios en la base de datos
                 $etiqueta->save();
 
+                $posicion = Posicion::where('posicion_camara_id',$request->select_camara)->first();
+
                 $caja = $etiqueta->caja;
-                $caja->caja_posicion()->attach($request->select_posicion);
-                $caja->input_output()->attach($request->select_posicion,
+                $caja->caja_posicion()->attach($posicion->posicion_id);
+                $caja->input_output()->attach($posicion->posicion_id,
                     ['io_tipo' => 'ENTRADA', 'io_proceso' => 'PRODUCCION']);
 
                 $resp = ["ok"];

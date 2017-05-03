@@ -172,36 +172,15 @@
             else
             {
                 camara_id = $("#select_camara").val();
-                posicion_id = undefined;
-                $.get('posicion?q=select',
-                    {camara_id : camara_id},
-                    function(data){
-                        console.log(data);
-                        $('#select_posicion').empty();
-                        $.each(data, function(key, element) {
-                            $('#select_posicion').append("<option value='" + key + "'>" + element + "</option>");
-                        });
-                });
+                
             }
         });
 
-        $("#select_posicion").click(function(){
-
-            if($("#select_posicion").val() == "")
-            {
-                alert("Ha ocurrido un error. Inténtalo más tarde.")
-            }
-            else
-            {
-                posicion_id = $("#select_posicion").val();
-            }
-        });
 
         $("#update").click(function(){
 
             if(frigorifico_id == undefined || 
-                camara_id == undefined ||
-                posicion_id == undefined){
+                camara_id == undefined ){
 
                     $("#alert-danger-modal").html("La CAJA no ha podido ser recepcionada debido a que falta información. Debes completar el formulario y volver a escanear la CAJA.").show();
                 }
@@ -321,7 +300,7 @@
                             {{--@foreach ($etiquetas as $etiqueta)
                             <tr role="row" data-id="{{ $etiqueta->etiqueta_id }}">
                                 <td>{{ $etiqueta->etiqueta_id }}</td>
-                                <td>{{ $etiqueta->caja->orden_producto->orden->lote->lote_id }}</td>
+                                <td>{{ $etiqueta->lote->lote_id }}</td>
                                 <td>{{ $etiqueta->caja->caja_id }}</td>
                                 <td>{{ $etiqueta->etiqueta_barcode }}</td>
                                 <td>{{ $etiqueta->etiqueta_estado }}</td>
