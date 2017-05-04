@@ -42,6 +42,8 @@ class Caja extends Model
                                 'caja_id');
     }
 
+    
+
     public function posicion_caja()
     {
         return $this->hasMany(  'App\Models\CajaPosicion',

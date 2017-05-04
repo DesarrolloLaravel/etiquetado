@@ -181,8 +181,8 @@ class Lote extends Model
         tengan esten en stock, y que pertenezcan a alguna de las ordenes
         del lote
         */
-        $cajas = Caja::has('caja_posicion')
-                ->whereHas('orden_producto.orden.lote', function($q){
+        $cajas = Caja::has('etiqueta')
+                ->whereHas('etiqueta.lote', function($q){
                     $q->where('lote_id', '=',$this->lote_id);
                 })->get();
 

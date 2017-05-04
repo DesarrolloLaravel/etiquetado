@@ -27,13 +27,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        {!! Form::label('posicion', 'Posición',
-        ['class' => 'col-sm-3 control-label']) !!}
-        <div class="col-sm-7">
-        {!! Form::select('select_posicion', [], null,['class' => 'form-control','id' => 'select_posicion']) !!}
-        </div>
-    </div>
 
     <div class="modal-footer" style="text-align:center">
         <a id="search" class="btn btn-primary">

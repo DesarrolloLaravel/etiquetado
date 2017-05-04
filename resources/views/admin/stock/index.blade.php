@@ -48,12 +48,10 @@
             {
                 frigorifico_id = $("#select_frigorifico").val();
                 camara_id = undefined;
-                posicion_id = undefined;
                 $.get('camara?q=select',
                     {frigorifico_id : frigorifico_id},
                     function(data){
                         $('#select_camara').empty();
-                        $('#select_posicion').empty();
                         $('#select_camara').append("<option value=''>Todos</option>");
                         $.each(data, function(key, element) {
                             $('#select_camara').append("<option value='" + key + "'>" + element + "</option>");
@@ -71,17 +69,6 @@
             else
             {
                 camara_id = $("#select_camara").val();
-                posicion_id = undefined;
-                $.get('posicion?q=select',
-                    {camara_id : camara_id},
-                    function(data){
-                        console.log(data);
-                        $('#select_posicion').empty();
-                        $('#select_posicion').append("<option value=''>Todos</option>");
-                        $.each(data, function(key, element) {
-                            $('#select_posicion').append("<option value='" + key + "'>" + element + "</option>");
-                        });
-                });
             }
         });
 
@@ -97,7 +84,6 @@
                     d.select_lote = $('#select_lote').val();
                     d.select_frigorifico = $('#select_frigorifico').val();
                     d.select_camara = $("#select_camara").val();
-                    d.select_posicion = $("#select_posicion").val();
                     // d.custom = $('#myInput').val();
                     // etc
                 },
@@ -125,7 +111,9 @@
 
         $("#search").click(function(){
 
+
             table.ajax.reload();
+
         });
 
         $("#packing_hoy").click(function(){
@@ -195,7 +183,7 @@
                             {{--@foreach ($cajas as $caja)
                             <tr role="row" data-id="{{ $caja->caja_id }}">
                                 <td>{{ $caja->caja_id }}</td>
-                                <td>{{ $caja->orden_producto->orden->lote->lote_id }}</td>
+                                <td>{{ $caja->etiqueta->lote->lote_id }}</td>
                                 <td>{{ $caja->caja_peso_real }}</td>
                                 <td>{{ $caja->caja_peso_bruto }}</td>
                             </tr>

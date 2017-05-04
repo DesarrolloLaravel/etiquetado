@@ -16,4 +16,11 @@ class CajaPosicion extends Model
     						'caja_posicion_posicion_id'];
 
     protected $dates = ['deleted_at'];
+
+    public function caja()
+    {
+        return $this->belongsTo('App\Models\Caja',
+                                'caja_posicion_caja_id',
+                                'caja_id');
+    }
 }
