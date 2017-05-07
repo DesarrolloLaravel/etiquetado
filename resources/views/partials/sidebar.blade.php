@@ -36,18 +36,7 @@
                     </ul>
                 </li>
                 <li class="{{ isActiveRoute('admin/caja') }}"><a href="{{ url('/admin/caja') }}"><i class='fa fa-cubes'></i> <span>Stock</span></a></li>
-                <li class="treeview {{ areActiveRoutes(['admin/despacho/create','admin/despacho','admin/despacho/execute']) }}">
-                    <a href="#"><i class='fa fa-sign-out'></i> <span>Despacho</span><i class="fa fa-angle-right pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ url('admin/despacho/create') }}"><i class='fa fa-circle-o'></i>Crear</a></li>
-                    </ul>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ url('admin/despacho') }}"><i class='fa fa-circle-o'></i>Buscar</a></li>
-                    </ul>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ url('admin/despacho/execute') }}"><i class='fa fa-circle-o'></i>Despachar</a></li>
-                    </ul>
-                </li>
+                <li class="{{ isActiveRoute('admin/despacho') }}"><a href="{{ url('/admin/despacho') }}"><i class='fa fa-cubes'></i> <span>Despacho</span></a></li>
                 <li class="treeview {{ areActiveRoutes(['admin/procesador','admin/elaborador','admin/producto','admin/formato','admin/user', 'admin/calibre', 'admin/calidad','admin/especie','admin/unidad_medida']) }}">
                     <a href="#"><i class='glyphicon glyphicon-tasks'></i> <span>Mantenedores</span><i class="fa fa-angle-right pull-right"></i></a>
                     <ul class="treeview-menu">

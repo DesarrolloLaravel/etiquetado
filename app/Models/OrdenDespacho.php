@@ -13,9 +13,9 @@ class OrdenDespacho extends Model
     protected $table = 'orden_despacho';
     protected $primaryKey = 'orden_id';
     protected $fillable = [ 'orden_estado',
-    						'orden_cliente_id',
                             'orden_guia',
-    						'orden_fecha'];
+    						'orden_fecha',
+                            'orden_orden_produccion'];
 
     protected $dates = ['deleted_at'];
 
@@ -44,10 +44,11 @@ class OrdenDespacho extends Model
                                 'orden_id');
     }
 
-    public function cliente()
+    public function ordenProduccion()
     {
-        return $this->belongsTo('App\Models\Cliente',
-            'orden_cliente_id',
-            'cliente_id');
+        return $this->belongsTo('App\Models\ordenProduccion',
+            'orden_orden_produccion',
+            'orden_id');
     }
+
 }

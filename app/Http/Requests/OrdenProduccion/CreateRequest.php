@@ -25,7 +25,6 @@ class CreateRequest extends Request
     {
         return [
             'orden_cliente_id'      => 'exists:cliente,cliente_id',
-            'orden_descripcion'     => 'required',
             'orden_fecha'           => 'required|date_format:d-m-Y|before:orden_fecha_inicio',
             'orden_fecha_inicio'    => 'required|date_format:d-m-Y|before:orden_fecha_compromiso',
             'orden_fecha_compromiso'=> 'required|date_format:d-m-Y',
@@ -38,7 +37,6 @@ class CreateRequest extends Request
         return [
             //
             'orden_cliente_id.required'         => 'Debes seleccionar un Cliente',
-            'orden_descripcion.required'        => 'La Descripción es obligatoria',
             'orden_fecha.required'              => 'Debes seleccionar una Fecha para la orden',
             'orden_fecha.before'                => 'Fecha Orden debe ser anterior a Fecha Inicio',
             'orden_fecha_inicio.required'       => 'Debes seleccionar una Fecha de inicio',

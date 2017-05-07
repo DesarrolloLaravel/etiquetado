@@ -136,6 +136,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('ordenproduccion/edit', 'OrdenProduccionController@edit');
 	Route::post('ordenproduccion/store', 'OrdenProduccionController@store');
 	Route::post('ordenproduccion/update', 'OrdenProduccionController@update');
+	Route::post('ordenproduccion/delete', 'OrdenProduccionController@delete');
 	Route::get('ordenproduccion/kilos_def', 'OrdenProduccionController@kilos_def');
 
 	Route::get('ordentrabajo', 'OrdenTrabajoController@index');
@@ -144,11 +145,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('ordentrabajo/edit', 'OrdenTrabajoController@edit');
 	Route::post('ordentrabajo/store', 'OrdenTrabajoController@store');
 	Route::post('ordentrabajo/update', 'OrdenTrabajoController@update');
+	Route::post('ordentrabajo/delete', 'OrdenTrabajoController@delete');
 	Route::get('ordentrabajo/cargar_especie', 'OrdenTrabajoController@cargar_especie');
 	Route::get('ordentrabajo/cargar_producto', 'OrdenTrabajoController@cargar_producto');
 	Route::get('ordentrabajo/validar_etiqueta', 'OrdenTrabajoController@validar_etiqueta');
 	Route::get('ordentrabajo/kilos_eti', 'OrdenTrabajoController@kilos_eti');
 	Route::post('ordentrabajo/r_pallet', 'OrdenTrabajoController@r_pallet');
+	Route::get('ordentrabajo/pre_borrado', 'OrdenTrabajoController@pre_borrado');
 
 	Route::get('producto', 'ProductoController@index');
 	Route::post('producto/store', 'ProductoController@store');
@@ -174,15 +177,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 
 	Route::get('despacho','OrdenDespachoController@index');
 	Route::get('despacho/create','OrdenDespachoController@create');
-	Route::post('despacho/store','OrdenDespachoController@store');
-	Route::get('despacho/next','OrdenDespachoController@next');
-	Route::get('despacho/execute','OrdenDespachoController@execute');
 	Route::get('despacho/show','OrdenDespachoController@show');
+	Route::get('despacho/edit','OrdenDespachoController@edit');
+	Route::get('despacho/cargar_pallet','OrdenDespachoController@cargar_pallet');
 	Route::post('despacho/update','OrdenDespachoController@update');
-	Route::post('despacho/discount','OrdenDespachoController@discount');
-	Route::get('despacho/resume','OrdenDespachoController@resume');
-	Route::get('despacho/export','OrdenDespachoController@exportPacking');
-    Route::post('despacho/delete', 'OrdenDespachoController@destroy');
+    Route::post('despacho/delete', 'OrdenDespachoController@delete');
+    Route::post('despacho/store', 'OrdenDespachoController@store');
+
 
     Route::get('calibre','CalibreController@index');
     Route::post('calibre/store','CalibreController@store');

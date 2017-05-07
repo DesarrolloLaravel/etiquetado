@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Cliente;
+use Log;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -12,153 +12,44 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Database\Eloquent\Collection;
 
-use App\Http\Requests\OrdenDespacho\CreateRequest;
-use App\Http\Requests\OrdenDespacho\DiscountRequest;
-
 use App\Models\OrdenDespacho;
 use App\Models\OrdenDespachoLote;
 use App\Models\OrdenProduccion;
 use App\Models\Producto;
 use App\Models\Lote;
 use App\Models\Etiqueta;
+use App\Models\Etiqueta_MP;
 use App\Models\Caja;
 
 class OrdenDespachoController extends Controller
 {
-    public function exportPacking(Request $request)
-    {
-        //dd($request->orden);
-        $orden = OrdenDespacho::findOrFail($request->orden);
+    public function cargar_pallet(Request $request){
 
-        Excel::create('Orden Despacho '.$orden->orden_id, function($excel) use ($orden) {
- 
-            $excel->sheet('Packing', function($sheet) use ($orden) {
+        Log::info($request->orden_id);
+        Log::info($request->etiqueta_pallet);
 
-                $detalle_lote = $orden->despacho_lote;
+        $eti = Etiqueta_MP::where('etiqueta_mp_barcode',$request->etiqueta_pallet)
+        ->count();
 
-                $detalles = [];
-                $cajas = [];
-                foreach ($detalle_lote as $detalle) {
+        Log::info($eti);
 
-                    $cajas_despacho = $detalle->all_cajas;
-                    
-                    $aux = [];
-                    foreach ($cajas_despacho as $caja) {
-                        # code...
-                        $lote = $caja->orden_producto->orden->lote;
-                        $producto = $caja->orden_producto->producto;
-                        $aux['Año'] = $lote->lote_year;
-                        $aux['Lote'] = $lote->lote_id;
-                        $aux['Procesadora'] = $lote->procesador->procesador_name;
-                        $aux['Productor'] = $lote->productor->productor_name;
-                        $aux['Elaborador'] = $lote->elaborador->elaborador_id;
-                        $aux['N° Caja'] = $caja->caja_id;
-                        $aux['Producto'] = $producto->producto_nombre;
-                        $aux['Descripcion'] = $producto->producto_descripcion;
-                        $aux['Calidad'] = \Config::get('options.calidad')[$lote->lote_calidad_id];
-                        $aux['Cliente'] = $orden->cliente->cliente_nombre;
-                        $aux['Guia'] = $orden->orden_guia;
-                        $aux['N° Orden'] = $orden->orden_id;
-                        $aux['Codigo'] = $caja->etiqueta->etiqueta_barcode;
-                        $aux['Kilos'] = $caja->caja_peso_real;
-                        $cajas[] = $aux;
-                    }
-                }
- 
-                $sheet->fromArray($cajas);
- 
-            });
-        })->export('xls');
-    }
-    
-    public function resume(Request $request)
-    {
-        if($request->ajax())
-        {
-            $orden = OrdenDespacho::findOrFail($request->orden_id);
+        if($eti == 1){
 
-            $detalle_orden = $orden->despacho_lote;
+            Log::info("Pallet: ".$request->etiqueta_pallet);
 
-            $total_cajas = 0;
-            $total_kilos = 0;
-            foreach ($detalle_orden as $detalle) {
-                # code...
-                $total_cajas = $total_cajas + $detalle->cajas()->count();
-                $total_kilos = $total_kilos + $detalle->cajas()->sum('caja_peso_real');
-            }
+            $kilos = Etiqueta_MP::with('producto')->where('etiqueta_mp_barcode',$request->etiqueta_pallet)->get();
 
-            $resp['orden_id'] = $orden->orden_id;
-            $resp['orden_estado'] = $orden->orden_estado;
-            $resp['orden_cliente'] = $orden->cliente->cliente_nombre;
-            $resp['orden_guia'] = $orden->orden_guia;
-            $resp['orden_fecha'] = $orden->orden_fecha;
+            Log::info($kilos);        
+        
+            return response()->json(["estado" => "ok", "dato" => $kilos]);
 
-            $resp['total_cajas'] = $total_cajas;
-            $resp['total_kilos'] = $total_kilos;
-            $resp['total_cajas_plan'] = $detalle_lote->sum('despacho_cajas_plan');
-            $resp['total_kilos_plan'] = $detalle_lote->sum('despacho_kilos_plan');
-        }
+        }else{
+
+            return response()->json(["estado" => "nok", "dato" => null]);
+        }  
     }
 
-    public function discount(DiscountRequest $request)
-    {
-
-        \DB::beginTransaction();
-
-        try{
-            $orden = OrdenDespacho::findOrFail($request->orden_id);
-
-            $orden->orden_estado = "DESPACHADO";
-
-            $orden->save();
-
-            $detalle_orden = $orden->despacho_lote;
-
-            foreach ($detalle_orden as $detalle) {
-                
-                $cajas = $detalle->cajas;
-
-                if($cajas->count() > 0)
-                {
-                    foreach ($cajas as $caja) {
-                        $caja->input_output()->attach($caja->caja_posicion->first()->posicion_id,
-                        ['io_tipo' => 'SALIDA', 'io_proceso' => 'DESPACHO']);
-                        $caja->posicion_caja->first()->delete();
-                        $caja->delete();
-                    }
-                }
-            }
-            $resp['estado'] = "ok";
-        }
-        catch ( Exception $e ){
-            $resp['estado'] = "nok";
-            \DB::rollback();
-        }
-
-        \DB::commit();
-
-        return response()->json($resp);
-    }
-
-    public function execute(Request $request)
-    {
-        return view('admin.orden_despacho.execute');
-    }
-
-    public function next(Request $request)
-    {
-        if($request->ajax())
-        {
-            $proximo_despacho = OrdenDespacho::withTrashed()->max('orden_id') + 1;
-
-            return response()->json($proximo_despacho);
-        }
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index(Request $request)
     {
         if($request->ajax())
@@ -195,6 +86,8 @@ class OrdenDespachoController extends Controller
                 }
             }
             
+            Log::info($ordenes);
+
             //inicializo el json
             $dt_json = '{ "data" : [';
 
@@ -203,7 +96,7 @@ class OrdenDespachoController extends Controller
                 //completo el json
                 $dt_json .= '["'.$orden->orden_id.'","'
                                 .$orden->orden_estado.'","'
-                                .$orden->cliente->cliente_nombre.'","'
+                                .$orden->orden_orden_produccion.'","'
                                 .$orden->orden_guia.'","'
                                 .\Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha)->format('d-m-Y').'"],';
             }
@@ -216,7 +109,7 @@ class OrdenDespachoController extends Controller
         }
         else
         {
-            return view('admin.orden_despacho.index');
+            return view('admin.despacho.index');
         }
     }
 
@@ -225,23 +118,34 @@ class OrdenDespachoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
-        /*$lote = Producto::has('orden_produccion.lote')
-                        ->with('orden_produccion.lote')
-                        ->get()
-                        ->where('orden_produccion.lote.lote_id', 1);
 
-        dd($lote);*/
-        $proximo_despacho = OrdenDespacho::max('orden_id')+1;
-        $clientes = [''=>'Ninguno'] +
-            Cliente::orderBy('cliente_nombre', 'ASC')
-                ->get()
-                ->lists('cliente_nombre','cliente_id')
-                ->all();
+        if($request->ajax())
+        {
+            
+            Log::info("Create");          
+            $estado = ['1' => 'Pre-Despacho','2' => 'Despacho', '3' => 'Despachado'];
 
-        return view('admin.orden_despacho.create', compact('proximo_despacho', 'clientes'));
+            Log::info($estado);
+
+            $despacho = OrdenDespacho::all()->max('orden_id')+1;
+
+            log::info($despacho);
+
+            $despacho_fecha = \Carbon\Carbon::now()->format('d-m-Y');
+
+            Log::info($despacho_fecha);
+            
+            $view = \View::make('admin.despacho.fields')
+                    ->with('despacho', $despacho)
+                    ->with('despacho_fecha', $despacho_fecha)
+                    ->with('estado',$estado);
+
+            $sections = $view->renderSections();
+
+            return response()->json(["estado" => "ok","section" => $sections['contentPanel']]);
+        }
     }
 
     /**
@@ -250,64 +154,25 @@ class OrdenDespachoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRequest $request)
+    public function store(Request $request)
     {
         //
-        if($request->ajax())
-        {
-            $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
-            //dd($request->all(), \Config::get('options.estado_despacho')[$request->orden_tipo]);
+        if($request->ajax()){
+
+            $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->despacho_fecha);
             $info = array(
-                'orden_cliente_id'      => $request->cliente_id,
-                'orden_estado'          => \Config::get('options.estado_despacho')[$request->orden_tipo],
-                'orden_guia'            => $request->orden_guia,
-                'orden_fecha'           => $orden_fecha
+                'orden_estado'    => $request->despacho_estado,
+                'orden_orden_produccion'           => $request->orden_id,
+                'orden_guia'    => $request->despacho_guia,
+                'orden_fecha'=> $orden_fecha
             );
 
-            \DB::beginTransaction();
 
-            try{
-                $orden = OrdenDespacho::create($info);
+            $orden = OrdenDespacho::create($info);
 
-                if($request->detail != "")
-                {
-                    $detail = explode(",", $request->detail);
-                    if((count($detail) % 5) == 0)
-                    {
-                        $n_elem = count($detail)/5;
-                        $arr = [];
-                        for ($i=0; $i < $n_elem; $i++)
-                        {
-                            $arr [] = ['despacho_orden_id' => $orden->orden_id,
-                                'despacho_lote_id' => $detail[5*$i],
-                                'despacho_producto_id' => $detail[(5*$i)+1],
-                                'despacho_cajas_plan' => $detail[(5*$i)+3],
-                                'despacho_kilos_plan' => $detail[(5*$i)+4]
-                            ];
-                            $despacho_lote = new OrdenDespachoLote();
-                            $despacho_lote->despacho_lote_id = $detail[5*$i];
-                            $despacho_lote->despacho_producto_id = $detail[(5*$i)+1];
-                            $despacho_lote->despacho_cajas_plan = $detail[(5*$i)+3];
-                            $despacho_lote->despacho_kilos_plan = $detail[(5*$i)+4];
-                            $despacho_lote->orden()->associate($orden);
-                            $despacho_lote->save();
-
-                        }
-                    }
-                }
-            }
-            catch ( Exception $e ){
-                \DB::rollback();
-                return response()->json([
-                    "estado" => "nok"
-                ]);
-            }
-            \DB::commit();
-
-            //envio respuesta al cliente
             return response()->json([
-                "estado" => "ok"
-            ]);
+                "ok"
+            ]);   
         }
     }
 
@@ -319,76 +184,7 @@ class OrdenDespachoController extends Controller
      */
     public function show(Request $request)
     {
-        //
-        $orden = OrdenDespacho::with('despacho_lote.lote',
-                        'despacho_lote.producto',
-                        'despacho_lote.cajas.etiqueta',
-                        'despacho_lote.all_cajas.etiqueta')
-                        ->findOrFail($request->orden_id);
-
-        if($request->ajax())
-        {
-            $resp = [];
-
-            $fecha = \Carbon\Carbon::createFromFormat('Y-m-d', $orden->orden_fecha)->format('d-m-Y'); 
-
-            $resp['orden_id'] = $orden->orden_id;
-            $resp['orden_estado'] = $orden->orden_estado;
-            $resp['orden_cliente'] = $orden->cliente->cliente_nombre;
-            $resp['orden_guia'] = $orden->orden_guia;
-            $resp['orden_fecha'] = $fecha;
-
-            if($request->q == "complete")
-                $detalle_lote = $orden->despacho_lote()->with('lote','producto','all_cajas.etiqueta')->get();
-            else
-                $detalle_lote = $orden->despacho_lote()->with('lote','producto','cajas.etiqueta')->get();
-
-
-            //dd($detalle_lote);
-
-            $detalles = [];
-            $cajas = [];
-            foreach ($detalle_lote as $detalle) {
-                # code...
-                $arr_detalle['lote_id'] = $detalle->lote->lote_id;
-                $arr_detalle['producto'] = $detalle->producto->producto_nombre;
-                $arr_detalle['cajas_plan'] = $detalle->despacho_cajas_plan;
-                $arr_detalle['kilos_plan'] = $detalle->despacho_kilos_plan;
-
-                $detalles [] = $arr_detalle;
-                $aux = [];
-
-                if($request->q == "complete")
-                {
-                    foreach ($detalle->all_cajas as $caja) {
-                        # code...
-                        $aux['id'] = $caja->caja_id;
-                        $aux['codigo'] = $caja->etiqueta->etiqueta_barcode;
-                        $aux['kilos'] = $caja->caja_peso_real;
-                        $cajas[] = $aux;
-                    }
-                }
-                else
-                {
-                    foreach ($detalle->cajas as $caja) {
-                        # code...
-                        $aux['id'] = $caja->caja_id;
-                        $aux['codigo'] = $caja->etiqueta->etiqueta_barcode;
-                        $aux['kilos'] = $caja->caja_peso_real;
-                        $cajas[] = $aux;
-                    }
-                }
-                
-
-            }
-            $resp['orden_cajas'] = $cajas;
-            
-            $resp['orden_detalle'] = $detalles;
-            $resp['orden_total_cajas'] = $detalle_lote->sum('despacho_cajas_plan');
-            $resp['orden_total_kilos'] = $detalle_lote->sum('despacho_kilos_plan');
-
-            return response()->json($resp);
-        }
+       Log::info("alerta");
     }
 
     /**
@@ -397,9 +193,10 @@ class OrdenDespachoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         //
+        Log::info("alerta");
     }
 
     /**
@@ -412,47 +209,7 @@ class OrdenDespachoController extends Controller
     public function update(Request $request)
     {
         //
-        if($request->ajax())
-        {
-            \DB::beginTransaction();
-
-            try{
-                $orden = OrdenDespacho::with('despacho_lote.cajas')->findOrFail($request->orden_id);
-                //detalles de la orden
-                $orden_detalle = $orden->despacho_lote;
-                //para cada detalle
-                foreach ($orden_detalle as $detalle) {
-                    //para cada detalle, borro todas las cajas asociadas
-                    $detalle->cajas()->detach();
-                }
-
-                $cajas_despacho = $request->arr_detail;
-
-                for ($i=0; $i < count($cajas_despacho); $i++) { 
-                    # code...
-                    $caja = Caja::findOrFail($cajas_despacho[$i][0]);
-                    $producto = $caja->orden_producto->producto;
-                    $lote = $caja->orden_producto->orden->lote;
-
-                    $despacho_lote = $orden->despacho_lote()
-                                    ->where('despacho_lote_id', $lote->lote_id)
-                                    ->where('despacho_producto_id', $producto->producto_id)
-                                    ->first();
-
-                    $despacho_lote->cajas()->attach($caja->caja_id);
-                }
-
-                $resp["estado"] = "ok";
-            }
-            catch ( Exception $e ){
-                $resp["estado"] = "nok";
-                \DB::rollback();
-            }
-            \DB::commit();
-            
-            //envio respuesta al cliente
-            return response()->json($resp);
-        }
+        Log::info("alerta");
     }
 
     /**
@@ -461,33 +218,8 @@ class OrdenDespachoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function delete(Request $request)
     {
-        if($request->ajax())
-        {
-            //se crea el validador con la información enviada desde el cliente
-            //y con las reglas de validación respectiva
-            $v = \Validator::make($request->all(), [
-                'orden_id' => 'required|exists:orden_despacho,orden_id'
-            ]);
-            //si falla la validación
-            if ($v->fails())
-            {
-                //respondo con un json que contiene los errores
-                return response()->json($v->errors());
-            }
-            //busco la compañia a eliminar
-            $orden = OrdenDespacho::findOrFail($request->orden_id);
-            if($orden->orden_estado == "DESPACHADO"){
-                return response()->json(["La orden seleccionda ya fue despachada"
-                ]);
-            }
-            //elimino la compañia
-            $orden->delete();
-
-            //respuesta al cliente
-            return response()->json(["ok"
-            ]);
-        }
+        Log::info("alerta");
     }
 }

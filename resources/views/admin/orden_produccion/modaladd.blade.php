@@ -10,6 +10,7 @@
                 {!! Form::open(['url' => 'admin/ordenproduccion/store',
                   'class' => 'form-horizontal',
                   'method' => 'POST',
+                  'files' => true,
                   'id' => 'form-add']) !!}
 
                 {!! Form::close() !!}
