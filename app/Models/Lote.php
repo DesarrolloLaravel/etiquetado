@@ -60,7 +60,7 @@ class Lote extends Model
     }
 
     public function etiqueta_mp(){
-        return $this->hasOne('App\Models\Etiqueta_MP',
+        return $this->hasMany('App\Models\Etiqueta_MP',
                              'etiqueta_mp_lote_id',
                              'lote_id');
     }

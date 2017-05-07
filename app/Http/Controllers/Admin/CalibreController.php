@@ -41,7 +41,7 @@ class CalibreController extends Controller
             foreach ($calibres as $calibre) {
                 //completo el json
                 $dt_json .= '["'.$calibre->calibre_id.'","'
-                    .$calibre->calibre_nombre.'"],';
+                                .$calibre->calibre_nombre_completo().'"],';
             }
             //elimino la ultima coma del json
             $dt_json = substr($dt_json, 0, -1);

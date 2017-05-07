@@ -96,7 +96,7 @@ return array(
 		'3' => 'DESPACHADO'
 	],
 	'estado_etiqueta' => [
-		'1' => 'NO RECEPCIONAdO',
+		'1' => 'NO RECEPCIONADO',
 		'2' => 'RECEPCIONADO',
 		'3' => 'PRODUCCIÓN'
 	],

@@ -83,29 +83,29 @@
 
         });
 
-        // $("#reprint_final").click(function(){
+        $("#reprint_final").click(function(){
 
-        //     var idioma = $("#idioma").val();
+            var idioma = $("#idioma").val();
 
-        //     console.log(idioma);
+            console.log(idioma);
 
-        //     $.get('etiqueta/reprint',
-        //         {etiqueta_id : etiqueta_id},
-        //         function(data){
-        //             if(data[0] == "ok")
-        //             {
-        //                 $("#modal_idioma").modal('hide');
-        //                 var printPage = window.open('{{ url("admin/etiqueta_mp/print") }}'+'/'+etiqueta__id+'/'+idioma, '');
-        //                 printPage.print();
-        //             }
-        //             else
-        //             {
-        //                 $(".alert-danger").html(data[1]).show();
-        //             }
-        //     }).fail(function(resp){
-        //         alert("Ha ocurrido un error. Inténtalo más tarde.")
-        //     });
-        // });
+            $.get('etiqueta/reprint',
+                {etiqueta_id : etiqueta_id},
+                function(data){
+                    if(data[0] == "ok")
+                    {
+                        $("#modal_idioma").modal('hide');
+                        var printPage = window.open('{{ url("admin/etiqueta_mp/print") }}'+'/'+etiqueta__id+'/'+idioma, '');
+                        printPage.print();
+                    }
+                    else
+                    {
+                        $(".alert-danger").html(data[1]).show();
+                    }
+            }).fail(function(resp){
+                alert("Ha ocurrido un error. Inténtalo más tarde.")
+            });
+        });
 
         $('#table-etiquetas-mp tbody').on( 'click', '#reprint', function (){
 
@@ -301,8 +301,8 @@
                             {{--@foreach ($etiquetas_mp as $etiqueta_mp)
                             <tr role="row" data-id="{{ $etiqueta_mp->etiqueta_mp_id }}">
                                 <td>{{ $etiqueta_mp->etiqueta_mp_id }}</td>
-                                <td>{{ $etiqueta_mp->producto }}</td>
                                 <td>{{ $etiqueta_mp->lote->lote_id }}</td>
+                                <td>{{ $etiqueta_mp->producto }}</td>
                                 <td>{{ $etiqueta_mp->etiqueta_mp_barcode }}</td>
                                 <td>{{ $etiqueta_mp->etiqueta_mp_estado }}</td>
                                 <td>{{ $etiqueta_mp->etiqueta_mp_fecha }}</td>

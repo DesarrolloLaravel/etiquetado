@@ -168,29 +168,12 @@
 	</div>
 	<div class="col-xs-6">
 		<div class="form-group">
-			{!! Form::label('kilos', 'Kilos Recepcionados',
-				['class' => 'control-label']) !!}
-			{!! Form::number('lote_kilos_recepcion', null, ['class' => 'form-control', 'min' => 0]) !!}
-		</div>
-	</div>
-</div>
-<div class="col-sm-6">
-	<div class="col-xs-6">
-		<div class="form-group">
 			{!! Form::label('kilos', 'Cajas Declarados',
 				['class' => 'control-label']) !!}
 			{!! Form::number('lote_cajas_declarado', null, ['class' => 'form-control', 'min' => 0]) !!}
 		</div>
 	</div>
-	<div class="col-xs-6">
-		<div class="form-group">
-			{!! Form::label('kilos', 'Cajas Recepcionados',
-				['class' => 'control-label']) !!}
-			{!! Form::number('lote_cajas_recepcion', null, ['class' => 'form-control', 'min' => 0]) !!}
-		</div>
-	</div>
 </div>
-
 <div class="col-sm-6">
 	<div class="col-xs-6">
 		<div class="form-group">

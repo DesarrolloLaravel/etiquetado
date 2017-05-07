@@ -20,7 +20,7 @@
 	$(document).ready(function(){
 
         alert = new Alert('#notifications');
-
+        $('.alert').hide();
         $('.select2').select2();
 
 	    table = $('#table-productos').DataTable({

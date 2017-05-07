@@ -203,12 +203,12 @@ class LoteController extends Controller
                 //completo el json
                 $dt_json .= '["","'
                                 .$lote->lote_id.'","'
-                                .$lote->lote_kilos_recepcion.'","'
                                 .$lote->lote_n_documento.'","'
                                 .$lote->procesador->procesador_name.'","'
                                 .$lote->productor->productor_name.'","'
                                 .$lote->lote_djurada.'","'
                                 .$lote->lote_produccion.'","'
+                                .$lote->lote_kilos_recepcion.'","'
                                 .$lote->especie->especie_id.'","'
                                 .$lote->especie->especie_name.'"],';
             }
@@ -338,9 +338,9 @@ class LoteController extends Controller
                 'lote_fecha_expiracion' => $fecha_expiracion,
                 'lote_n_documento'      => $request->lote_n_documento,
                 'lote_kilos_declarado'  => $request->lote_kilos_declarado,
-                'lote_kilos_recepcion'  => $request->lote_kilos_recepcion,
+                'lote_kilos_recepcion'  => 0,
                 'lote_cajas_declarado'  => $request->lote_cajas_declarado,
-                'lote_cajas_recepcion'  => $request->lote_cajas_recepcion,
+                'lote_cajas_recepcion'  => 0,
                 'lote_productor_id'     => $request->lote_productor_id,
                 'lote_destino_id'       => $request->lote_destino_id,
                 'lote_cliente_id'       => $request->lote_cliente_id,

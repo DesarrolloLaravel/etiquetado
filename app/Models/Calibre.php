@@ -21,4 +21,10 @@ class Calibre extends Model
  		 	'calibre_unidad_medida_id',
  		 	'unidad_medida_id');
  	}
+
+ 	public function calibre_nombre_completo(){
+
+ 		return $this->calibre_nombre." ".$this->unidad_medida->unidad_medida_abreviacion;
+
+ 	}
 }
