@@ -56,6 +56,7 @@
     var table;
     var table_products;
     var arr_products = [];
+    var arr_delete = [];
     var arr_kilos = [];
 
     $(document).ready(function(){
@@ -83,7 +84,6 @@
                     <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
             }],
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
-                $(nRow).find('td:first').addClass('details-control');
                 $(nRow).attr('data-id', aData[1]);
             }
         });
@@ -125,6 +125,7 @@
         $('#table-ordenes tbody').on( 'click', '#edit', function ()
         {
             arr_products = [];
+            arr_delete = [];
             arr_kilos =[];
             if(table_products != undefined)
             {
@@ -145,7 +146,21 @@
 
                         $('.select2').select2();
 
-                        setValues(data['orden'], 0);
+                        setValues(data['orden'],0);
+
+                        for (var i = 0; i < data.prod.length; i++) {
+                        
+                            peso = data.prod[i].producto.producto_peso - data.prod[i].op_producto_kilos_declarados;
+
+                            table_products.row.add( [
+                                data.prod[i].producto.producto_id,
+                                data.prod[i].producto.especie.especie_comercial_name,
+                                data.prod[i].producto.producto_nombre,
+                                data.prod[i].op_producto_kilos_declarados,
+                                data.prod[i].producto.producto_peso,
+                                peso
+                            ] ).draw( false );
+                        }
 
                         $('.datepicker').datepicker({
                             format : 'dd-mm-yyyy',
@@ -243,6 +258,8 @@
 
             var data = form.serialize()+ '&productos=' + arr_products+ '&kilos='+arr_kilos;
 
+            alert(data);
+
             $.post(url, data, function(resp)
             {
                 if(resp[0] == "ok")
@@ -274,33 +291,34 @@
             });
         });
 
-        $(document).on('click','#update',function(event){
+        $(document).on('click','#updates',function(event){
 
             var form = $("#form-edit");
             //obtengo url
             var url = form.attr('action');
             //obtengo la informacion del formulario
             $("#form-edit #orden_id").attr("disabled", false);
-            var data = form.serialize()+ '&productos=' + arr_products + '&kilos='+ arr_kilos;
+
+            var data = form.serialize() + '&productos=' + arr_products + '&kilos=' + arr_kilos + '&del='+ arr_delete;
+            
             $("#form-edit #orden_id").attr("disabled", true);
 
             $.post(url, data, function(resp)
             {
-                if(resp[0] == "ok")
-                {
-                    $(".alert-success").html("El registro fue actualizado exitosamente").show();
-                    $(".alert-danger").hide();
+                $(".alert-success").html("El registro fue actualizado exitosamente").show();
+                    
+                $(".alert-danger").hide();
                     //reseteo el formulario
-                    $('#form-edit').trigger("reset");
+                $('#form-edit').trigger("reset");
 
-                    $('#modal_edit').modal('hide');
+                $('#modal_edit').modal('hide');
 
-                    table_products.destroy();
-                    arr_products = [];
-                    arr_kilos = [];
+                table_products.destroy();
+                arr_products = [];
+                arr_delete = [];
+                arr_kilos = [];
 
-                    table.ajax.reload();
-                }
+                table.ajax.reload();
 
             }).fail(function(resp){
                 $('#modal_edit').animate({ scrollTop: 0 }, 'slow');
@@ -360,6 +378,114 @@
             }
         });
 
+
+        $('#table-ordenes tbody').on( 'click', '#delete', function ()
+        {   
+
+            arr_products = [];
+            arr_delete = [];
+            arr_kilos =[];
+            if(table_products != undefined)
+            {
+                table_products.destroy();
+            }
+
+            $(".alert").hide();
+
+            orden_id = $(this).parents('tr').data('id');
+
+            $.get("ordenproduccion/edit",
+                {orden_id : orden_id}, function(data){
+
+                if(data['estado'] == "ok")
+                {
+                    $('#modal_delete .modal-dialog .modal-content .modal-body').find('#form-delete').html(data['section']);
+                    $('#modal_delete').modal('show');
+
+                    $("#form-delete #orden_id").attr("disabled", true);
+                    $("#form-delete #orden_descripcion").attr("disabled", true);
+                    $("#form-delete #orden_cliente_id").attr("disabled", true);
+                    $("#form-delete #orden_fecha").attr("disabled", true);
+                    $("#form-delete #orden_fecha_inicio").attr("disabled", true);
+                    $("#form-delete #orden_fecha_compromiso").attr("disabled", true);
+                    $("#form-delete #especie_id").attr("disabled", true);
+                    $("#form-delete #producto_ide").attr("disabled", true);
+                    $("#form-delete #kilos_id").attr("disabled", true);
+                    $("#form-delete #add_product").attr("disabled", true);
+
+
+                    $('.select2').select2();
+
+                    setValues(data['orden'],1);
+
+                    for (var i = 0; i < data.prod.length; i++) {
+                    
+                        peso = data.prod[i].producto.producto_peso - data.prod[i].op_producto_kilos_declarados;
+
+                        table_products.row.add( [
+                            data.prod[i].producto.producto_id,
+                            data.prod[i].producto.especie.especie_comercial_name,
+                            data.prod[i].producto.producto_nombre,
+                            data.prod[i].op_producto_kilos_declarados,
+                            data.prod[i].producto.producto_peso,
+                            peso
+                        ] ).draw( false );
+                    }
+
+                    $('.datepicker').datepicker({
+                        format : 'dd-mm-yyyy',
+                        autoclose: true,
+                        language : 'es'
+                    });
+
+                }
+
+            });
+
+        });
+
+        $(document).on('click','#borrar',function(event){
+
+            var form = $("#form-delete");
+            //obtengo url
+            var url = form.attr('action');
+            //obtengo la informacion del formulario
+            $("#form-delete #orden_id").attr("disabled", false);
+
+            var data = form.serialize();
+            
+            $("#form-delete #orden_id").attr("disabled", true);
+
+            $.post(url, data, function(resp)
+            {
+                $(".alert-success").html("El registro fue eliminado exitosamente").show();
+                    
+                $(".alert-danger").hide();
+                    //reseteo el formulario
+                $('#form-delete').trigger("reset");
+
+                $('#modal_delete').modal('hide');
+
+                table_products.destroy();
+                arr_products = [];
+                arr_delete = [];
+                arr_kilos = [];
+
+                table.ajax.reload();
+
+            }).fail(function(resp){
+                $('#modal_delete').animate({ scrollTop: 0 }, 'slow');
+                var html = "";
+                for(var key in resp.responseJSON)
+                {
+                    html += resp.responseJSON[key][0] + "<br>";
+                }
+                $(".alert-success").hide();
+                $(".alert-danger").html(html).show();
+            });
+
+        });
+
     });
 
     function setValues(data, n)
@@ -391,21 +517,18 @@
         $('#'+form+' #table-products tbody').on('click', '#delete_product', function () {
             product_id = $(this).parents('tr').data('id');
 
-            arr_products.splice(arr_products.indexOf(product_id));
+
+            arr_delete.push(product_id);
+
+            var index = arr_products.indexOf(product_id);
+
+            arr_products.splice(index);
+            arr_kilos.splice(index);
 
             table_products.row( $(this).parents('tr') )
                 .remove()
                 .draw();
-        });
-
-        for (var i = 0; i < data.productos.length; i++) {
-            console.log(data.productos[i]);
-            table_products.row.add( [
-                data.productos[i].op_producto_producto_id
-            ] ).draw( false );
-            arr_products.push(data.productos[i].op_producto_producto_id);
-        };
-        
+        }); 
     }
 
 </script>
@@ -448,5 +571,6 @@
 
 @include('admin.orden_produccion.modaladd')
 @include('admin.orden_produccion.modaledit')
+@include('admin.orden_produccion.modaldelete')
 
 @endsection

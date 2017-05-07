@@ -16,9 +16,9 @@ class AlterTableOrdenDespachoFk extends Migration
         Schema::table('orden_despacho', function(Blueprint $table)
         {
             //$table->unsignedInteger('orden_cliente_id')->index()->change();
-            $table->foreign('orden_cliente_id', 'orden_despacho_cliente_id')
-                ->references('cliente_id')
-                ->on('cliente')
+            $table->foreign('orden_orden_producción', 'orden_orden_producción')
+                ->references('orden_id')
+                ->on('orden_produccion')
                 ->onUpdate('NO ACTION')->onDelete('cascade');
         });
     }
@@ -33,7 +33,7 @@ class AlterTableOrdenDespachoFk extends Migration
         //
         Schema::table('orden_despacho', function(Blueprint $table)
         {
-            $table->dropForeign('orden_despacho_cliente_id');
+            $table->dropForeign('orden_orden_producción');
         });
     }
 }

@@ -4,22 +4,24 @@
 
 		{!! Form::label('nombre', 'Num. Orden',
 				['class' => 'col-sm-1 control-label']) !!}
-			<div class="col-sm-3">
+			<div class="col-sm-2">
 				{!! Form::number('orden_number', $proxima_orden, ['class' => 'form-control', 'id' => 'orden_id', 'min' => 0, 'disabled']) !!}
 			</div>
 
-		{!! Form::label('descripcion', 'Descripción',
-			['class' => 'col-sm-1 control-label']) !!}
-		<div class="col-sm-3">
-			{!! Form::text('orden_descripcion', null, ['class' => 'form-control']) !!}
-		</div>
-
 		{!! Form::label('orden_cliente', 'Cliente',
 			['class' => 'col-sm-1 control-label']) !!}
-			<div class="col-sm-3">
-				{!! Form::select('orden_cliente_id', $clientes,null, ['class' => 'form-control']) !!}
+			<div class="col-sm-2">
+				{!! Form::select('orden_cliente_id', $clientes,null, ['class' => 'form-control','id' => 'orden_cliente_id']) !!}
 			</div>
-	</div>
+
+		{!! Form::label('descripcion', 'Descripción',
+				['class' => 'col-sm-1 control-label']) !!}
+			<div class="col-sm-4">
+				{!! Form::text('file', null) !!}
+			</div>
+			
+		
+	</div>	
 </div>
 <div class="col-sm-12">
 	<div class="form-group">
@@ -27,19 +29,19 @@
 		{!! Form::label('fecha', 'Fecha Orden',
 			['class' => 'col-sm-1 control-label']) !!}
 		<div class="col-sm-2">
-			{!! Form::text('orden_fecha', $orden_fecha, ['class' => 'form-control datepicker']) !!}
+			{!! Form::text('orden_fecha', $orden_fecha, ['class' => 'form-control datepicker','id' => 'orden_fecha']) !!}
 		</div>
 
 		{!! Form::label('fecha', 'Fecha Inicio Prod.',
 			['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-2">
-			{!! Form::text('orden_fecha_inicio', $orden_fecha_inicio, ['class' => 'form-control datepicker']) !!}
+			{!! Form::text('orden_fecha_inicio', $orden_fecha_inicio, ['class' => 'form-control datepicker', 'id' => 'orden_fecha_inicio']) !!}
 		</div>
 
 		{!! Form::label('fecha', 'Fecha Compromiso',
 			['class' => 'col-sm-2 control-label']) !!}
 		<div class="col-sm-2">
-			{!! Form::text('orden_fecha_compromiso', $orden_fecha_compromiso, ['class' => 'form-control datepicker']) !!}
+			{!! Form::text('orden_fecha_compromiso', $orden_fecha_compromiso, ['class' => 'form-control datepicker', 'id' => 'orden_fecha_compromiso']) !!}
 		</div>
 		
 	</div>

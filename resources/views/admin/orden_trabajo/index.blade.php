@@ -464,7 +464,8 @@
                     $( "#especie_id" ).prop( "disabled", true );
                     $( "#orden_prod" ).prop( "disabled", true );  
                     $( "#orden_fecha" ).prop( "disabled", true ); 
-                    $( "#etiqueta_ide" ).prop( "disabled", true );   
+                    $( "#etiqueta_ide" ).prop( "disabled", true );
+                    $( "#add_pallet" ).prop( "disabled", true ); 
 
 
                     $('#table-pallet tbody').on('click', '#d_return', function () {
@@ -490,6 +491,112 @@
 
             });
 
+        });
+
+        $('#table-trabajos tbody').on( 'click', '#delete', function ()
+        {   
+
+            $(".alert").hide();
+
+            id = $(this).parents('tr').data('id');
+
+            $.get("ordentrabajo/pre_borrado",
+                {id : id},function(data){
+                    
+                if(data['estado'] == "ok")
+                {
+                    $('#modal_delete .modal-dialog .modal-content .modal-body').find('#form-delete').html(data['section']);
+                    $('#modal_delete').modal('show');
+
+                    $('.select2').select2();
+
+                    table_pallet = $('#table-pallet').DataTable({
+                        "language": {
+                            "url": "../../plugins/datatables/es_ES.txt"
+                        },
+                        "order": [[ 1, 'desc' ]],
+                        "columnDefs": [{
+                            "targets": -1,
+                            "data": null,
+                            "defaultContent": ""
+                        }],
+                        'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                            $(nRow).attr('data-id', aData[0]);
+                        }
+                    });
+
+                    for (var i = 0; i < data.pallet.length; i++) {
+                        
+                        table_pallet.row.add( [
+                            data.pallet[i].etiqueta_mp_id,
+                            data.pallet[i].etiqueta_mp_lote_id,
+                            data.pallet[i].etiqueta_mp_barcode,
+                            data.pallet[i].etiqueta_mp_peso
+                        ] ).draw( false );
+
+                        //arr_etiquetas.push(data.pallet[i].etiqueta_mp_barcode);
+                    }
+
+                    $( "#producto_ide" ).prop( "disabled", true );
+                    $( "#especie_id" ).prop( "disabled", true );
+                    $( "#orden_prod" ).prop( "disabled", true );  
+                    $( "#orden_fecha" ).prop( "disabled", true );   
+                    $( "#etiqueta_ide" ).prop( "disabled", true );
+                    $( "#add_pallet" ).prop( "disabled", true );                        
+                
+                    $('.datepicker').datepicker({
+                        format : 'dd-mm-yyyy',
+                        autoclose: true,
+                        language : 'es'
+                    });
+
+                }
+            });
+
+        });
+
+        $(document).on('click','#borrar',function(event){
+
+
+            
+            var form = $("#form-delete");
+            //obtengo url
+            var url = form.attr('action');
+            alert(url);
+            $("#form-delete #orden_trabajo_id").attr("disabled", false);
+            //obtengo la informacion del formulario
+            var data = form.serialize();          
+
+            alert(data);
+
+            $.post(url, data, function(resp)
+            {
+                if(resp[0] == "ok")
+                {
+                    $(".alert-success").html("El registro fue guardado exitosamente").show();
+                    $(".alert-danger").hide();
+                    //reseteo el formulario
+                    $('#form-delete').trigger("reset");
+
+                    $('#modal_delete').modal('hide');
+                    console.log(table_pallet);
+                    table_pallet.destroy();
+                    console.log(table_pallet);
+                    arr_etiquetas = [];
+
+                    table.ajax.reload();
+                }
+
+            }).fail(function(resp){
+                $('#modal_delete').animate({ scrollTop: 0 }, 'slow');
+                var html = "";
+                for(var key in resp.responseJSON)
+                {
+                    html += resp.responseJSON[key][0] + "<br>";
+                }
+                $(".alert-success").hide();
+                $(".alert-danger").html(html).show();
+            });
         });
 
 
@@ -593,4 +700,5 @@
 @include('admin.orden_trabajo.modaladd')
 @include('admin.orden_trabajo.modaledit')
 @include('admin.orden_trabajo.modalreturn')
+@include('admin.orden_trabajo.modaldelete')
 @endsection

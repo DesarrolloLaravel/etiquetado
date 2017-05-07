@@ -29,11 +29,10 @@ class OrdenProduccionController extends Controller
     public function cargar_producto(Request $request)
     {
         //
+
+        Log::info("cargar_producto");
         
-        $productos = Producto::orderBy('producto_nombre','ASC')
-                ->where('producto_especie_id',$request->especie_id)
-                ->lists('producto_nombre','producto_id')
-                ->all();
+        $productos = Producto::orderBy('producto_nombre','ASC')->where('producto_especie_id',$request->especie_id)->lists('producto_nombre','producto_id')->all();
 
         Log::info($productos);
 
@@ -138,6 +137,8 @@ class OrdenProduccionController extends Controller
     public function store(CreateRequest $request)
     {
         //
+        
+
 
         $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
         $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_inicio);
@@ -145,7 +146,7 @@ class OrdenProduccionController extends Controller
        
         $info = array(
             'orden_id'          => $request->orden_id,
-            'orden_descripcion'     => $request->orden_descripcion,
+            'orden_descripcion'     => $imageName,
             'orden_fecha'           => $orden_fecha,
             'orden_fecha_inicio'    => $orden_fecha_inicio,
             'orden_fecha_compromiso'=> $orden_fecha_compromiso,
@@ -184,24 +185,6 @@ class OrdenProduccionController extends Controller
     public function show(Request $request)
     {
         //
-        $orden = OrdenProduccion::findOrFail($request->orden_id);
-
-        if($request->ajax())
-        {
-            $resp = [];
-
-            $resp['orden_id'] = $orden->orden_id;
-            $resp['orden_descripcion'] = $orden->orden_descripcion;
-            $resp['orden_fecha'] = $orden->orden_fecha;
-
-            $producto = OrdenProduccionProducto::where('op_producto_orden_id',$request->orden_id)
-            ->get('op_producto_id');
-
-
-            $resp['orden_productos'] = $producto;
-
-            return response()->json($resp);
-        }
     }
 
     /**
@@ -228,13 +211,11 @@ class OrdenProduccionController extends Controller
              $especies =[''=>'Ninguno'] +
                 Especie::orderBy('especie_name','ASC')
                     ->get()
-                    ->lists('especie_name','especie_id')
+                    ->lists('especie_comercial_name','especie_id')
                     ->all();
 
-            $op = OrdenProduccionProducto::where('op_producto_orden_id',$request->orden_id)
-                ->getAll()
-                ->lists('op_producto_producto_id','op_producto_kilos_declarados');
-
+            $op = OrdenProduccionProducto::with('producto')->where('op_producto_orden_id',$request->orden_id)
+                ->get();
 
             $orden_fecha = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha)->format('d-m-Y');
             $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha_inicio)->format('d-m-Y');
@@ -247,11 +228,11 @@ class OrdenProduccionController extends Controller
                     ->with('orden_fecha_inicio', $orden_fecha_inicio)
                     ->with('orden_fecha_compromiso', $orden_fecha_compromiso)
                     ->with('especies',$especies)
-                    ->with('productos',$op);
+                    ->with('productos',$productos);
 
             $sections = $view->renderSections();
 
-            return response()->json(["estado" => "ok", "orden" => $orden, "section" => $sections['contentPanel']]);
+            return response()->json(["estado" => "ok", "prod" => $op, "orden" => $orden , "section" => $sections['contentPanel']]);
         }
     }
 
@@ -267,39 +248,55 @@ class OrdenProduccionController extends Controller
         //
         if($request->ajax())
         {
+            Log::info($request->orden_number);
+
             $orden = OrdenProduccion::find($request->orden_number);
 
             $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
             $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_inicio);
             $orden_fecha_compromiso = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_compromiso);
 
-            //dd(explode(delimiter, string)$request->productos[1]);
-
             $info = array(
-                'orden_lote_id'         => $request->orden_lote_id,
                 'orden_number'          => $request->orden_number,
                 'orden_descripcion'     => $request->orden_descripcion,
                 'orden_fecha'           => $orden_fecha,
                 'orden_fecha_inicio'    => $orden_fecha_inicio,
                 'orden_fecha_compromiso'=> $orden_fecha_compromiso,
                 'orden_cliente_id'      => $request->orden_cliente_id,
-                'orden_ciudad_id'       => $request->orden_ciudad_id,
-                'orden_provincia_id'    => $request->orden_provincia_id
             );
 
-            \DB::beginTransaction();
 
-            try{
-                $orden->fill($info);
-                $orden->save();
-                $orden->productos()->detach();
-                $orden->productos()->attach(explode(",", $request->productos));
-            }
-            catch ( Exception $e ){
-                \DB::rollback();
-            }
+            $orden->fill($info);
+            $orden->save();
 
-            \DB::commit();
+            Log::info("crear op_producto");
+
+            $prod = explode(',',$request->productos);
+            $peso = explode(',',$request->kilos);
+            $del = explode(',',$request->del);
+
+            if(count($del) > 0){
+
+                for ($i=0; $i < count($del) ; $i++) { 
+                    $op_del = OrdenProduccionProducto::where('op_producto_producto_id',$del[$i])->where('op_producto_orden_id',$request->orden_number)->firstOrFail();
+
+                    $op_del->delete();
+                }
+            }
+    
+            if(count($prod) > 0){
+                for ($i=0; $i < count($prod) ; $i++) { 
+                
+                    $pp = array(
+                        'op_producto_orden_id' => $orden->orden_id,
+                        'op_producto_producto_id' => $prod[$i],
+                        'op_producto_kilos_declarados' => $peso[$i]
+                    );
+                
+                    $opp = OrdenProduccionProducto::create($pp);
+                }    
+            }
+                            
             //envio respuesta al cliente
             return response()->json([
                 "ok"
@@ -313,9 +310,23 @@ class OrdenProduccionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
         //
-        dd($id);
+        if($request->ajax())
+        {          
+            $orden = OrdenProduccion::findOrFail($request->orden_number);
+
+            $orden->delete();
+
+            $op = OrdenProduccionProducto::where('op_producto_orden_id',$request->orden_number)->findOrFail();
+
+            $op->delete();
+
+            //respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
     }
 }

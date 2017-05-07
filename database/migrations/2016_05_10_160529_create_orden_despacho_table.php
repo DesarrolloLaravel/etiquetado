@@ -16,10 +16,10 @@ class CreateOrdenDespachoTable extends Migration
         Schema::create('orden_despacho', function (Blueprint $table) {
             
             $table->increments('orden_id');
-            $table->enum('orden_estado',\Config::get('options.estado_despacho'));
-            $table->unsignedInteger('orden_cliente_id');
+            $table->enum('orden_estado',array('PRE-DESPACHO','DESPACHO','DESPACHADO'));
             $table->date('orden_fecha');
             $table->string('orden_guia')->nullable();
+            $table->unsignedInteger('orden_orden_produccion')->index();
             $table->timestamps();
             $table->softDeletes();
         });

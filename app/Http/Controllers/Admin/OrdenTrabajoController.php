@@ -19,6 +19,7 @@ use App\Models\Producto;
 use App\Models\OrdenProduccion;
 use App\Models\OrdenProduccionProducto;
 use App\Models\etiqueta_MP;
+use App\Models\Caja;
 
 class OrdenTrabajoController extends Controller
 {
@@ -418,8 +419,85 @@ class OrdenTrabajoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
         //
+        if($request->ajax())
+        {          
+            $orden = OrdenTrabajo::findOrFail($request->orden_number);
+
+            $orden->delete();
+
+            $ot = OrdenTrabajoProducto::where('ot_producto_orden_trabajo',$request->orden_number)->findOrFail();
+
+            $ot->delete();
+
+            //respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
+    }
+
+    public function pre_borrado(Request $request)
+    {
+        //
+        if($request->ajax()){
+            Log::info($request->id);
+            
+            $caj = Caja::where('caja_ot_producto_id',$request->id)->count();
+
+            Log::info($caj);
+
+            if($caj == 0){
+
+                $orden = OrdenTrabajo::where('orden_trabajo_id',$request->id)->firstOrFail();
+
+                $nombre_especie = Especie::where('especie_id',$orden->orden_trabajo_especie)->get()->lists('especie_comercial_name');
+
+        
+                $nombre_producto = Producto::where('producto_id',$orden->orden_trabajo_producto)->get()->lists('fullName');
+
+                $repl = array('[',']','"','"');
+
+                $especies = array($orden->orden_trabajo_especie => str_replace($repl," ",$nombre_especie));
+                
+                $productos = array($orden->orden_trabajo_producto => str_replace($repl," ",$nombre_producto));
+
+                $orden_producto = array($orden->orden_trabajo_orden_produccion => $orden->orden_trabajo_orden_produccion);
+
+                $orden_fecha = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_trabajo_fecha)->format('d-m-Y');
+
+                $op = OrdenTrabajoProducto::where('ot_producto_orden_trabajo',$request->id)->with('etiqueta')->get();
+
+                $info = [];
+
+                foreach ($op as $eti) {
+                    
+                    Log::info($eti->etiqueta);
+                    
+                    $info[] = $eti->etiqueta;  
+
+                }
+
+                Log::info($info);
+                Log::info($especies);
+                Log::info($productos);
+                Log::info($orden_producto);
+                Log::info($orden_fecha);
+
+                $view = \View::make('admin.orden_trabajo.fields')
+                        ->with('ordenProduccion', $orden_producto)
+                        ->with('proxima_orden', $request->id)
+                        ->with('orden_trabajo_fecha', $orden_fecha)
+                        ->with('especies',$especies)
+                        ->with('productos',$productos);
+
+                $sections = $view->renderSections();
+                  
+                return response()->json(["estado" => "ok", "pallet" => $info, "section" => $sections['contentPanel']]);
+            }        
+        }
+        
     }
 }

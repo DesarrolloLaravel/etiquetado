@@ -91,7 +91,7 @@ return array(
 		'2' => 'SI'
 	],
 	'estado_despacho' => [
-		//'1' => 'PRE-EMBARQUE',
+		'1' => 'PRE-DESPACHO',
 		'2' => 'DESPACHO',
 		'3' => 'DESPACHADO'
 	],

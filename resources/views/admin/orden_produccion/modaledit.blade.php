@@ -15,7 +15,7 @@
                 {!! Form::close() !!}
             </div>
             <div class="modal-footer">
-              <button id="update" type="button" class="btn btn-primary">Actualizar</button>
+              <button id="updates" type="button" class="btn btn-primary">Actualizar</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div><!-- /.modal-content -->
