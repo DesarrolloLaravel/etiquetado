@@ -23,7 +23,7 @@
                 <li class="dropdown user user-menu">
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="hidden-xs">Javier</span>
+                        <span class="hidden-xs">{!!Auth::user()->users_name!!}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- Menu Footer-->

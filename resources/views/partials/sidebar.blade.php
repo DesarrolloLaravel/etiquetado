@@ -27,7 +27,7 @@
                     </ul>
                 </li>
                 <li class="treeview {{ areActiveRoutes(['admin/etiqueta/create','admin/etiqueta', 'admin/nordic/create', 'admin/etiqueta/all']) }}">
-                    <a href="#"><i class='fa fa-list-alt'></i> <span>Etiqueta</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <a href="#"><i class='glyphicon glyphicon-barcode'></i> <span>Etiqueta</span><i class="fa fa-angle-right pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a href="{{ url('admin/etiqueta/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Planta</a></li>
                         <li><a href="{{ url('admin/nordic/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Nordic</a></li>
@@ -35,7 +35,15 @@
                         <li><a href="{{ url('admin/etiqueta/all') }}"><i class='fa fa-circle-o'></i>Todas las Etiquetas</a></li>
                     </ul>
                 </li>
-                <li class="{{ isActiveRoute('admin/caja') }}"><a href="{{ url('/admin/caja') }}"><i class='fa fa-cubes'></i> <span>Stock</span></a></li>
+
+                <li class="treeview {{ areActiveRoutes(['admin/caja']) }}">
+                    <a href="#"><i class='fa fa-list-alt'></i> <span>Stock</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('admin/caja') }}"><i class='fa fa-cubes'></i>Control Stock</a></li>
+                        <li><a href="{{ url('admin/pallet_pt/create') }}"><i class='fa fa-cubes'></i>Pallets</a></li>
+                    </ul>    
+                </li>
+
                 <li class="{{ isActiveRoute('admin/despacho') }}"><a href="{{ url('/admin/despacho') }}"><i class='fa fa-cubes'></i> <span>Despacho</span></a></li>
                 <li class="treeview {{ areActiveRoutes(['admin/procesador','admin/elaborador','admin/producto','admin/formato','admin/user', 'admin/calibre', 'admin/calidad','admin/especie','admin/unidad_medida']) }}">
                     <a href="#"><i class='glyphicon glyphicon-tasks'></i> <span>Mantenedores</span><i class="fa fa-angle-right pull-right"></i></a>

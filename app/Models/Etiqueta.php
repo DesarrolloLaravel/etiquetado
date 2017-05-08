@@ -39,6 +39,12 @@ class Etiqueta extends Model
                                 'etiqueta_lote_id',
                                 'lote_id');
     }
+    public function pallet_etiqueta(){
+        return $this->hasMany('App\Models\Pallet_Etiqueta_caja',
+                                'pec_etiqueta_id',
+                                'etiqueta_id');
+
+    }
 
 
 }

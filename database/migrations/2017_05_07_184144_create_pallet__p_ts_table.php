@@ -12,9 +12,11 @@ class CreatePalletPTsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pallet__p_ts', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('pallet_pt', function (Blueprint $table) {
+            $table->increments('pallet_pt_id');
+            $table->string('etiqueta_mp_barcode');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +27,6 @@ class CreatePalletPTsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pallet__p_ts');
+        Schema::drop('pallet_pt');
     }
 }

@@ -129,6 +129,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('etiqueta_mp/destroy', 'EtiquetaMPController@destroy');
 	Route::get('etiqueta_mp/reprint','EtiquetaMPController@reprint');
 
+	Route::get('pallet_pt','PalletPTController@index');
+    Route::get('pallet_pt/all','PalletPTController@indexAll');
+	Route::get('pallet_pt/print/{id}', 'PalletPTController@print_etiqueta');
+	Route::get('pallet_pt/create', 'PalletPTController@create');
+	Route::get('pallet_pt/create2', 'PalletPTController@create2');
+	Route::post('pallet_pt/store', 'PalletPTController@store');
+	Route::post('pallet_pt/update', 'PalletPTController@update');
+	Route::post('pallet_pt/destroy', 'PalletPTController@destroy');
+	Route::get('pallet_pt/reprint','PalletPTController@reprint');
+
 	Route::get('ordenproduccion', 'OrdenProduccionController@index');
 	Route::get('ordenproduccion/create', 'OrdenProduccionController@create');
 	Route::get('ordenproduccion/cargar_producto', 'OrdenProduccionController@cargar_producto');
