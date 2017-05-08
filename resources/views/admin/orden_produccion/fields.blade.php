@@ -16,8 +16,8 @@
 
 		{!! Form::label('descripcion', 'Descripción',
 				['class' => 'col-sm-1 control-label']) !!}
-			<div class="col-sm-4">
-				{!! Form::text('file', null) !!}
+			<div class="col-sm-3 col-sm-offset-1">
+				{!! Form::text('orden_descripcion', null, ['class' => 'form-control', 'id' => 'orden_descripcion']) !!}
 			</div>
 			
 		

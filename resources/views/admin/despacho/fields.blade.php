@@ -51,7 +51,7 @@
 <div class="col-sm-12">
 	<div class="form-group">
 		
-		{!! Form::label('etiqueta', 'Etiqueta Pallet',
+		{!! Form::label('etiqueta', 'Etiqueta',
 			['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::text('etiqueta_pallet', null, ['class' => 'form-control','id' => 'etiqueta_ide']) !!}
@@ -72,7 +72,6 @@
 		        <thead>
 		            <tr>
 		            	<th>#</th>
-		                <th>Número Cajas</th>
 		                <th>Producto</th>
 		                <th>C&oacute;digo</th>
 		                <th>Kilos (Kg)</th>
@@ -82,7 +81,6 @@
 		        <tfoot>
 		        	<tr>
 		        		<th>#</th>
-		                <th>Número Cajas</th>
 		                <th>Producto</th>
 		                <th>C&oacute;digo</th>
 		                <th>Kilos (Kg)</th>

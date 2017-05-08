@@ -217,7 +217,7 @@
 
             alert("add pallet");
 
-            etiqueta_pallet = $("#etiqueta_ide").val();
+            etiqueta = $("#etiqueta_ide").val();
             orden_id = $("#orden_id").val();
 
             alert(etiqueta_pallet);
@@ -238,9 +238,8 @@
                 }
                 else
                 {
-                    alert("lllega");
 
-                    $.get('despacho/cargar_pallet',{orden_id : orden_id,etiqueta_pallet : etiqueta_pallet},function(data){
+                    $.get('despacho/cargar_etiqueta',{orden_id : orden_id,etiqueta : etiqueta},function(data){
 
                         if(data['estado'] == "nok"){
 
@@ -251,14 +250,13 @@
 
                             $(".alert-danger").hide();
                             table_etiqueta.row.add( [
-                                data['dato'].etiqueta_mp_id,
-                                data['dato'].etiqueta_mp_cantidad_cajas,
-                                data['dato'].producto.producto_nombre,
-                                data['dato'].etiqueta_mp_barcode,
-                                data['dato'].etiqueta_mp_peso
+                                data['caja'].caja_id,
+                                data['producto'],
+                                etiqueta,
+                                data['caja'].caja_peso_real
                             ] ).draw( false );
 
-                            arr_etiquetas.push(data['dato'].etiqueta_mp_id);        
+                            arr_etiquetas.push(etiqueta);        
 
                         }
                     });

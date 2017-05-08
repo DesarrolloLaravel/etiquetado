@@ -189,7 +189,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('despacho/create','OrdenDespachoController@create');
 	Route::get('despacho/show','OrdenDespachoController@show');
 	Route::get('despacho/edit','OrdenDespachoController@edit');
-	Route::get('despacho/cargar_pallet','OrdenDespachoController@cargar_pallet');
+	Route::get('despacho/cargar_etiqueta','OrdenDespachoController@cargar_etiqueta');
 	Route::post('despacho/update','OrdenDespachoController@update');
     Route::post('despacho/delete', 'OrdenDespachoController@delete');
     Route::post('despacho/store', 'OrdenDespachoController@store');

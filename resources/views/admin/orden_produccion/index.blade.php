@@ -207,6 +207,8 @@
             $.get('ordenproduccion/create',
                 function(data){
 
+                    $(".alert-danger").hide();
+                    
                     $('#modal_add .modal-dialog .modal-content .modal-body').find('#form-add').html(data['section']);
                     $('#modal_add').modal('show');
 

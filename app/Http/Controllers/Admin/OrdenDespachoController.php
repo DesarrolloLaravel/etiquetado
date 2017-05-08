@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\OrdenDespacho;
+use App\Models\OrdenTrabajo;
 use App\Models\OrdenDespachoLote;
 use App\Models\OrdenProduccion;
 use App\Models\Producto;
@@ -23,30 +24,31 @@ use App\Models\Caja;
 
 class OrdenDespachoController extends Controller
 {
-    public function cargar_pallet(Request $request){
+    public function cargar_etiqueta(Request $request){
 
-        Log::info($request->orden_id);
-        Log::info($request->etiqueta_pallet);
+        Log::info($request->etiqueta);
 
-        $eti = Etiqueta_MP::where('etiqueta_mp_barcode',$request->etiqueta_pallet)
-        ->count();
+        $et = Etiqueta::where('etiqueta_barcode',$request->etiqueta)->where('etiqueta_estado',"RECEPCIONADA")->count();
 
-        Log::info($eti);
+        if($et == 1){
 
-        if($eti == 1){
+            $eti = Etiqueta::where('etiqueta_barcode',$request->etiqueta)->where('etiqueta_estado',"RECEPCIONADA")->first();
 
-            Log::info("Pallet: ".$request->etiqueta_pallet);
+            Log::info($eti->etiqueta_id);
 
-            $kilos = Etiqueta_MP::with('producto')->where('etiqueta_mp_barcode',$request->etiqueta_pallet)->get();
+            $caj = Caja::where('caja_id',$eti->etiqueta_caja_id)->first();
 
-            Log::info($kilos);        
-        
-            return response()->json(["estado" => "ok", "dato" => $kilos]);
+            $ot = OrdenTrabajo::where('orden_trabajo_id',$caj->caja_ot_producto_id)->first();
 
-        }else{
+            $prod = Producto::where('producto_id',$ot->orden_trabajo_producto)->first();
 
-            return response()->json(["estado" => "nok", "dato" => null]);
-        }  
+            return response()->json(["estado" => "ok","caja" => $caj,"producto" => $prod->fullName]);
+        }
+        else{
+
+            return response()->json(["estado" => "nok"]);   
+
+        }
     }
 
    
@@ -86,8 +88,11 @@ class OrdenDespachoController extends Controller
                 }
             }
             
-            Log::info($ordenes);
-
+            if($ordenes->count() == 0)
+            {
+                return '{"data":[]}';
+            }
+           
             //inicializo el json
             $dt_json = '{ "data" : [';
 

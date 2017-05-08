@@ -137,16 +137,12 @@ class OrdenProduccionController extends Controller
     public function store(CreateRequest $request)
     {
         //
-        
-
-
         $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
         $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_inicio);
         $orden_fecha_compromiso = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha_compromiso);
        
         $info = array(
-            'orden_id'          => $request->orden_id,
-            'orden_descripcion'     => $imageName,
+            'orden_descripcion'     => $request->orden_descripcion,
             'orden_fecha'           => $orden_fecha,
             'orden_fecha_inicio'    => $orden_fecha_inicio,
             'orden_fecha_compromiso'=> $orden_fecha_compromiso,
