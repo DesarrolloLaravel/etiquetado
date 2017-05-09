@@ -13,7 +13,7 @@
 		<div class="input-group col-sm-3">
 			<input name="orden_id" id="orden_id" type="text" class="form-control" disabled>
 			<span class="input-group-btn">
-				<button id="orden_search" class="btn btn-secondary" type="button">
+				<button id="orden_search" class="btn btn-secondary" type="button" name="orden_search">
 					<i class="fa fa-search"></i>
 				</button>
 			</span>

@@ -14,9 +14,7 @@ class OrdenDespachoLote extends Model
     protected $primaryKey = 'despacho_id';
     protected $fillable = [ 'despacho_orden_id',
     						'despacho_lote_id',
-    						'despacho_producto_id',
-    						'despacho_cajas_plan',
-    						'despacho_kilos_plan'];
+    						'despacho_producto_id'];
 
     protected $dates = ['deleted_at'];
 

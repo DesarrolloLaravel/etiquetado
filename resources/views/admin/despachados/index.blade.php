@@ -1,11 +1,11 @@
 @extends('app')
 
 @section('htmlheader_title')
-    Despacho
+    Despachados
 @endsection
 
 @section('contentheader_title')
-    Despacho
+    Despachados
 @endsection
 
 @section('main-content')
@@ -33,7 +33,6 @@
     var table;
     var table_etiqueta;
     var arr_cajas = [];
-    var del_cajas = [];
     var arr_pallet = [];
     var orden_id;
     var etiqueta_pallet;
@@ -51,7 +50,7 @@
         $(".alert").hide();
 
         table = $('#table-despacho').DataTable({
-            "ajax" : "despacho",
+            "ajax" : "../despacho?q=despachado",
             "language": {
                 "url": "../../plugins/datatables/es_ES.txt"
             },
@@ -59,9 +58,7 @@
             "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
-                <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>\
-                <button class='btn btn-xs btn-success' id='excel'><i class='fa fa-file-excel-o'></i></button>"
+                "defaultContent": "<button class='btn btn-xs btn-success' id='excel'><i class='fa fa-file-excel-o'></i></button>"
             }],
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
                 $(nRow).attr('data-id', aData[0]);
@@ -74,126 +71,24 @@
 
             alert("edit");
 
-            if(table_etiqueta != undefined)
-            {
-                table_etiqueta.destroy();
-            }
-
-            var despacho_id = $(this).parents('tr').data('id');
+            despacho_id = $(this).parents('tr').data('id');
 
             $.get("despacho/edit",
                 {despacho_id : despacho_id},
                 function(data){
 
-                if(data['estado'] == "ok"){
-
-                    $('#modal_edit .modal-dialog .modal-content .modal-body').find('#form-edit').html(data['section']);
-
-                    $('#modal_edit').modal('show');
-
-                    setValues(data,0);
-
-                    table_etiqueta = $('#table-etiqueta').DataTable({
-                        "language": {
-                            "url": "../../plugins/datatables/es_ES.txt"
-                        },
-                        "order": [[ 1, 'desc' ]],
-                        "columnDefs": [{
-                            "targets": -1,
-                            "data": null,
-                            "defaultContent": "<a class='btn btn-xs btn-danger' id='delete_caja'><i class='fa fa-close'></i></a>"
-                        }],
-                        'fnCreatedRow': function (nRow, aData, iDataIndex) {
-                            $(nRow).attr('data-id', aData[0]);
-                        }
-                    });
-
-                    $('#table-etiqueta tbody').on('click', '#delete_caja', function () {
-
-                        var caja_id = $(this).parents('tr').data('id');
-
-                        var index = arr_etiquetas.indexOf(caja_id);
-
-                        arr_etiquetas.splice(index);
-                        arr_cajas.splice(index);
-
-                        del_cajas.push(caja_id);
-                        
-
-                        table_etiqueta.row( $(this).parents('tr') )
-                            .remove()
-                            .draw();
-                    }); 
-
-                    alert(data.resp.orden_cajas.length);
-
-                    for (var i = 0; i < data.resp.orden_cajas.length; i++) {
-                        
-                        table_etiqueta.row.add( [
-                            data.resp.orden_cajas[i].id,
-                            data.resp.orden_detalle[i].producto,
-                            data.resp.orden_cajas[i].codigo,
-                            data.resp.orden_cajas[i].kilos
-                        ] ).draw( false );
-
-                        arr_etiquetas.push(data.resp.orden_cajas[i].codigo);
-                        arr_cajas.push(data.resp.orden_cajas[i].id);
+                    if(data[0] == "nok"){
+                        $('#modal_error').modal('show');
                     }
+                    else{
+                        console.log(data);
+                        setValues(data, 0);
 
-                }
-            });
-                
-        });
-
-        $(document).on('click','#update',function(event){
-
-
-            if(arr_etiquetas.length == 0){
-
-                $('#modal_edit').modal('hide');
-                table.ajax.reload();
-            }
-
-
-            var form = $("#form-edit");
-            //obtengo url
-            var url = form.attr('action');
-            //obtengo la informacion del formulario
-            $("#form-edit #orden_id").attr("disabled", false);
-
-             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;
-            
-            $("#form-edit #orden_id").attr("disabled", true);
-
-            $.post(url, data, function(resp)
-            {
-                if(resp[0] == "ok")
-                {
-                    $(".alert-success").html("El registro fue actualizado exitosamente").show();
-                    $(".alert-danger").hide();
-                    //reseteo el formulario
-                    $('#form-edit').trigger("reset");
-
-                    $('#modal_edit').modal('hide');
-
-                    table_pallet.destroy();
-                    arr_etiquetas = [];
-
-                    table.ajax.reload();
-                }
-
-            }).fail(function(resp){
-                $('#modal_edit').animate({ scrollTop: 0 }, 'slow');
-                var html = "";
-                for(var key in resp.responseJSON)
-                {
-                    html += resp.responseJSON[key][0] + "<br>";
-                }
-                $(".alert-success").hide();
-                $(".alert-danger").html(html).show();
-            });
-
-        });
+                        $('#modal_edit').modal('show');
+    
+                    }
+                });
+        } );
 
         $('#table-despacho tbody').on( 'click', '#delete', function ()
         {
@@ -436,39 +331,16 @@
         });
     });
 
-    function setValues(data, n)
-    {
-        var form = "form-edit";
-        if (n == 1) {
-            form = "form-delete";
-        }
-
-        $("#"+form+" input[name='orden_id']").val(data.resp['orden_orden_produccion']);
-        $("#"+form+" input[name='despacho_guia']").val(data.resp['orden_guia']);
-        $("#"+form+" select[name='despacho_estado']").val(data.estatus);
-
-        $("#"+form+" select[name='despacho_estado']").prop("disabled", true);
-        $("#"+form+" input[name='despacho_guia']").prop("disabled", true);
-        $("#"+form+" input[name='despacho_guia']").prop("disabled", true);
-        $("#"+form+" input[name='despacho_fecha']").prop("disabled", true);
-        $("#"+form+" button[name='orden_search']").prop("disabled", true);
-    }
-
 </script>
 <div class="container">
     <div class="row">
         <div class="col-md-11">
             <div class="box box-primary">
                 <div class="box-body">
-                    <a class="btn btn-primary" id="add">
-                        <i class="fa fa-plus"></i>
-                        Agregar Despacho
-                    </a>
-                    <br><br>
-                    <a class="btn btn-default disabled" id="despachos">
+                    <a class="btn btn-primary" href="{{ url('/admin/despacho') }}" id="despachos">
                         Despachos
                     </a>
-                    <a class="btn btn-primary" href="{{ url('admin/despacho/despachados') }}" id="despachados">
+                    <a class="btn btn-default disabled"  id="despachados">
                         Despachados
                     </a>
                     <br><br>
@@ -505,8 +377,6 @@
 
 @include('admin.despacho.modaladd')
 @include('admin.despacho.modalorden')
-@include('admin.despacho.modaledit')
-
 
 
 @endsection

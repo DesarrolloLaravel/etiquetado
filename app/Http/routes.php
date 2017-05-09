@@ -32,7 +32,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('lote/delete','LoteController@destroy');
 
 	Route::get('anulados','AnuladosController@index');
-	
+
 	Route::get('procesador','ProcesadorController@index');
 	Route::get('procesador/edit','ProcesadorController@edit');
 	Route::post('procesador/store','ProcesadorController@store');
@@ -193,6 +193,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('despacho/update','OrdenDespachoController@update');
     Route::post('despacho/delete', 'OrdenDespachoController@delete');
     Route::post('despacho/store', 'OrdenDespachoController@store');
+
+    Route::get("despacho/despachados", function(){
+   		return \View::make("admin/despachados/index");
+	});
 
 
     Route::get('calibre','CalibreController@index');

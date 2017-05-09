@@ -15,12 +15,15 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\OrdenDespacho;
 use App\Models\OrdenTrabajo;
 use App\Models\OrdenDespachoLote;
+use App\Models\OrdenDespachoCaja;
 use App\Models\OrdenProduccion;
 use App\Models\Producto;
 use App\Models\Lote;
 use App\Models\Etiqueta;
 use App\Models\Etiqueta_MP;
 use App\Models\Caja;
+use App\Models\InputOutput;
+use App\Models\CajaPosicion;
 
 class OrdenDespachoController extends Controller
 {
@@ -51,12 +54,17 @@ class OrdenDespachoController extends Controller
         }
     }
 
+    public function despachados(){
+
+        return view('admin.despacho.despachados');
+    }
+
    
     public function index(Request $request)
     {
         if($request->ajax())
         {
-            $ordenes = OrdenDespacho::all();
+            $ordenes = OrdenDespacho::where('orden_estado','<>','DESPACHADO')->get();
 
             if($request->q == "all")
             {
@@ -76,11 +84,10 @@ class OrdenDespachoController extends Controller
                     return '{"data":[]}';
                 }
             }
-            else if($request->q == "pre-embarque")
+            else if($request->q == "despachado")
             {
-                $ordenes = OrdenDespacho::has('despacho_lote')
-                        ->where('orden_estado', 'PRE-EMBARQUE')
-                        ->get();
+                $ordenes = OrdenDespacho::where('orden_estado', 'DESPACHADO')
+                ->get();
                         
                 if($ordenes->count() == 0)
                 {
@@ -164,20 +171,73 @@ class OrdenDespachoController extends Controller
         //
         if($request->ajax()){
 
+            Log::info($request->cajas);
+
+            $estado = $request->despacho_estado;
+
+            Log::info($estado);
+
             $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->despacho_fecha);
             $info = array(
-                'orden_estado'    => $request->despacho_estado,
+                'orden_estado'    => $estado,
                 'orden_orden_produccion'           => $request->orden_id,
                 'orden_guia'    => $request->despacho_guia,
                 'orden_fecha'=> $orden_fecha
             );
-
-
+            
             $orden = OrdenDespacho::create($info);
+
+            $caj = explode(',',$request->cajas);
+            $etis = explode(',',$request->etiquetas);
+
+            for ($i=0; $i < count($etis) ; $i++) { 
+
+                $et = Etiqueta::where('etiqueta_barcode',$etis[$i])->first();
+
+                $caja = Caja::where('caja_id',$caj[$i])->first();
+
+                $ot = OrdenTrabajo::where('orden_trabajo_id',$caja->caja_ot_producto_id)->first();
+           
+                $pp = array(
+
+                    'despacho_orden_id' => $orden->orden_id,
+                    'despacho_lote_id' => $et->etiqueta_lote_id,
+                    'despacho_producto_id' => $ot->orden_trabajo_producto
+                );
+            
+                $opp = OrdenDespachoLote::create($pp); 
+
+                $cc = array(
+                    'despacho_caja_caja_id' => $caj[$i], 
+                    'despacho_caja_despacho_lote_id' => $opp->despacho_id
+
+                );
+
+                OrdenDespachoCaja::create($cc);
+
+                if($estado == 2 || $estado == 3 ){
+
+                    Log::info("Despacho y Despachado");
+
+                    $io = InputOutput::where('io_caja_id',$caj[$i])->firstOrFail();
+
+                    $inout = array(
+                        'io_tipo' => 2,
+                        'io_proceso' => 2
+                    );
+
+                    $io->fill($inout);
+                    $io->save();
+
+                    $pos = CajaPosicion::where('caja_posicion_caja_id',$caj[$i])->firstOrFail();
+
+                    $pos->delete();
+                }
+            }
 
             return response()->json([
                 "ok"
-            ]);   
+            ]);
         }
     }
 
@@ -201,7 +261,78 @@ class OrdenDespachoController extends Controller
     public function edit(Request $request)
     {
         //
-        Log::info("alerta");
+        Log::info("editar Despacho");
+
+        $estado = ['1' => 'Pre-Despacho','2' => 'Despacho', '3' => 'Despachado'];
+
+        if($request->ajax())
+        {
+
+            $orden = OrdenDespacho::with('despacho_lote.lote',
+                        'despacho_lote.producto',
+                        'despacho_lote.cajas.etiqueta',
+                        'despacho_lote.all_cajas.etiqueta')
+                        ->findOrFail($request->despacho_id);
+
+            $resp = [];
+
+            $fecha = \Carbon\Carbon::createFromFormat('Y-m-d', $orden->orden_fecha)->format('d-m-Y'); 
+
+            $resp['orden_id'] = $orden->orden_id;
+            $resp['orden_estado'] = $orden->orden_estado;
+            $resp['orden_orden_produccion'] = $orden->orden_orden_produccion;
+            $resp['orden_guia'] = $orden->orden_guia;
+            $resp['orden_fecha'] = $fecha;
+
+
+            if($resp['orden_estado'] == "PRE-DESPACHO"){
+                $est = 1;
+            }else if($resp['orden_estado'] == "DESPACHO"){
+                $est = 2;
+            }else{
+                $est = 3;
+            }
+
+           
+            $detalle_lote = $orden->despacho_lote()->with('lote','producto','all_cajas.etiqueta')->get();
+
+            //dd($detalle_lote);
+
+            $detalles = [];
+            $cajas = [];
+
+            foreach ($detalle_lote as $detalle) {
+                # code...
+                $arr_detalle['lote_id'] = $detalle->lote->lote_id;
+                $arr_detalle['producto'] = $detalle->producto->fullName;
+
+                $detalles [] = $arr_detalle;
+                $aux = [];
+                
+                foreach ($detalle->cajas as $caja) {
+                    # code...
+                    $aux['id'] = $caja->caja_id;
+                    $aux['codigo'] = $caja->etiqueta->etiqueta_barcode;
+                    $aux['kilos'] = $caja->caja_peso_real;
+                    $cajas[] = $aux;
+                }
+            }
+
+            $resp['orden_cajas'] = $cajas;  
+            $resp['orden_detalle'] = $detalles;
+          
+
+            $view = \View::make('admin.despacho.fields')
+                    ->with('despacho',$resp['orden_id'])
+                    ->with('despacho_fecha', $fecha)
+                    ->with('estado',$estado);
+
+            $sections = $view->renderSections();
+
+            return response()->json(["estado" => "ok","resp" =>$resp,"estatus" => $est,"section" => $sections['contentPanel']]);
+        }
+
+
     }
 
     /**

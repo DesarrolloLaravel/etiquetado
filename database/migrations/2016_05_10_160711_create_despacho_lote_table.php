@@ -19,8 +19,6 @@ class CreateDespachoLoteTable extends Migration
             $table->unsignedInteger('despacho_orden_id')->index();
             $table->unsignedInteger('despacho_lote_id')->index();
             $table->unsignedInteger('despacho_producto_id')->index();
-            $table->Integer('despacho_cajas_plan');
-            $table->float('despacho_kilos_plan');
             $table->timestamps();
             $table->softDeletes();
         });
