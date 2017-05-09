@@ -270,9 +270,7 @@ class OrdenDespachoController extends Controller
 
             $orden = OrdenDespacho::with('despacho_lote.lote',
                         'despacho_lote.producto',
-                        'despacho_lote.cajas.etiqueta',
-                        'despacho_lote.all_cajas.etiqueta')
-                        ->findOrFail($request->despacho_id);
+                        'despacho_lote.cajas.etiqueta')->findOrFail($request->despacho_id);
 
             $resp = [];
 
@@ -294,7 +292,7 @@ class OrdenDespachoController extends Controller
             }
 
            
-            $detalle_lote = $orden->despacho_lote()->with('lote','producto','all_cajas.etiqueta')->get();
+           $detalle_lote = $orden->despacho_lote()->with('lote','producto','cajas.etiqueta')->get();
 
             //dd($detalle_lote);
 
@@ -345,7 +343,85 @@ class OrdenDespachoController extends Controller
     public function update(Request $request)
     {
         //
-        Log::info("alerta");
+        Log::info($request->despacho_id);
+
+        if($request->ajax()){
+
+            $caj = explode(',',$request->cajas);
+            $etis = explode(',',$request->etiquetas);
+            $del = explode(',',$request->del);
+
+            Log::info($caj);
+            Log::info($etis);
+            Log::info($del);
+
+            $odl = OrdenDespachoLote::where('despacho_orden_id',$request->despacho_id)->firstOrFail();
+
+            Log::info("id");
+            Log::info($odl->despacho_id);
+
+
+            for ($i=0; $i < count($del); $i++) { 
+            
+                $odc = OrdenDespachoCaja::where('despacho_caja_caja_id',$del[$i])->where('despacho_caja_despacho_lote_id',$odl->despacho_id)->firstOrFail();
+
+                $odc->delete();
+
+
+                if($request->despacho_estado == 2){
+
+                    $posicion = CajaPosicion::withTrashed()->where('caja_posicion_caja_id',$del[$i])->first();
+
+                    Log::info($posicion);
+
+                    $posicion->restore();
+
+                    $inf = array(
+                            'io_tipo' => 'ENTRADA',
+                            'io_proceso' => 'PRODUCCION'
+                    );
+
+                    $io = InputOutput::where('io_caja_id',$del[$i])->first();
+
+                    $io->fill($inf);
+
+                    $io->save();
+                } 
+
+            }
+            if(count($caj) > 0){
+
+                for ($i=0; $i < count($etis) ; $i++) { 
+
+                    $cc = array(
+                        'despacho_caja_caja_id' => $caj[$i], 
+                        'despacho_caja_despacho_lote_id' => $odl->despacho_id
+
+                    );
+
+                    OrdenDespachoCaja::create($cc);
+
+                    if($estado == 2 || $estado == 3 ){
+
+                        Log::info("Despacho y Despachado");
+
+                        $io = InputOutput::where('io_caja_id',$caj[$i])->firstOrFail();
+
+                        $inout = array(
+                            'io_tipo' => 2,
+                            'io_proceso' => 2
+                        );
+
+                        $io->fill($inout);
+                        $io->save();
+
+                        $pos = CajaPosicion::where('caja_posicion_caja_id',$caj[$i])->firstOrFail();
+
+                        $pos->delete();
+                    }
+                }
+            }
+        }
     }
 
     /**

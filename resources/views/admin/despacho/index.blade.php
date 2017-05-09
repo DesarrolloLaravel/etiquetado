@@ -79,6 +79,7 @@
                 table_etiqueta.destroy();
             }
 
+
             var despacho_id = $(this).parents('tr').data('id');
 
             $.get("despacho/edit",
@@ -98,32 +99,33 @@
                             "url": "../../plugins/datatables/es_ES.txt"
                         },
                         "order": [[ 1, 'desc' ]],
+                        "destroy": true,
                         "columnDefs": [{
                             "targets": -1,
                             "data": null,
-                            "defaultContent": "<a class='btn btn-xs btn-danger' id='delete_caja'><i class='fa fa-close'></i></a>"
+                            "defaultContent": "<a class='btn btn-xs btn-danger' id='d_return'><i class='fa fa-close'></i></a>"
                         }],
                         'fnCreatedRow': function (nRow, aData, iDataIndex) {
                             $(nRow).attr('data-id', aData[0]);
                         }
                     });
 
-                    $('#table-etiqueta tbody').on('click', '#delete_caja', function () {
-
+                    $('#table-etiqueta tbody').on('click', '#d_return', function () {
+                        
+                        alert("caja delete");
                         var caja_id = $(this).parents('tr').data('id');
 
-                        var index = arr_etiquetas.indexOf(caja_id);
+                        var index = arr_cajas.indexOf(caja_id);
 
-                        arr_etiquetas.splice(index);
+                        arr_pallet.splice(index);
                         arr_cajas.splice(index);
 
                         del_cajas.push(caja_id);
-                        
 
                         table_etiqueta.row( $(this).parents('tr') )
                             .remove()
                             .draw();
-                    }); 
+                    });
 
                     alert(data.resp.orden_cajas.length);
 
@@ -136,10 +138,9 @@
                             data.resp.orden_cajas[i].kilos
                         ] ).draw( false );
 
-                        arr_etiquetas.push(data.resp.orden_cajas[i].codigo);
+                        arr_pallet.push(data.resp.orden_cajas[i].codigo);
                         arr_cajas.push(data.resp.orden_cajas[i].id);
                     }
-
                 }
             });
                 
@@ -147,23 +148,23 @@
 
         $(document).on('click','#update',function(event){
 
-
-            if(arr_etiquetas.length == 0){
-
-                $('#modal_edit').modal('hide');
-                table.ajax.reload();
-            }
-
+            alert("doc");
 
             var form = $("#form-edit");
             //obtengo url
             var url = form.attr('action');
             //obtengo la informacion del formulario
-            $("#form-edit #orden_id").attr("disabled", false);
-
-             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;
+            alert(url);
+            $("#form-edit #num_despacho").attr("disabled", false);
+            $("#form-edit #despacho_estado").attr("disabled", false);
             
-            $("#form-edit #orden_id").attr("disabled", true);
+            var data = form.serialize()+ '&cajas=' + arr_cajas + '&etiquetas=' + arr_pallet + '&del='+del_cajas;
+
+            alert(data);
+            
+            
+            $("#form-edit #num_despacho").attr("disabled", true);
+            $("#form-edit #despacho_estado").attr("disabled",true);
 
             $.post(url, data, function(resp)
             {
@@ -176,8 +177,10 @@
 
                     $('#modal_edit').modal('hide');
 
-                    table_pallet.destroy();
-                    arr_etiquetas = [];
+                    table_etiqueta.destroy();
+                    arr_pallet = [];
+                    arr_cajas = [];
+                    delete_caja = [];
 
                     table.ajax.reload();
                 }
@@ -229,7 +232,7 @@
 
         $("#add").click(function(){
 
-            arr_etiquetas = [];
+            arr_pallet = [];
             arr_cajas = [];
 
             if(table_etiqueta != undefined)
@@ -247,6 +250,7 @@
                     "language": {
                         "url": "../../plugins/datatables/es_ES.txt"
                     },
+                    "destroy": true,
                     "order": [[ 1, 'desc' ]],
                     "columnDefs": [{
                         "targets": -1,
@@ -262,9 +266,9 @@
 
                     var caja_id = $(this).parents('tr').data('id');
 
-                    var index = arr_etiquetas.indexOf(caja_id);
+                    var index = arr_pallet.indexOf(caja_id);
 
-                    arr_etiquetas.splice(index);
+                    arr_pallet.splice(index);
                     arr_cajas.splice(index);
                     
 
@@ -346,7 +350,7 @@
             {
                 in_array = false;
 
-                if(arr_etiquetas.indexOf(etiqueta_pallet) >= 0)
+                if(arr_pallet.indexOf(etiqueta_pallet) >= 0)
                 {
                     in_array = true;
                 }
@@ -376,7 +380,7 @@
                             ] ).draw( false );
 
                             arr_cajas.push(data['caja'].caja_id);
-                            arr_etiquetas.push(etiqueta);        
+                            arr_pallet.push(etiqueta);        
 
                         }
                     });
@@ -399,7 +403,7 @@
 
             alert(url);
             //obtengo la informacion del formulario
-            var data = form.serialize()+ '&cajas=' + arr_cajas + '&etiquetas='+ arr_etiquetas;
+            var data = form.serialize()+ '&cajas=' + arr_cajas + '&etiquetas='+ arr_pallet;
 
             alert(data);
 
@@ -418,7 +422,8 @@
                     console.log(table_etiqueta);
                     table_etiqueta.destroy();
                     console.log(table_etiqueta);
-                    arr_etiquetas = [];
+                    arr_pallet = [];
+                    arr_cajas = [];
 
                     table.ajax.reload();
                 }
