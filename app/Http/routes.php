@@ -194,6 +194,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::post('despacho/update','OrdenDespachoController@update');
     Route::post('despacho/delete', 'OrdenDespachoController@delete');
     Route::post('despacho/store', 'OrdenDespachoController@store');
+    Route::get('despacho/despachar', 'OrdenDespachoController@despachar');
+
 
     Route::get("despacho/despachados", function(){
    		return \View::make("admin/despachados/index");

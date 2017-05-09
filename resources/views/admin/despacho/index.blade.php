@@ -61,6 +61,7 @@
                 "data": null,
                 "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
                 <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>\
+                <button class='btn btn-xs btn-warning' id='despachar'><i class='fa fa-reply'></i></button>\
                 <button class='btn btn-xs btn-success' id='excel'><i class='fa fa-file-excel-o'></i></button>"
             }],
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
@@ -225,6 +226,30 @@
                             .not("input[type='hidden']")
                             .attr("disabled", true);    
     
+                    }
+
+                });
+        } );
+
+        $('#table-despacho tbody').on( 'click', '#despachar', function ()
+        {
+            $(".alert").hide();
+            alert("despachar");
+
+            despacho_id = $(this).parents('tr').data('id');
+
+            alert(despacho_id);
+
+            $.get("despacho/despachar",
+                {despacho_id : despacho_id},
+                function(data){
+                    
+                    if(data['estado'] == "nok"){
+                        $('#modal_error').modal('show');
+                    }
+                    else{
+                        
+                        table.ajax.refresh();
                     }
 
                 });

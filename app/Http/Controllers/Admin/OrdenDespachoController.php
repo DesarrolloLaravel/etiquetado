@@ -59,6 +59,47 @@ class OrdenDespachoController extends Controller
         return view('admin.despacho.despachados');
     }
 
+    public function despachar(Request $request){
+
+        Log::info($request->despacho_id);
+
+        $dp = OrdenDespacho::where('orden_id',$request->despacho_id)->firstOrFail();
+
+        if($dp->orden_estado == 1){
+
+            $lote = OrdenDespachoLote::where('despacho_orden_id',$request->despacho_id)->firstOrFail();
+
+            $caja = OrdenDespachoCaja::where('despacho_caja_despacho_lote_id',$lote->despacho_id)->get();
+
+            if($caja->count() > 0){
+                for ($i=0; $i < count($caja) ; $i++) { 
+                    
+                    $io = InputOutput::where('io_caja_id',$caja[$i]->despacho_caja_id)->firstOrFail();
+
+                    $inout = array(
+                        'io_tipo' => 2,
+                        'io_proceso' => 2
+                    );
+
+                    $io->fill($inout);
+                    $io->save();
+
+                    $pos = CajaPosicion::where('caja_posicion_caja_id',$caja[$i]->despacho_caja_id)->firstOrFail();
+
+                    $pos->delete();
+                           
+               }   
+            }
+        }
+
+        $info = array('orden_estado' => 3);
+
+        $dp->fill($info);
+        $dp->save();
+
+        return response()->json(["estado" => "ok"]);
+    }
+
    
     public function index(Request $request)
     {
@@ -269,8 +310,7 @@ class OrdenDespachoController extends Controller
         {
 
             $orden = OrdenDespacho::with('despacho_lote.lote',
-                        'despacho_lote.producto',
-                        'despacho_lote.cajas.etiqueta')->findOrFail($request->despacho_id);
+                        'despacho_lote.producto','despacho_lote.despacho_caja')->findOrFail($request->despacho_id);
 
             $resp = [];
 
@@ -292,7 +332,9 @@ class OrdenDespachoController extends Controller
             }
 
            
-           $detalle_lote = $orden->despacho_lote()->with('lote','producto','cajas.etiqueta')->get();
+           $detalle_lote = $orden->despacho_lote()->with('lote','producto','despacho_caja')->get();
+
+           Log::info($detalle_lote);
 
             //dd($detalle_lote);
 
@@ -307,7 +349,7 @@ class OrdenDespachoController extends Controller
                 $detalles [] = $arr_detalle;
                 $aux = [];
                 
-                foreach ($detalle->cajas as $caja) {
+                foreach ($detalle->despacho_caja as $caja) {
                     # code...
                     $aux['id'] = $caja->caja_id;
                     $aux['codigo'] = $caja->etiqueta->etiqueta_barcode;
