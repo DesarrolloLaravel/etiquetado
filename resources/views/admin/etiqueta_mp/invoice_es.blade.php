@@ -13,8 +13,8 @@
         -webkit-transform-origin: 16% 65%; /* Chrome, Safari, Opera */
         transform: rotate(90deg);
         transform-origin: 16% 65%;
-        margin-top: -200px;
-        margin-left: 10px;
+        margin-top: -150px;
+        margin-left: 1px;
         font-size: 14px;
     }
     table tbody tr td{
@@ -27,7 +27,7 @@
     p {
         margin: 3px -5px;
         padding: 0px;
-        font-size: 12px;
+        font-size: 13px;
     }
 </style>
 <body>
@@ -35,12 +35,12 @@
     this.print();
 </script>
 <main>
-    <table width="285" border="0" cellspacing="0" cellpadding="0">
+    <table width="410" border="0" cellspacing="0" cellpadding="0">
         <tbody>
         <tr class="with-border">
             <td colspan="10">
                 <p>{{ $data['especie_comercial_name'] }}</p>
-                <p style="font-size: 13px">{{ $data['producto'] }}</p>
+                <p style="font-size: 14px">{{ $data['producto'] }}</p>
             </td>
             <td colspan="2">
                 <p>Pallet</p>
@@ -49,6 +49,7 @@
         </tr>
         <tr class="with-border">
             <td colspan="4">
+                Etiqueta Pallet Materia Prima
             </td>
             <td colspan="5">
                 <p>Calidad</p>
@@ -61,12 +62,12 @@
         </tr>
         <tr class="with-border">
             <td colspan="4">
-                <p style="font-size: 10px">Fecha Ingreso
+                <p style="font-size: 11px">Fecha Ingreso
                     <br>(dd-mm-yyyy):</p>
-                <p style="font-size: 10px">Fecha Expiraci&oacute;n
+                <p style="font-size: 11px">Fecha Expiraci&oacute;n
                     <br>(dd-mm-yyyy):</p>
             </td>
-            <td colspan="3" style='border-left-style: hidden; font-size: 12px'>
+            <td colspan="3" style='border-left-style: hidden; font-size: 13px'>
                 {{ $data['fecha_produccion'] }}<br>
                 {{ $data['fecha_vencimiento'] }}
             </td>
@@ -96,14 +97,14 @@
         <tr class="noBorder">
             <td colspan="12">
                 <p>
-                    Pais de Origen Chile * Salmon de Cultivo * Procesado en Chile * Coloreado con Astaxantina * Mantener congelado a -18° C * Procesado de acuerdo al programa HACCP
+                    Pais de Origen Chile * Mantener congelado a -18° C * Procesado de acuerdo al programa HACCP
                 </p>
             </td>
         </tr>
         <tr class="noBorder">
             <td colspan="12" style="text-align:center">
-                <p style="font-size: 12px">{{ $data['code'] }}</p>
-                <img height="50" width="200" style="margin-left:10px;" src="{{ 'data:image/png;base64,'. $data['barcode'] }}" alt="barcode"   /><br>
+                <p style="font-size: 15px">{{ $data['code'] }}</p>
+                <img height="60" width="200" style="margin-left:10px;" src="{{ 'data:image/png;base64,'. $data['barcode'] }}" alt="barcode"   /><br>
                 <br>
             </td>
         </tr>

@@ -12,11 +12,12 @@ return array(
 	],
 	'role' =>[
 		'' => "Seleccione un Rol",
-		'administracion' => 'Administrador',
-		'recepcion' => 'Recepcion',
+		'administracion' => 'Administracion',
+		'gerencia' => 'Gerencia',
+		'almacenamiento' =>'Almacenamiento',
 		'produccion' => 'Produccion',
-		'empaque' => 'Empaque',
-		'almacenamiento' =>'Almacenamiento'
+		'empaque' => 'Empaque'
+
 	],
 	'especie' => [
 		''=>'Ninguno',

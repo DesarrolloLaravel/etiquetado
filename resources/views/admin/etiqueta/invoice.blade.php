@@ -13,8 +13,8 @@
     -webkit-transform-origin: 16% 65%; /* Chrome, Safari, Opera */
     transform: rotate(90deg);
     transform-origin: 16% 65%;
-    margin-top: -175px;
-    margin-left: 10px;
+    margin-top: -140px;
+    margin-left: 3px;
     font-size: 14px;
   }
   table tbody tr td{
@@ -35,12 +35,12 @@
     this.print();
     </script>
     <main>
-      <table width="285" border="0" cellspacing="0" cellpadding="0">
+      <table width="420" border="0" cellspacing="0" cellpadding="0">
         <tbody>
           <tr class="with-border">
             <td colspan="10">
               <p>{{ $data['especie_comercial_name'] }}</p>
-              <p style="font-size: 13px">{{ $data['producto'] }}</p>
+              <p style="font-size: 14px">{{ $data['producto'] }}</p>
             </td>
             <td colspan="2">
               <p>Box</p>
@@ -63,10 +63,10 @@
           </tr>
           <tr class="with-border">
             <td colspan="4">
-              <p style="font-size: 10px">Packing Date (dd-mm-yyyy):</p>
-              <p style="font-size: 10px">Best Before (dd-mm-yyyy):</p>
+              <p style="font-size: 11px">Packing Date (dd-mm-yyyy):</p>
+              <p style="font-size: 11px">Best Before (dd-mm-yyyy):</p>
             </td>
-            <td colspan="3" style='border-left-style: hidden; font-size: 12px'>
+            <td colspan="3" style='border-left-style: hidden; font-size: 13px'>
               {{ $data['fecha_produccion'] }}<br>
               {{ $data['fecha_vencimiento'] }}
             </td>
@@ -96,14 +96,14 @@
           <tr class="noBorder">
             <td colspan="12">
               <p>
-                Country of origin Chile * Farm Raised * Processed in Chile * Colored with Astaxanthin * Keep Frozen at -18° C * Processed under HACCP program
+                Country of origin Chile * Keep Frozen at -18° C * Processed under HACCP program
               </p>
             </td>
           </tr>
           <tr class="noBorder">
             <td colspan="12" style="text-align:center">
-              <p style="font-size: 12px">{{ $data['code'] }}</p>
-              <img height="50" width="200" style="margin-left:10px;" src="{{ 'data:image/png;base64,'. $data['barcode'] }}" alt="barcode"   /><br>
+              <p style="font-size: 15px">{{ $data['code'] }}</p>
+              <img height="60" width="200" style="margin-left:10px;" src="{{ 'data:image/png;base64,'. $data['barcode'] }}" alt="barcode"   /><br>
               <br>
             </td>
           </tr>

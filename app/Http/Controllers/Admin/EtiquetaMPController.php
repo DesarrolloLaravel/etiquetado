@@ -224,7 +224,7 @@ class EtiquetaMPController extends Controller
     {
         //
 
-            $barcode = 'AF0'.$request->etiqueta_fecha.'0'.$request->lote_id.'0'.'P';
+            $barcode = 'PMP'.$request->etiqueta_fecha.'0'.$request->lote_id.'0'.'P';
 
             $info_etiqueta_mp = array(
                 'etiqueta_mp_lote_id'           => $request->lote_id,
@@ -239,7 +239,7 @@ class EtiquetaMPController extends Controller
             $etiqueta_mp_id=Etiqueta_MP::create($info_etiqueta_mp);
             $etiqueta_mp= Etiqueta_MP::findOrFail($etiqueta_mp_id->etiqueta_mp_id);
 
-            $barcode = 'AF0'.$request->lote_id.'0'.$etiqueta_mp_id->etiqueta_mp_id.'0P';
+            $barcode = 'PMP'.$request->lote_id.'0'.$etiqueta_mp_id->etiqueta_mp_id.'0P';
 
             $info_etiqueta_mp = array(
                 'etiqueta_mp_lote_id'           => $request->lote_id,
@@ -253,6 +253,7 @@ class EtiquetaMPController extends Controller
 
             $etiqueta_mp -> fill($info_etiqueta_mp);
             $etiqueta_mp->save();
+
 
             $resp = ["estado" => "ok","etiqueta_mp_id" =>$etiqueta_mp_id->etiqueta_mp_id];
 
@@ -313,6 +314,12 @@ class EtiquetaMPController extends Controller
                 $etiqueta_mp->etiqueta_mp_posicion = $request->select_camara;
                 //se guardan los cambios en la base de datos
                 $etiqueta_mp->save();
+
+
+                $lote = Lote::findOrFail($etiqueta_mp->etiqueta_mp_lote_id);
+                $lote->lote_kilos_recepcion=$lote->lote_kilos_recepcion+$etiqueta_mp->etiqueta_mp_peso;
+                $lote->lote_cajas_recepcion=$lote->lote_cajas_recepcion+$etiqueta_mp->etiqueta_mp_cantidad_cajas;
+                $lote->save();
 
                 $resp = ["ok","Pallet recepcionado exitosamente."];
             }

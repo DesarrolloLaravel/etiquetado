@@ -18,7 +18,7 @@
     var table, barcode = '';
     var pressed = false; 
     var chars = [];
-    var frigorifico_id, camara_id;
+    var frigorifico_id, camara_id , posicion_id;
     var etiqueta_mp_id;
 
     $(document).ready(function(){
@@ -37,7 +37,7 @@
             if (pressed == false) {
                 pressed = true;
                 t = setTimeout(function(){
-                    if (chars.length >= 10) {
+                    if (chars.length >= 8) {
                         var barcode = chars.join("");
                         console.log("Barcode Scanned: " + barcode);
                         // assign value to some input (or do whatever you want)
