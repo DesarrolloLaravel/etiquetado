@@ -178,6 +178,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::get('caja/export/{lote_id}','CajaController@exportTodayPacking');
     Route::get('caja/export/today/{lote_id}/{today}','CajaController@exportTodayPacking');
     Route::get('caja/export/history/{lote_id}','CajaController@exportHistoryPacking');
+    Route::get('caja/export/informe/{fecha}','CajaController@exportinforme');
 
 	Route::get('frigorifico','FrigorificoController@index');
 

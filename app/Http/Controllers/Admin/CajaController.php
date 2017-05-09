@@ -20,6 +20,7 @@ use App\Models\Posicion;
 use App\Models\Lote;
 use App\Models\Producto;
 use App\Models\Etiqueta;
+use Log;
 
 class CajaController extends Controller
 {
@@ -144,6 +145,14 @@ public function max()
     $resp['proxima_caja'] = $proxima_caja;
 
     return $resp;
+}
+
+public function exportinforme($fecha)
+{
+
+    Log::info(\Carbon\Carbon::createFromFormat('Y-m-d', $request->fecha)->format('d-m-Y'));
+
+
 }
 public function exportHistoryPacking($lote_id)
 {

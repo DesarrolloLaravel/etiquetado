@@ -54,8 +54,7 @@ $(document).ready(function(){
         //obtengo url
         var url = form.attr('action');
 
-        var disabled = form.find(':input:disabled').removeAttr('disabled');
-        //obtengo la informacion del formulario
+
         var data = form.serialize();
 
         disabled.attr('disabled','disabled');
