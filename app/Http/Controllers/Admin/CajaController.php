@@ -147,12 +147,10 @@ public function max()
     return $resp;
 }
 
-public function exportinforme($fecha)
+public function informeFecha(Request $request)
 {
-
-    Log::info(\Carbon\Carbon::createFromFormat('Y-m-d', $request->fecha)->format('d-m-Y'));
-
-
+    Log::info("hola");
+    Log::info($request->fecha);
 }
 public function exportHistoryPacking($lote_id)
 {

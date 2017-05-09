@@ -9,37 +9,37 @@
 @endsection
 
 @section('main-content')
-<link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datepicker/datepicker3.css') }}">
+<<link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datepicker/datepicker3.css') }}">
 <script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/plugins/datepicker/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/dataTables.bootstrap.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/jquery.dataTables.min.css') }}">
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 <script type="text/javascript">
 	var table;
     var frigorifico_id, camara_id, posicion_id;
 
-    $(document).ready(function(){
-
-        
-
-        $.ajaxSetup({
+     $.ajaxSetup({
             headers:{
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+    $(document).ready(function(){
+
+
         $(".alert").hide();
         alert = new Alert('#notifications');
 
 
-    $('.datepicker').datepicker({
-        format : 'dd-mm-yyyy',
-        autoclose: true,
-        language : 'es'
-    });
+        $('.datepicker').datepicker({
+            format : 'dd-mm-yyyy',
+            autoclose: true,
+            language : 'es'
+        });
 
-    $('.datepicker').datepicker('update', new Date());
+        $('.datepicker').datepicker('update', new Date());
 
         $("#form-summary").hide();
 
@@ -74,6 +74,7 @@
                 });
             }
         });
+
 
         $("#select_camara").click(function(){
 
@@ -159,45 +160,21 @@
                 alert.error("Debes seleccionar un Lote para exportar");
         });
 
-        $("#informe_produccion").click(function(){
-            $("#modal_prod").modal('show');
+        $(document).on('click','#informe_produccion',function(){
+
+            $('#modal_prod').modal('show');
         });
 
-        $('#select_date').click(function(){
+        $(document).on('click','#select_date',function(){
 
-
-                var form = $("#form-fecha");
-                //obtengo url
-                var url = form.attr('action');
-
-
-                //obtengo la informacion del formulario
-                var data = form.serialize();
-
-
-                alert.error(url);
-    
-                $.get(url, data,
-                        function(data){
-                if(data['estado'] == "ok")
-                {
-                    
-                }
-                else
-                {
-                    alert.error("Ha ocurrido un error. Inténtalo más tarde.")
-                }
+            var fecha = $("#fecha_id").val();
             
-        }).fail(function(resp){
 
-            html = "";
-            for(var key in resp.responseJSON)
-            {
-                html += resp.responseJSON[key][0] + "<br>";
-            }
-            $(".alert-success").hide()
-            $(".alert-danger").html(html).show();
-        });
+            $.get('caja/informeFecha',{fecha : fecha},function(data){
+
+                
+
+            });
         });
 
     });
