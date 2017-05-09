@@ -32,7 +32,6 @@
                         <li><a href="{{ url('admin/etiqueta/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Planta</a></li>
                         <li><a href="{{ url('admin/nordic/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Espec&iacute;fica</a></li>
                         <li><a href="{{ url('admin/etiqueta') }}"><i class='fa fa-circle-o'></i>Monitor de Cajas</a></li>
-                        <li><a href="{{ url('admin/etiqueta/all') }}"><i class='fa fa-circle-o'></i>Todas las Etiquetas</a></li>
                     </ul>
                 </li>
 
@@ -40,7 +39,6 @@
                     <a href="#"><i class='fa fa-list-alt'></i> <span>Stock</span><i class="fa fa-angle-right pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a href="{{ url('admin/caja') }}"><i class='fa fa-cubes'></i>Control Stock</a></li>
-                        <li><a href="{{ url('admin/pallet_pt/create') }}"><i class='fa fa-cubes'></i>Pallets</a></li>
                     </ul>    
                 </li>
 

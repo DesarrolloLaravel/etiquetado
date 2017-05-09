@@ -38,7 +38,13 @@
     <a id="packing_actual" class="btn btn-primary">
         Packing Actual
     </a>
+</div>
+<br>
+<div style="text-align:center">
     <a id="packing_historico" class="btn btn-primary">
         Packing Historico
+    </a>
+    <a id="informe_produccion" class="btn btn-primary">
+        Informe Producción
     </a>
 </div>

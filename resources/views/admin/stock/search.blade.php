@@ -27,6 +27,15 @@
         </div>
     </div>
 
+    <!-- <div class="form-group">
+        {!! Form::label('camara', 'Tipo*',
+        ['class' => 'col-sm-3 control-label']) !!}
+        <div class="col-sm-7">
+        {!! Form::select('select_tipo', [1=>'Ambos',2=>'Producto Terminado',3=>'Materia Prima'], null,['class' => 'form-control','id' => 'select_tipo']) !!}
+        </div>
+    </div>
+    <p>* No afecta en la busqueda de cajas, solo en los reportes.</p> -->
+
 
     <div class="modal-footer" style="text-align:center">
         <a id="search" class="btn btn-primary">

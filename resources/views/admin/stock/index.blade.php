@@ -9,7 +9,9 @@
 @endsection
 
 @section('main-content')
-
+<link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datepicker/datepicker3.css') }}">
+<script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/datepicker/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/dataTables.bootstrap.css') }}">
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
@@ -19,6 +21,8 @@
 
     $(document).ready(function(){
 
+        
+
         $.ajaxSetup({
             headers:{
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -27,7 +31,18 @@
 
         $(".alert").hide();
         alert = new Alert('#notifications');
+
+
+    $('.datepicker').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose: true,
+        language : 'es'
+    });
+
+    $('.datepicker').datepicker('update', new Date());
+
         $("#form-summary").hide();
+
 
         $.get('frigorifico?q=select', function(data){
             $('#select_frigorifico').empty();
@@ -120,6 +135,7 @@
             if($('#select_lote').val() != ""){
                 var url = location.href+"/export/today/"+$('#select_lote').val()+'/true';
                 window.open(url, '_blank');
+
             }
             else
                 alert.error("Debes seleccionar un Lote para exportar");
@@ -141,6 +157,47 @@
             }
             else
                 alert.error("Debes seleccionar un Lote para exportar");
+        });
+
+        $("#informe_produccion").click(function(){
+            $("#modal_prod").modal('show');
+        });
+
+        $('#select_date').click(function(){
+
+
+                var form = $("#form-fecha");
+                //obtengo url
+                var url = form.attr('action');
+
+
+                //obtengo la informacion del formulario
+                var data = form.serialize();
+
+
+                alert.error(url);
+    
+                $.get(url, data,
+                        function(data){
+                if(data['estado'] == "ok")
+                {
+                    
+                }
+                else
+                {
+                    alert.error("Ha ocurrido un error. Inténtalo más tarde.")
+                }
+            
+        }).fail(function(resp){
+
+            html = "";
+            for(var key in resp.responseJSON)
+            {
+                html += resp.responseJSON[key][0] + "<br>";
+            }
+            $(".alert-success").hide()
+            $(".alert-danger").html(html).show();
+        });
         });
 
     });
@@ -205,4 +262,5 @@
     </div>
 </div>
 
+@include('admin.stock.modalfecha')
 @endsection
