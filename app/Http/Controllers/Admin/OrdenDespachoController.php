@@ -27,6 +27,37 @@ use App\Models\CajaPosicion;
 
 class OrdenDespachoController extends Controller
 {
+    public function imprimir_informe($despacho_id){
+
+        Log::info($despacho_id);
+
+        $orden = OrdenDespacho::findOrFail($request->despacho_id);
+
+        Log::info($orden);
+
+        $fecha = \Carbon\Carbon::createFromFormat('Y-m-d', $orden->orden_fecha)->format('d-m-Y'); 
+
+        Excel::create('Orden Despacho '.$orden->orden_id, function($excel) use ($orden) {
+ 
+            $excel->sheet('Packing', function($sheet) use ($orden) {
+
+
+                $detalles = [];
+
+                $detalle['Orden'] = $orden->orden_id;
+                $detalle['Estado'] = $orden->orden_estado;
+                $detalle['Fecha'] = $orden->orden_fecha;
+                $detalle['Orden de Producción'] = $orden->orden_orden_produccion;
+                $detalle['Guía'] = $orden->orden_guia;
+ 
+                $sheet->fromArray($detalle);
+ 
+            });
+            
+        })->export('xls');
+
+    }
+
     public function cargar_etiqueta(Request $request){
 
         Log::info($request->etiqueta);
@@ -52,11 +83,6 @@ class OrdenDespachoController extends Controller
             return response()->json(["estado" => "nok"]);   
 
         }
-    }
-
-    public function despachados(){
-
-        return view('admin.despacho.despachados');
     }
 
     public function despachar(Request $request){
@@ -474,6 +500,16 @@ class OrdenDespachoController extends Controller
      */
     public function delete(Request $request)
     {
-        Log::info("alerta");
+        if($request->ajax())
+        {
+            //se crea el validador con la información enviada desde el cliente
+            $ord = OrdenDespacho::findOrFail($request->despacho_id);
+            //elimino la compañia
+            $ord->delete();
+            //respuesta al cliente
+            return response()->json([
+                "ok"
+            ]);
+        }
     }
 }

@@ -217,24 +217,115 @@
                     }
                     else{
                         
-                        setValues(data, 1);
+                        $('#modal_delete .modal-dialog .modal-content .modal-body').find('#form-delete').html(data['section']);
 
                         $('#modal_delete').modal('show');
 
-                        $("#form-delete :input")
-                            .not('.btn')
-                            .not("input[type='hidden']")
-                            .attr("disabled", true);    
+                        setValues(data,1);
+
+                        table_etiqueta = $('#table-etiqueta').DataTable({
+                            "language": {
+                                "url": "../../plugins/datatables/es_ES.txt"
+                            },
+                            "order": [[ 1, 'desc' ]],
+                            "destroy": true,
+                            "columnDefs": [{
+                                "targets": -1,
+                                "data": null,
+                                "defaultContent": "<a class='btn btn-xs btn-danger' id='d_return'><i class='fa fa-close'></i></a>"
+                            }],
+                            'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                                $(nRow).attr('data-id', aData[0]);
+                            }
+                        });
+
+                        alert(data.resp.orden_cajas.length);
+
+                        for (var i = 0; i < data.resp.orden_cajas.length; i++) {
+                            
+                            table_etiqueta.row.add( [
+                                data.resp.orden_cajas[i].id,
+                                data.resp.orden_detalle[i].producto,
+                                data.resp.orden_cajas[i].codigo,
+                                data.resp.orden_cajas[i].kilos
+                            ] ).draw( false );
+
+                            arr_pallet.push(data.resp.orden_cajas[i].codigo);
+                            arr_cajas.push(data.resp.orden_cajas[i].id);
+                        }
+
     
                     }
 
                 });
         } );
 
-        $('#table-despacho tbody').on( 'click', '#despachar', function ()
+       $(document).on('click','#borrar',function(event){
+
+            alert("doc");
+
+            var form = $("#form-delete");
+            //obtengo url
+            var url = form.attr('action');
+            //obtengo la informacion del formulario
+            alert(url);
+            $("#form-delete #num_despacho").attr("disabled", false);
+            
+            var data = form.serialize();
+
+            alert(data);
+            
+            $("#form-delete #num_despacho").attr("disabled", true);
+
+            $.post(url, data, function(resp)
+            {
+                if(resp[0] == "ok")
+                {
+                    $(".alert-success").html("El registro fue actualizado exitosamente").show();
+                    $(".alert-danger").hide();
+                    //reseteo el formulario
+                    $('#form-delete').trigger("reset");
+
+                    $('#modal_delete').modal('hide');
+
+                    table.ajax.reload();
+                }
+
+            }).fail(function(resp){
+                $('#modal_edit').animate({ scrollTop: 0 }, 'slow');
+                var html = "";
+                for(var key in resp.responseJSON)
+                {
+                    html += resp.responseJSON[key][0] + "<br>";
+                }
+                $(".alert-success").hide();
+                $(".alert-danger").html(html).show();
+            });
+
+        });
+
+        $('#table-despacho tbody').on( 'click', '#excel', function ()
         {
             $(".alert").hide();
-            alert("despachar");
+            alert("excel");
+
+            var despacho_id = $(this).parents('tr').data('id');
+
+            alert(despacho_id);
+
+            $.get("despacho/imprimir_informe",
+                {despacho_id : despacho_id},
+                function(data){
+                    
+                    window.open(data, '_blank');
+
+            });
+        } );
+
+        $("#table-despacho tbody").on( 'click', '#despachar', function ()
+        {
+            $(".alert").hide();
+            alert("excel");
 
             despacho_id = $(this).parents('tr').data('id');
 
@@ -252,8 +343,8 @@
                         table.ajax.refresh();
                     }
 
-                });
-        } );
+            });
+        });
 
         $("#add").click(function(){
 
@@ -471,6 +562,9 @@
         var form = "form-edit";
         if (n == 1) {
             form = "form-delete";
+
+            $("#"+form+" input[name='etiqueta_pallet']").prop("disabled", true);
+            $("#"+form+" #add_pallet").prop("disabled", true);
         }
 
         $("#"+form+" input[name='orden_id']").val(data.resp['orden_orden_produccion']);
@@ -536,6 +630,7 @@
 @include('admin.despacho.modaladd')
 @include('admin.despacho.modalorden')
 @include('admin.despacho.modaledit')
+@include('admin.despacho.modaldelete')
 
 
 
