@@ -17,6 +17,7 @@ class CreateProductosTable extends Migration
             
             $table->increments('producto_id');
             $table->string('producto_nombre')->nullable();
+            $table->string('producto_fullname')->nullable();
             $table->unsignedInteger('producto_especie_id')->index()->nullable();
             $table->unsignedInteger('producto_condicion_id')->nullable();
             $table->unsignedInteger('producto_formato_id')->index()->nullable();

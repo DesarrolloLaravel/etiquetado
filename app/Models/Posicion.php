@@ -33,6 +33,12 @@ class Posicion extends Model
                     ->withTimestamps();
     }
 
+    public function posicion_caja(){
+        return $this->belongsTo('App\Models\CajaPosicion',
+                               'caja_posicion_posicion_id',
+                               'posicion_id');
+    }
+
     public function input_output()
     {
         return $this->belongsToMany('App\Models\Caja',

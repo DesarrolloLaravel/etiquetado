@@ -168,13 +168,11 @@
         $(document).on('click','#select_date',function(){
 
             var fecha = $("#fecha_id").val();
+            var url = location.href+"/informeFecha/"+fecha;
+            window.open(url, '_blank');
+            $('#modal_prod').modal('hide');
+
             
-
-            $.get('caja/informeFecha',{fecha : fecha},function(data){
-
-                
-
-            });
         });
 
     });

@@ -42,4 +42,10 @@ class Etiqueta_MP extends Model
                              'camara_id');
     }
 
+    public function ot_producto(){
+        return $this->belongsTo('App\Models\OrdenTrabajoProducto',
+                                'ot_producto_etiqueta_pallet',
+                                'etiqueta_mp_id');
+    }
+
 }

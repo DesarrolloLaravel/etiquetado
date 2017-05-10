@@ -64,7 +64,43 @@
                         <li class="{{ isActiveRoute('admin/condicion') }}"><a href="{{ url('/admin/condicion') }}"><i class='fa fa-cube'></i> <span>Condición</span></a></li>
                         <li class="{{ isActiveRoute('admin/trim') }}"><a href="{{ url('/admin/trim') }}"><i class='fa fa-cube'></i> <span>Trim</span></a></li>
                     </ul>
-                </li>    
+                </li>
+            @elseif(\Auth::user()->users_role == "gerencia")
+             <li class="{{ isActiveRoute('geren/home') }}"><a href="{{ url('/geren/home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a></li>
+                <!--<li class="{{ isActiveRoute('admin/recepcion') }}"><a href="{{ url('/admin/recepcion') }}"><i class='fa fa-sign-out'></i> <span>Recepci&oacute;n Materia Prima</span></a></li>-->
+                <li class="treeview {{ areActiveRoutes(['geren/lote/create','geren/lote']) }}">
+                    <a href="#"><i class='fa fa-folder'></i> <span>Lotes</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('/geren/lote/create') }}"><i class='fa fa-circle-o'></i>Crear</a></li>
+                        <li><a href="{{ url('/geren/lote') }}"><i class='fa fa-circle-o'></i>Listar</a></li>
+                        <li><a href="{{ url('/geren/etiqueta_mp/create') }}"><i class='fa fa-circle-o'></i>Etiqueta Pallet</a></li>
+                        <li><a href="{{ url('/geren/etiqueta_mp') }}"><i class='fa fa-circle-o'></i>Recepci&oacute;n Pallet</a></li>
+                    </ul>
+                </li>
+                <li class="treeview {{ areActiveRoutes(['geren/ordenproduccion']) }}">
+                    <a href="#"><i class='fa fa-gear '></i> <span>Ordenes</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('/geren/ordenproduccion') }}"><i class='fa fa-circle-o'></i>Producci&oacute;n</a></li>
+                         <li><a href="{{ url('/geren/ordentrabajo') }}"><i class='fa fa-circle-o'></i>Trabajo</a></li>
+                    </ul>
+                </li>
+                <li class="treeview {{ areActiveRoutes(['geren/etiqueta/create','geren/etiqueta', 'geren/nordic/create', 'geren/etiqueta/all']) }}">
+                    <a href="#"><i class='glyphicon glyphicon-barcode'></i> <span>Etiqueta</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('geren/etiqueta/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Planta</a></li>
+                        <li><a href="{{ url('geren/nordic/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Espec&iacute;fica</a></li>
+                        <li><a href="{{ url('geren/etiqueta') }}"><i class='fa fa-circle-o'></i>Monitor de Cajas</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview {{ areActiveRoutes(['geren/caja']) }}">
+                    <a href="#"><i class='fa fa-list-alt'></i> <span>Stock</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('geren/caja') }}"><i class='fa fa-cubes'></i>Control Stock</a></li>
+                    </ul>    
+                </li>
+
+                <li class="{{ isActiveRoute('geren/despacho') }}"><a href="{{ url('/geren/despacho') }}"><i class='fa fa-cubes'></i> <span>Despacho</span></a></li>
             @elseif(\Auth::user()->users_role == "recepcion")
             <li class="{{ isActiveRoute('recepcion/home') }}"><a href="{{ url('/recepcion/home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a></li>
             <li class="treeview {{ areActiveRoutes(['recepcion/lote/create','recepcion/lote']) }}">

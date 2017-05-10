@@ -23,4 +23,11 @@ class CajaPosicion extends Model
                                 'caja_posicion_caja_id',
                                 'caja_id');
     }
+
+    public function posicion(){
+        return $this->hasMany('App\Models\Posicion',
+                              'caja_posicion_posicion_id',
+                              'posicion_id');
+    }
+
 }
