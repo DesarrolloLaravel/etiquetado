@@ -178,7 +178,7 @@
 
             var especie_id = $(this).val();
 
-            
+
             $.get('ordenproduccion/cargar_producto',{especie_id:especie_id},function(data){
 
                 $('#producto_ide').empty()

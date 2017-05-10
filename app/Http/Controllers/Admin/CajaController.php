@@ -203,7 +203,7 @@ public function informeFecha(Request $request)
 
         $etiqueta_pt = Etiqueta::where('etiqueta_estado','NO RECEPCIONADA')->whereBetween('created_at',array($fecha_i,$fecha_f))->with('lote')->get();
 
-         $excel->sheet('Producto Terminado Etiquetado', function($sheet) use ( $etiqueta_pt){
+         $excel->sheet('Etiquetas No Recepcionado', function($sheet) use ( $etiqueta_pt){
 
             foreach ($etiqueta_pt as $mpp) {
                 $aux['#']=$mpp->etiqueta_caja_id;

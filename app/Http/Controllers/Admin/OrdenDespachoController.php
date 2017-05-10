@@ -31,7 +31,7 @@ class OrdenDespachoController extends Controller
 
         Log::info($despacho_id);
 
-        $orden = OrdenDespacho::findOrFail($request->despacho_id);
+        $orden = OrdenDespacho::findOrFail($despacho_id);
 
         Log::info($orden);
 
