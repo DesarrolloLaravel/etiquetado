@@ -31,6 +31,10 @@ class AuthCustom extends Controller
             {
                 return redirect()->intended('admin/home');
             }
+            elseif (\Auth::user()->users_role == "gerencia") {
+                # code...
+                return redirect()->intended('geren/home');
+            }
             elseif (\Auth::user()->users_role == "recepcion") {
                 # code...
                 return redirect()->intended('recepcion/home');

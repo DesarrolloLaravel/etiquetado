@@ -23,7 +23,7 @@ class CalibreController extends Controller
     public function index(Request $request)
     {
         //
-        $calibres = Calibre::all();
+        $calibres = Calibre::where('calibre_id','>','0')->get();
         $unidades = ['null' => 'Ninguno'] + UnidadMedida::orderBy('unidad_medida_nombre', 'ASC')
                 ->get()
                 ->lists('unidad_medida_nombre', 'unidad_medida_id')->all();

@@ -23,7 +23,7 @@ class EnvaseDosController extends Controller
     public function index(Request $request)
     {
         //
-        $envasesdos = Envase_Dos::all();
+        $envasesdos = Envase_Dos::where('envaseDos_id','>','0')->get();
 
         //si es petición ajax
         if($request -> ajax()){

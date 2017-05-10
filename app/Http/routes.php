@@ -462,7 +462,6 @@ Route::group(['prefix' => 'geren', 'middleware' => ['auth','profile:gerencia'], 
 	Route::resource('lote', 'LoteController');
 
 });
-});
 
 Route::group(['prefix' => 'produccion', 'middleware' => ['auth','profile:produccion'], 'namespace' => 'Produccion'], function(){
 

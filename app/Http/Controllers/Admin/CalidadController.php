@@ -23,7 +23,7 @@ class CalidadController extends Controller
     public function index(Request $request)
     {
         //
-        $calidades = Calidad::all();
+        $calidades = Calidad::where('calidad_id','>','0')->get();
 
         if($request->ajax())
         {

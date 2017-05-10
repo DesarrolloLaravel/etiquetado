@@ -73,8 +73,7 @@
             "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
-                    <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
+                "defaultContent": ""
             },
             {
                     "targets" : 0,
@@ -368,7 +367,7 @@
                                 <th>Productor</th>
                                 <th>D. Jurada</th>
                                 <th>Producci&oacute;n</th>
-                                <th>Opciones</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -394,7 +393,7 @@
                                 <th>Productor</th>
                                 <th>D. Jurada</th>
                                 <th>Producci&oacute;n</th>
-                                <th>Opciones</th>
+                                <th></th>
                             </tr>
                         </tfoot>
                     </table>

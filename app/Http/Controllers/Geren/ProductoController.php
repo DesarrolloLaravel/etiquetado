@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\Calibre;
 use App\Models\Calidad;
@@ -103,7 +103,7 @@ class ProductoController extends Controller
                     ->get()
                     ->lists('envaseDos_nombre', 'envaseDos_id')->all();
 
-            return view('admin.producto.index', compact('productos', 'especies','condiciones', 'formatos', 'trims',
+            return view('geren.producto.index', compact('productos', 'especies','condiciones', 'formatos', 'trims',
                 'calidades','variantes','variantes_dos', 'calibres', 'envases','envases_dos'));
         }
     }

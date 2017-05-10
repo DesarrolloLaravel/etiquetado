@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -49,7 +49,7 @@ class ProcesadorController extends Controller
         }
         else
         {
-            return view('admin.procesador.index', compact('procesadores'));
+            return view('geren.procesador.index', compact('procesadores'));
         }
         
     }

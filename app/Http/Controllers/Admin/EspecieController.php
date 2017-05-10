@@ -24,7 +24,7 @@ class EspecieController extends Controller
     public function index(Request $request)
     {
         //
-        $especies = Especie::all();
+        $especies = Especie::where('especie_id','>','0')->get();
 
         if($request->ajax())
         {

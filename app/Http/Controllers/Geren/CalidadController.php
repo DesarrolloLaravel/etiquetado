@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\Calidad;
 use App\Models\Producto;
@@ -49,7 +49,7 @@ class CalidadController extends Controller
         }
         else
         {
-            return view('admin.calidad.index', compact('calidades'));
+            return view('geren.calidad.index', compact('calidades'));
         }
     }
 

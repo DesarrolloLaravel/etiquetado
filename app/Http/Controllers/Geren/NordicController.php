@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\Lote;
 use App\Models\OrdenTrabajo;
@@ -33,7 +33,7 @@ class NordicController extends Controller
         $data['lote_number'] = $lote->lote_id;
         //dd($data);
 
-        $view =  \View::make('admin.nordic.invoice',
+        $view =  \View::make('geren.nordic.invoice',
             compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
@@ -60,7 +60,7 @@ class NordicController extends Controller
     public function create()
     {
         //
-        return view('admin.nordic.create');
+        return view('geren.nordic.create');
     }
 
     /**

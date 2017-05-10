@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -56,7 +56,7 @@ class AnuladosController extends Controller
         }
         else
         {
-            return view('admin.anulados.index');
+            return view('geren.anulados.index');
         }
     }
 

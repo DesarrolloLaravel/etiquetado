@@ -23,7 +23,7 @@ class EnvaseController extends Controller
     public function index(Request $request)
     {
         //
-        $envases = Envase::all();
+        $envases = Envase::where('envase_id','>','0')->get();
 
         //si es petición ajax
         if($request -> ajax()){

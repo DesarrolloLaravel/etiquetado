@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\Especie;
 use App\Models\Producto;
@@ -52,7 +52,7 @@ class EspecieController extends Controller
         }
         else
         {
-            return view('admin.especie.index', compact('especies'));
+            return view('geren.especie.index', compact('especies'));
         }
     }
 

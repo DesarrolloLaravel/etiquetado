@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 use Log;
@@ -78,7 +78,7 @@ class OrdenProduccionController extends Controller
         }
         else
         {
-            return view('admin.orden_produccion.index');
+            return view('geren.orden_produccion.index');
         }
     }
 
@@ -113,7 +113,7 @@ class OrdenProduccionController extends Controller
             $orden_fecha_inicio = \Carbon\Carbon::now()->format('d-m-Y');
             $orden_fecha_compromiso = \Carbon\Carbon::now()->format('d-m-Y');
 
-            $view = \View::make('admin.orden_produccion.fields')
+            $view = \View::make('geren.orden_produccion.fields')
                     ->with('clientes', $clientes)
                     ->with('proxima_orden', $proxima_orden)
                     ->with('orden_fecha', $orden_fecha)
@@ -217,7 +217,7 @@ class OrdenProduccionController extends Controller
             $orden_fecha_inicio = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha_inicio)->format('d-m-Y');
             $orden_fecha_compromiso = \Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha_compromiso)->format('d-m-Y');
 
-            $view = \View::make('admin.orden_produccion.fields')
+            $view = \View::make('geren.orden_produccion.fields')
                     ->with('clientes', $clientes)
                     ->with('proxima_orden', $orden->orden_id)
                     ->with('orden_fecha', $orden_fecha)

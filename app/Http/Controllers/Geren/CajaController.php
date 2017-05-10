@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -524,7 +524,7 @@ public function getCajasByLoteOfProduct(Request $request)
                             ->lists('lote_id', 'lote_id')
                             ->all();
 
-                            return view('admin.stock.index', compact('lotes'));
+                            return view('geren.stock.index', compact('lotes'));
                         }
                     }
 

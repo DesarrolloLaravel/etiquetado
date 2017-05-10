@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -49,7 +49,7 @@ class EmpresaController extends Controller
         }
         else
         {
-            return view('admin.empresa.index', compact('empresas'));
+            return view('geren.empresa.index', compact('empresas'));
         }
     }
 

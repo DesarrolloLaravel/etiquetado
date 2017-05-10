@@ -260,7 +260,7 @@
 
             var data = form.serialize()+ '&productos=' + arr_products+ '&kilos='+arr_kilos;
 
-            alert(data);
+
 
             $.post(url, data, function(resp)
             {

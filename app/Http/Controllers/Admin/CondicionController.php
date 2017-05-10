@@ -24,7 +24,7 @@ class CondicionController extends Controller
     {
         //
         //toma todos las condiciones
-        $condiciones = Condicion::all();
+        $condiciones = Condicion::where('condicion_id','>','0')->get();
 
         //si es petición ajax
         if($request -> ajax()){

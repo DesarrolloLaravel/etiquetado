@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\UnidadMedida;
 use App\Models\Calibre;
@@ -50,7 +50,7 @@ class UnidadMedidaController extends Controller
         }
         else
         {
-            return view('admin.unidad_medida.index', compact('unidades_medida'));
+            return view('geren.unidad_medida.index', compact('unidades_medida'));
         }
     }
 

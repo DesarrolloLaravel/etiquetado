@@ -24,7 +24,7 @@ class VarianteController extends Controller
     public function index(Request $request)
     {
         //toma todos las variantes
-        $variantes = Variante::all();
+        $variantes = Variante::where('variante_id','>','0')->get();
 
         //si es petición ajax
         if($request -> ajax()){

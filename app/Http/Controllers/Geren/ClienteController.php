@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -53,7 +53,7 @@ class ClienteController extends Controller
             return $dt_json;
         }
         else{
-            return view('admin.cliente.index', compact('clientes'));    
+            return view('geren.cliente.index', compact('clientes'));    
         }
     }
 

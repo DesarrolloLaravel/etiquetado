@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\geren;
 
 use Illuminate\Http\Request;
 
@@ -51,7 +51,7 @@ class VarianteDosController extends Controller
             return $dt_json;
         }
         else{
-            return view('admin.varianteDos.index', compact('variantes'));    
+            return view('geren.varianteDos.index', compact('variantes'));    
         }
     }
 

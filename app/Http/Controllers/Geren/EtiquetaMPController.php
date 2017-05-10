@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 use Illuminate\Console\Command;
@@ -34,7 +34,7 @@ class EtiquetaMPController extends Controller
 
         if($diff_minutes >= 5)
         {
-            return response()->json(["nok", "Para reemprimir esta Etiqueta debes solicitar autorización a la Administración."]);
+            return response()->json(["nok", "Para reemprimir esta Etiqueta debes solicitar autorización a la Gerenistración."]);
         }
         else
         {
@@ -57,7 +57,7 @@ class EtiquetaMPController extends Controller
 
         if($diff_minutes >= 5)
         {
-            return "Para reemprimir esta Etiqueta debes solicitar autorización a Administración";
+            return "Para reemprimir esta Etiqueta debes solicitar autorización a Gerenistración";
         }
         else
         {*/
@@ -81,7 +81,7 @@ class EtiquetaMPController extends Controller
         $data['code'] = $etiqueta_mp->etiqueta_mp_barcode;
         $data['lote_number'] = $lote->lote_id;
 
-            $view =  \View::make('admin.etiqueta_mp.invoice_es',
+            $view =  \View::make('geren.etiqueta_mp.invoice_es',
                 compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
@@ -97,7 +97,7 @@ class EtiquetaMPController extends Controller
         $data = $this->getData();
         $date = date('Y-m-d');
         $invoice = "2222";
-        $view =  \View::make('admin.etiqueta.invoice', compact('data', 'date', 'invoice'))->render();
+        $view =  \View::make('geren.etiqueta.invoice', compact('data', 'date', 'invoice'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice', array ("Attachment" => false));
@@ -152,7 +152,7 @@ class EtiquetaMPController extends Controller
         }
         else
         {
-            return view('admin.etiqueta.index_all');
+            return view('geren.etiqueta.index_all');
         }
     }
 
@@ -196,7 +196,7 @@ class EtiquetaMPController extends Controller
         }
         else
         {
-            return view('admin.etiqueta_mp.index');
+            return view('geren.etiqueta_mp.index');
         }
     }
 
@@ -210,7 +210,7 @@ class EtiquetaMPController extends Controller
 
         $productos =[''=>'Ninguno'];
 
-        return view('admin.etiqueta_mp.create',compact('productos'));
+        return view('geren.etiqueta_mp.create',compact('productos'));
 
     }
 

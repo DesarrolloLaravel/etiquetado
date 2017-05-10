@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 use Log;
@@ -132,7 +132,7 @@ class OrdenTrabajoController extends Controller
         }
         else
         {
-            return view('admin.orden_trabajo.index');
+            return view('geren.orden_trabajo.index');
         }
     }
 
@@ -160,7 +160,7 @@ class OrdenTrabajoController extends Controller
 
             $orden_fecha = \Carbon\Carbon::now()->format('d-m-Y');
             
-            $view = \View::make('admin.orden_trabajo.fields')
+            $view = \View::make('geren.orden_trabajo.fields')
                     ->with('ordenProduccion', $ordenProduccion)
                     ->with('proxima_orden', $proxima_orden)
                     ->with('orden_trabajo_fecha', $orden_fecha)
@@ -303,7 +303,7 @@ class OrdenTrabajoController extends Controller
             Log::info($orden_producto);
             Log::info($orden_fecha);
 
-            $view = \View::make('admin.orden_trabajo.fields')
+            $view = \View::make('geren.orden_trabajo.fields')
                     ->with('ordenProduccion', $orden_producto)
                     ->with('proxima_orden', $request->orden_id)
                     ->with('orden_trabajo_fecha', $orden_fecha)
@@ -486,7 +486,7 @@ class OrdenTrabajoController extends Controller
                 Log::info($orden_producto);
                 Log::info($orden_fecha);
 
-                $view = \View::make('admin.orden_trabajo.fields')
+                $view = \View::make('geren.orden_trabajo.fields')
                         ->with('ordenProduccion', $orden_producto)
                         ->with('proxima_orden', $request->id)
                         ->with('orden_trabajo_fecha', $orden_fecha)

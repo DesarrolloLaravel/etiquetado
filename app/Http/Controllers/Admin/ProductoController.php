@@ -13,6 +13,7 @@ use App\Models\Variante;
 use App\Models\VarianteDos;
 use App\Models\Producto;
 use App\Models\Especie;
+use Log;
 
 
 
@@ -63,43 +64,43 @@ class ProductoController extends Controller
         }
         else
         {
-            $especies = ['null'=>'NO APLICA'] + Especie::orderBy('especie_abbreviation', 'ASC')
+            $especies = [''=>'NO APLICA'] + Especie::orderBy('especie_abbreviation', 'ASC')
                     ->get()
                     ->lists('especie_abbreviation','especie_id')->all();
 
-            $condiciones = ['null'=>'NO APLICA'] + Condicion::orderBy('condicion_name', 'ASC')
+            $condiciones = [''=>'NO APLICA'] + Condicion::orderBy('condicion_name', 'ASC')
                     ->get()
                     ->lists('condicion_name','condicion_id')->all();
 
-            $formatos = ['null'=>'NO APLICA'] + Formato::orderBy('formato_nombre', 'ASC')
+            $formatos = [''=>'NO APLICA'] + Formato::orderBy('formato_nombre', 'ASC')
                     ->get()
                     ->lists('formato_abreviatura','formato_id')->all();
 
-            $trims = ['null'=>'NO APLICA'] + Trim::orderBy('trim_name', 'ASC')
+            $trims = [''=>'NO APLICA'] + Trim::orderBy('trim_name', 'ASC')
                     ->get()
                     ->lists('trim_name','trim_id')->all();
 
-            $calidades = ['null' => 'NO APLICA'] + Calidad::orderBy('calidad_nombre', 'ASC')
+            $calidades = ['' => 'NO APLICA'] + Calidad::orderBy('calidad_nombre', 'ASC')
                     ->get()
                     ->lists('calidad_nombre', 'calidad_id')->all();
 
-            $variantes = ['null'=>'NO APLICA'] + Variante::orderBy('variante_name', 'ASC')
+            $variantes = [''=>'NO APLICA'] + Variante::orderBy('variante_name', 'ASC')
                     ->get()
                     ->lists('variante_name','variante_id')->all();
 
-            $variantes_dos = ['null'=>'NO APLICA'] + VarianteDos::orderBy('varianteDos_name', 'ASC')
+            $variantes_dos = [''=>'NO APLICA'] + VarianteDos::orderBy('varianteDos_name', 'ASC')
                     ->get()
                     ->lists('varianteDos_name','varianteDos_id')->all();
 
-            $calibres = ['null' => 'NO APLICA'] + Calibre::orderBy('calibre_nombre', 'ASC')
+            $calibres = ['' => 'NO APLICA'] + Calibre::orderBy('calibre_nombre', 'ASC')
                     ->get()
                     ->lists('calibre_nombre', 'calibre_id')->all();
 
-            $envases = ['null' => 'NO APLICA'] + Envase::orderBy('envase_nombre', 'ASC')
+            $envases = ['' => 'NO APLICA'] + Envase::orderBy('envase_nombre', 'ASC')
                     ->get()
                     ->lists('envase_nombre', 'envase_id')->all();
 
-            $envases_dos = ['null' => 'NO APLICA'] + Envase_Dos::orderBy('envaseDos_nombre', 'ASC')
+            $envases_dos = ['' => 'NO APLICA'] + Envase_Dos::orderBy('envaseDos_nombre', 'ASC')
                     ->get()
                     ->lists('envaseDos_nombre', 'envaseDos_id')->all();
 
@@ -140,23 +141,13 @@ class ProductoController extends Controller
             $producto->producto_v2_id = $request->producto_v2;
             $producto->producto_envase2_id = $request->producto_envase2;
 
-            $especie = Especie::find($request->producto_especie);
-            $producto->especie()->associate($especie);
-
-            $formato = Formato::find($request->producto_formato);
-            $producto->formato()->associate($formato);
-
-            $trim = Trim::find($request->producto_trim);
-            $producto->trim()->associate($trim);
-
-            $calidad = Calidad::find($request->producto_calidad);
-            $producto->calidad()->associate($calidad);
-
-            $calibre = Calibre::find($request->producto_calibre);
-            $producto->calibre()->associate($calibre);
-
-            $envase = Envase::find($request->producto_envase1);
-            $producto->envase()->associate($envase);
+            $producto->producto_especie_id=$request->producto_especie;
+            $producto->producto_formato_id=$request->producto_formato;
+            $producto->producto_trim_id = $request->producto_trim;
+            $producto->producto_calidad_id = $request->producto_calidad;
+            $producto->producto_calibre_id = $request->producto_calibre;
+            $producto->producto_envase1_id = $request->producto_envase1;
+            $producto->producto_fullname=$producto->getFullName();
 
             $producto->save();
 
@@ -224,25 +215,24 @@ class ProductoController extends Controller
 
             //se crea un array con la información enviada desde el cliente
 
-            $info = array(
-                'producto_nombre' => $request->producto_nombre,
-                'producto_codigo' => $request->producto_codigo,
-                'producto_peso' => $request->producto_peso,
-                'producto_condicion_id' => $request->producto_condicion,
-                'producto_variante_id'=> $request->producto_variante,
-                'producto_v2_id' => $request->producto_v2,
-                'producto_envase2_id' => $request->producto_envase2,
-                'producto_especie_id' => $request->producto_especie,
-                'producto_formato_id' => $request->producto_formato,
-                'producto_trim_id' => $request->producto_trim,
-                'producto_calidad_id' => $request->producto_calidad,
-                'producto_calibre_id' => $request->producto_calibre,
-                'producto_envase1_id' => $request->producto_envase1
+            $producto->producto_nombre = $request->producto_nombre;
+            $producto->producto_codigo = $request->producto_codigo;
+            $producto->producto_peso = $request->producto_peso;
 
-                );
+            $producto->producto_condicion_id = $request->producto_condicion;
+            $producto->producto_variante_id = $request->producto_variante;
+            $producto->producto_v2_id = $request->producto_v2;
+            $producto->producto_envase2_id = $request->producto_envase2;
+
+            $producto->producto_especie_id=$request->producto_especie;
+            $producto->producto_formato_id=$request->producto_formato;
+            $producto->producto_trim_id = $request->producto_trim;
+            $producto->producto_calidad_id = $request->producto_calidad;
+            $producto->producto_calibre_id = $request->producto_calibre;
+            $producto->producto_envase1_id = $request->producto_envase1;
+            $producto->producto_fullname=$producto->getFullName();
 
             //se pasa la información a la compañia encontrada
-            $producto->fill($info);
             //se guardan los cambios en la base de datos
             $producto->save();
             //se envia respuesta al cliente

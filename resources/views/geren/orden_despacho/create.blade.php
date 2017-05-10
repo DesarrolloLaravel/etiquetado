@@ -188,7 +188,7 @@
             "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<a class='btn btn-xs btn-danger' id='delete_detail'><i class='fa fa-close'></i></a>"
+                "defaultContent": ""
             },
             {
                 "targets": [ 1 ],

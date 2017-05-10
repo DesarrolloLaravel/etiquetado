@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\Calidad;
 use App\Models\Formato;
@@ -53,7 +53,7 @@ class LoteController extends Controller
             $produccion = $lotes->where('lote_produccion', 'SI')
                             ->lists('lote_id', 'lote_id');
 
-            $view = \View::make('admin.lote.produccionfields')
+            $view = \View::make('geren.lote.produccionfields')
                     ->with('produccion', $produccion)
                     ->with('no_produccion', $no_produccion);
 
@@ -221,7 +221,7 @@ class LoteController extends Controller
         }
         else
         {
-            return view('admin.lote.index');
+            return view('geren.lote.index');
         }
     }
 
@@ -294,7 +294,7 @@ class LoteController extends Controller
         $fecha_planta = \Carbon\Carbon::now()->format('d-m-Y');
         $fecha_expiracion = \Carbon\Carbon::now()->format('d-m-Y');
 
-        return view('admin.lote.lote', 
+        return view('geren.lote.lote', 
                 compact('procesadores',
                         'calidades',
                         'formatos',
@@ -491,7 +491,7 @@ class LoteController extends Controller
                         ->lists('cliente_nombre','cliente_id')
                         ->all();
 
-            $view = \View::make('admin.lote.fields')
+            $view = \View::make('geren.lote.fields')
                     ->with('procesadores', $procesadores)
                     ->with('formatos', $formatos)
                     ->with('calidades', $calidades)

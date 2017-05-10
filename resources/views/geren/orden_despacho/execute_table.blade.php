@@ -70,7 +70,7 @@
                 </a>
             </div>
             @endif
-            @if(\Auth::user()->users_role == "gerenistracion" && \Route::getCurrentRoute()->getPath() != 'geren/despacho')
+            @if(\Auth::user()->users_role == "gerencia" && \Route::getCurrentRoute()->getPath() != 'geren/despacho')
                 <div class="form-group" style="text-align:center">
                     <a id="discount" class="btn btn-lg btn-success">
                         Despachar

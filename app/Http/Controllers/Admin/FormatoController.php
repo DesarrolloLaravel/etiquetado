@@ -23,7 +23,7 @@ class FormatoController extends Controller
     public function index(Request $request)
     {
         //
-        $formatos = Formato::all();
+        $formatos = Formato::where('formato_id','>','0')->get();
 
         if($request -> ajax()){
 

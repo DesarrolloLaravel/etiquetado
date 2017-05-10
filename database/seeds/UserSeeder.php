@@ -21,6 +21,14 @@ class UserSeeder extends Seeder
         ));
 
         \DB::table('users')->insert(array(
+            'users_user'        => 'gerencia',
+            'users_name'        => 'Javier Villarroel',
+            'users_email'       => 'recepcion@gmail.com',
+            'password'    => \Hash::make('123123'),
+            'users_role'        => 'gerencia'
+        ));
+
+        \DB::table('users')->insert(array(
             'users_user'        => 'recepcion',
             'users_name'        => 'Javier Villarroel',
             'users_email'       => 'recepcion@gmail.com',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 
 use Illuminate\Http\Request;
@@ -35,7 +35,7 @@ class EtiquetaController extends Controller
 
         if($diff_minutes >= 5)
         {
-            return response()->json(["nok", "Para reemprimir esta Etiqueta debes solicitar autorización a la Administración."]);
+            return response()->json(["nok", "Para reemprimir esta Etiqueta debes solicitar autorización a la Gerenistración."]);
         }
         else
         {
@@ -58,7 +58,7 @@ class EtiquetaController extends Controller
 
         if($diff_minutes >= 5)
         {
-            return "Para reemprimir esta Etiqueta debes solicitar autorización a Administración";
+            return "Para reemprimir esta Etiqueta debes solicitar autorización a Gerenistración";
         }
         else
         {*/
@@ -99,13 +99,13 @@ class EtiquetaController extends Controller
         $data['lote_number'] = $lote->lote_id;
 
         if(\Config::get('options.idioma')[$idioma] == "Español")
-            $view =  \View::make('admin.etiqueta.invoice_es',
+            $view =  \View::make('geren.etiqueta.invoice_es',
                 compact('data'))->render();
         elseif (\Config::get('options.idioma')[$idioma] == "Inglés")
-            $view =  \View::make('admin.etiqueta.invoice',
+            $view =  \View::make('geren.etiqueta.invoice',
                 compact('data'))->render();
         else
-            $view =  \View::make('admin.etiqueta.invoice',
+            $view =  \View::make('geren.etiqueta.invoice',
                 compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
@@ -121,7 +121,7 @@ class EtiquetaController extends Controller
         $data = $this->getData();
         $date = date('Y-m-d');
         $invoice = "2222";
-        $view =  \View::make('admin.etiqueta.invoice', compact('data', 'date', 'invoice'))->render();
+        $view =  \View::make('geren.etiqueta.invoice', compact('data', 'date', 'invoice'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice', array ("Attachment" => false));
@@ -176,7 +176,7 @@ class EtiquetaController extends Controller
         }
         else
         {
-            return view('admin.etiqueta.index_all');
+            return view('geren.etiqueta.index_all');
         }
     }
 
@@ -221,7 +221,7 @@ class EtiquetaController extends Controller
         }
         else
         {
-            return view('admin.etiqueta.index');
+            return view('geren.etiqueta.index');
         }
     }
 
@@ -249,12 +249,12 @@ class EtiquetaController extends Controller
         $peso_estandar = $producto->producto_peso;
         $caja_id = $etiqueta->caja->caja_id + 1;
 
-        return view('admin.etiqueta.create', compact('lote_id', 'orden_id', 'producto_id',
+        return view('geren.etiqueta.create', compact('lote_id', 'orden_id', 'producto_id',
             'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
         
         $proxima_caja = Caja::withTrashed()->max('caja_id') + 1;
 
-        return view('admin.etiqueta.create',compact('proxima_caja'));
+        return view('geren.etiqueta.create',compact('proxima_caja'));
 
     }
 

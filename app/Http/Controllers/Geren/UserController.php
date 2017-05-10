@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -54,7 +54,7 @@ class UserController extends Controller
             return $dt_json;
         }
         else{
-            return view('admin.user.index', compact('users'));    
+            return view('geren.user.index', compact('users'));    
         }
     }
 

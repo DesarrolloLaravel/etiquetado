@@ -23,7 +23,7 @@ class VarianteDosController extends Controller
     public function index(Request $request)
     {
         //
-         $variantes = VarianteDos::all();
+         $variantes = VarianteDos::where('varianteDos_id','>','0')->get();
 
         //si es petición ajax
         if($request -> ajax()){

@@ -79,6 +79,7 @@ class Producto extends Model
         }
 
         $especie = $this->especie ? $this->especie->especie_abbreviation : '';
+        $condicion = $this->condicion ? $this->condicion->condicion_name : '';
         $producto = $this->producto_condicion_id == 0 ? '' : $this->producto_condicion_id;
         $trim = $this->trim ? $this->trim->trim_nombre : '';
         $calibre = $this->calibre ? $this->calibre->calibre_nombre : '';
@@ -86,11 +87,11 @@ class Producto extends Model
         $calidad = $this->calidad ? $this->calidad->calidad_nombre : '';
 
         return $especie." ".
-            \Config::get('producto.condicion')[$producto]." ".
+            $condicion." ".
             $formato." ".
             $trim." ".
             $calibre." ".
-            \Config::get('producto.v2')[$productov2]." ".
+            $productov2." ".
             $calidad;
     }
 

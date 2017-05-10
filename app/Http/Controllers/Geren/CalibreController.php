@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use App\Models\Calibre;
 use App\Models\UnidadMedida;
@@ -52,7 +52,7 @@ class CalibreController extends Controller
         }
         else
         {
-            return view('admin.calibre.index', compact('calibres','unidades'));
+            return view('geren.calibre.index', compact('calibres','unidades'));
         }
     }
 

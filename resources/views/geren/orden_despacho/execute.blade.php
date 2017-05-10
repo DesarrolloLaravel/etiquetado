@@ -363,7 +363,7 @@
 @include('geren.orden_despacho.modal_orden_despacho')
 @include('geren.orden_despacho.modal_despacho')
 
-@if(\Auth::user()->users_role == "gerenistracion")
+@if(\Auth::user()->users_role == "gerencia")
     @include('geren.orden_despacho.modal_despachar')
 @endif
 

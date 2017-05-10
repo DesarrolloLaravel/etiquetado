@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 
@@ -52,7 +52,7 @@ class EnvaseController extends Controller
             return $dt_json;
         }
         else{
-            return view('admin.envase.index', compact('envases'));    
+            return view('geren.envase.index', compact('envases'));    
         }
     }
 

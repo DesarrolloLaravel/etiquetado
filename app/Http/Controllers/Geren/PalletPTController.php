@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Illuminate\Http\Request;
 use Illuminate\Console\Command;
@@ -36,7 +36,7 @@ class PalletPTController extends Controller
 
         if($diff_minutes >= 5)
         {
-            return response()->json(["nok", "Para reemprimir esta Etiqueta debes solicitar autorización a la Administración."]);
+            return response()->json(["nok", "Para reemprimir esta Etiqueta debes solicitar autorización a la Gerenistración."]);
         }
         else
         {
@@ -59,7 +59,7 @@ class PalletPTController extends Controller
 
         if($diff_minutes >= 5)
         {
-            return "Para reemprimir esta Etiqueta debes solicitar autorización a Administración";
+            return "Para reemprimir esta Etiqueta debes solicitar autorización a Gerenistración";
         }
         else
         {*/
@@ -83,7 +83,7 @@ class PalletPTController extends Controller
         $data['code'] = $etiqueta_mp->etiqueta_mp_barcode;
         $data['lote_number'] = $lote->lote_id;
 
-            $view =  \View::make('admin.etiqueta_mp.invoice_es',
+            $view =  \View::make('geren.etiqueta_mp.invoice_es',
                 compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
@@ -99,7 +99,7 @@ class PalletPTController extends Controller
         $data = $this->getData();
         $date = date('Y-m-d');
         $invoice = "2222";
-        $view =  \View::make('admin.etiqueta.invoice', compact('data', 'date', 'invoice'))->render();
+        $view =  \View::make('geren.etiqueta.invoice', compact('data', 'date', 'invoice'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
         return $pdf->stream('invoice', array ("Attachment" => false));
@@ -154,7 +154,7 @@ class PalletPTController extends Controller
         }
         else
         {
-            return view('admin.etiqueta.index_all');
+            return view('geren.etiqueta.index_all');
         }
     }
 
@@ -198,7 +198,7 @@ class PalletPTController extends Controller
         }
         else
         {
-            return view('admin.pallet_pt.index');
+            return view('geren.pallet_pt.index');
         }
     }
 
@@ -212,7 +212,7 @@ class PalletPTController extends Controller
 
         $proximo_pallet=Pallet_PT::withTrashed()->max('pallet_pt_id') + 1;
 
-        return view('admin.pallet_pt.create',compact('proximo_pallet'));
+        return view('geren.pallet_pt.create',compact('proximo_pallet'));
 
     }
 
@@ -221,7 +221,7 @@ class PalletPTController extends Controller
 
         $proximo_pallet=Pallet_PT::withTrashed()->max('pallet_pt_id') + 1;
 
-        return view('admin.pallet_pt.create',compact('proximo_pallet'));
+        return view('geren.pallet_pt.create',compact('proximo_pallet'));
 
     }
 

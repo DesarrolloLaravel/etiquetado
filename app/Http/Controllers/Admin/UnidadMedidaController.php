@@ -22,7 +22,7 @@ class UnidadMedidaController extends Controller
     public function index(Request $request)
     {
         //
-        $unidades_medida = UnidadMedida::all();
+        $unidades_medida = UnidadMedida::where('unidad_medida_id','>','0')->get();;
 
         if($request->ajax())
         {

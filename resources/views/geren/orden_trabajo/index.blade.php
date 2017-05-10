@@ -79,8 +79,7 @@
                 "targets": -1,
                 "data": null,
                 "defaultContent": "<button class='btn btn-xs btn-warning' id='return'><i class='fa fa-reply'></i></button>\
-                    <button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
-                    <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
+                    <button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>"
             }],
 
             'fnCreatedRow': function (nRow, aData, iDataIndex) {

@@ -80,8 +80,7 @@
             "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>\
-                    <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
+                "defaultContent": "<button class='btn btn-xs btn-primary' id='edit'><i class='fa fa-pencil'></i></button>"
             }],
             'fnCreatedRow': function (nRow, aData, iDataIndex) {
                 $(nRow).attr('data-id', aData[1]);
@@ -259,8 +258,6 @@
             //obtengo la informacion del formulario
 
             var data = form.serialize()+ '&productos=' + arr_products+ '&kilos='+arr_kilos;
-
-            alert(data);
 
             $.post(url, data, function(resp)
             {

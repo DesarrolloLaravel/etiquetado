@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Geren;
 
 use Log;
 use Illuminate\Http\Request;
@@ -56,7 +56,7 @@ class OrdenDespachoController extends Controller
 
     public function despachados(){
 
-        return view('admin.despacho.despachados');
+        return view('geren.despacho.despachados');
     }
 
    
@@ -121,7 +121,7 @@ class OrdenDespachoController extends Controller
         }
         else
         {
-            return view('admin.despacho.index');
+            return view('geren.despacho.index');
         }
     }
 
@@ -149,7 +149,7 @@ class OrdenDespachoController extends Controller
 
             Log::info($despacho_fecha);
             
-            $view = \View::make('admin.despacho.fields')
+            $view = \View::make('geren.despacho.fields')
                     ->with('despacho', $despacho)
                     ->with('despacho_fecha', $despacho_fecha)
                     ->with('estado',$estado);
@@ -320,7 +320,7 @@ class OrdenDespachoController extends Controller
             $resp['orden_detalle'] = $detalles;
           
 
-            $view = \View::make('admin.despacho.fields')
+            $view = \View::make('geren.despacho.fields')
                     ->with('despacho',$resp['orden_id'])
                     ->with('despacho_fecha', $fecha)
                     ->with('estado',$estado);
