@@ -195,6 +195,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
     Route::post('despacho/delete', 'OrdenDespachoController@delete');
     Route::post('despacho/store', 'OrdenDespachoController@store');
     Route::get('despacho/despachar', 'OrdenDespachoController@despachar');
+    Route::get('despacho/imprimir_informe/{orden_id}', 'OrdenDespachoController@imprimir_informe');
 
 
     Route::get("despacho/despachados", function(){

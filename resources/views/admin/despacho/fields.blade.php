@@ -58,7 +58,7 @@
 		</div>
 
 		<div class="col-sm-2">
-			<a class="btn btn-primary" id="add_pallet">
+			<a class="btn btn-primary" id="add_pallet" name="add_pallet">
 	            <i class="fa fa-plus"></i>
 	        </a>
 		</div>
