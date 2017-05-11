@@ -32,7 +32,10 @@ class OrdenProduccionController extends Controller
 
         Log::info("cargar_producto");
         
-        $productos = Producto::orderBy('producto_nombre','ASC')->where('producto_especie_id',$request->especie_id)->lists('producto_nombre','producto_id')->all();
+        $productos = Producto::orderBy('producto_nombre','ASC')
+                               ->where('producto_especie_id',$request->especie_id)
+                               ->lists('producto_fullname','producto_id')
+                               ->all();
 
         Log::info($productos);
 
@@ -101,9 +104,10 @@ class OrdenProduccionController extends Controller
 
             $especies =[''=>'Ninguno'] +
                 Especie::orderBy('especie_name','ASC')
-                    ->get()
-                    ->lists('especie_name','especie_id')
+                    ->where('especie_id','>','0')
+                    ->lists('especie_comercial_name','especie_id')
                     ->all();
+
             
             $productos =[''=>'Ninguno'];
 
@@ -206,7 +210,7 @@ class OrdenProduccionController extends Controller
 
              $especies =[''=>'Ninguno'] +
                 Especie::orderBy('especie_name','ASC')
-                    ->get()
+                    ->where('especie_id','>','0')
                     ->lists('especie_comercial_name','especie_id')
                     ->all();
 

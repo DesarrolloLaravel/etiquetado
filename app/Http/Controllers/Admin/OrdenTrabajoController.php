@@ -75,7 +75,8 @@ class OrdenTrabajoController extends Controller
         $productos = Producto::orderBy('producto_nombre','ASC')
                 ->where('producto_especie_id',$request->especie_id)
                 ->where('producto_id','<>',0)
-                ->lists('producto_nombre','producto_id')
+                ->lists('producto_fullname','producto_id')
+
                 ->all();
 
         Log::info($productos);

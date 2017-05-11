@@ -307,19 +307,12 @@
         $('#table-despacho tbody').on( 'click', '#excel', function ()
         {
             $(".alert").hide();
-            alert("excel");
 
             var despacho_id = $(this).parents('tr').data('id');
 
             alert(despacho_id);
-
-            $.get("despacho/imprimir_informe",
-                {despacho_id : despacho_id},
-                function(data){
-                    
-                    window.open(data, '_blank');
-
-            });
+            var url = location.href+"/imprimir_informe/"+despacho_id;
+            window.open(url, '_blank');
         } );
 
         $("#table-despacho tbody").on( 'click', '#despachar', function ()

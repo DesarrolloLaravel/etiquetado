@@ -63,13 +63,10 @@
         {
             $(".alert").hide();
 
-            alert("excel");
-
             var despacho_id = $(this).parents('tr').data('id');
 
             alert(despacho_id);
-
-            var url = location.href+"/imprimir_informe/"+despacho_id;
+            var url = location.href+"../../imprimir_informe/"+despacho_id;
             window.open(url, '_blank');
 
         });
