@@ -470,15 +470,37 @@
 
                     $('#table-pallet tbody').on('click', '#d_return', function () {
                         
-                        etiqueta_id = $(this).parents('tr').data('id');
+                        var etiqueta_id = $(this).parents('tr').data('id');
+                        $("#form-return #orden_trabajo_id").attr("disabled", false);
 
-                        arr_etiquetas.push(etiqueta_id);
+                        var orden = $( "#orden_prod" ).val();
+
+                        $("#form-return #orden_trabajo_id").attr("disabled", true);
+                        alert(orden);
+
+                        //arr_etiquetas.push(etiqueta_id);
                         
 
-                        table_pallet.row( $(this).parents('tr') )
+                        /*table_pallet.row( $(this).parents('tr') )
                             .remove()
-                            .draw();
-                    });   
+                            .draw();*/
+
+                        $.get("ordentrabajo/rec_etiqueta",
+                        {orden : orden, etiqueta_id : etiqueta_id},function(data){
+
+
+                            alert(JSON.stringify(data));
+                            
+
+                            $("#form-returne input[name='orden_number']").val(orden);
+                            $("#form-returne input[name='orden_etid']").val(etiqueta_id);
+                            $("#form-returne input[name='orden_etiqueta']").val(data.eti.etiqueta_mp_barcode);
+                            $("#form-returne input[name='orden_kilos_actual']").val(data.eti.etiqueta_mp_peso);
+                            $("#form-returne input[name='orden_cajas_actual']").val(data.eti.etiqueta_mp_cantidad_cajas);
+                            $('#modal_etiqueta').modal('show');
+
+                        });
+                    });
                     
             
                     $('.datepicker').datepicker({
@@ -488,6 +510,7 @@
                     });
 
                 }
+
 
             });
 
@@ -556,7 +579,6 @@
         });
 
         $(document).on('click','#borrar',function(event){
-
 
             
             var form = $("#form-delete");
@@ -649,8 +671,6 @@
             });
         });
 
-
-
     });
 
 </script>
@@ -701,4 +721,5 @@
 @include('admin.orden_trabajo.modaledit')
 @include('admin.orden_trabajo.modalreturn')
 @include('admin.orden_trabajo.modaldelete')
+@include('admin.orden_trabajo.modalreturnetiqueta')
 @endsection

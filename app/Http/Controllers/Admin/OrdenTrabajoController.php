@@ -28,7 +28,18 @@ class OrdenTrabajoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+    public function rec_etiqueta(Request $request){
+
+        Log::info($request->orden);
+        Log::info($request->etiqueta_id);
+
+        $et = Etiqueta_MP::where('etiqueta_mp_id',$request->etiqueta_id)->first();
+
+        Log::info($et);
+
+        return response()->json(["estado" => "ok", "eti" => $et]);
+
+    }
     public function cargar_especie(Request $request)
     {
         //
@@ -39,13 +50,16 @@ class OrdenTrabajoController extends Controller
         $dat = [];
 
         foreach ($pro as $pp) {
-            
-            $dat[$pp->producto->especie->especie_id] = $pp->producto->especie->especie_comercial_name;
 
-            Log::info($pp->producto->especie->especie_id);
-            Log::info($pp->producto->especie->especie_comercial_name);
+            if($pp->producto->especie->especie_id > 0){
 
-            Log::info($dat);
+                $dat[$pp->producto->especie->especie_id] = $pp->producto->especie->especie_comercial_name;
+
+                Log::info($pp->producto->especie->especie_id);
+                Log::info($pp->producto->especie->especie_comercial_name);
+
+                Log::info($dat);
+            }   
         }
 
         $especies = $dat;
@@ -60,6 +74,7 @@ class OrdenTrabajoController extends Controller
         
         $productos = Producto::orderBy('producto_nombre','ASC')
                 ->where('producto_especie_id',$request->especie_id)
+                ->where('producto_id','<>',0)
                 ->lists('producto_nombre','producto_id')
                 ->all();
 

@@ -161,6 +161,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('ordentrabajo/validar_etiqueta', 'OrdenTrabajoController@validar_etiqueta');
 	Route::get('ordentrabajo/kilos_eti', 'OrdenTrabajoController@kilos_eti');
 	Route::post('ordentrabajo/r_pallet', 'OrdenTrabajoController@r_pallet');
+    Route::get('ordentrabajo/rec_etiqueta', 'OrdenTrabajoController@rec_etiqueta');
 	Route::get('ordentrabajo/pre_borrado', 'OrdenTrabajoController@pre_borrado');
 
 	Route::get('producto', 'ProductoController@index');
