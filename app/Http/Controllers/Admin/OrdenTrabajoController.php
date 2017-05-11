@@ -90,22 +90,20 @@ class OrdenTrabajoController extends Controller
     {
         //
 
-        Log::info($request->producto_id);
-        Log::info($request->etiqueta_pallet);
 
-        $eti = Etiqueta_MP::where('etiqueta_mp_producto_id',$request->producto_id)->where('etiqueta_mp_estado','NO RECEPCIONAdO')->where('etiqueta_mp_barcode',$request->etiqueta_pallet)
+
+        $eti = Etiqueta_MP::where('etiqueta_mp_estado','NO RECEPCIONAdO')->where('etiqueta_mp_barcode',$request->etiqueta_pallet)
         ->count();
 
-        Log::info($eti);
+
 
         if($eti == 1){
 
-            Log::info("Pallet: ".$request->etiqueta_pallet);
+
 
             $kilos = Etiqueta_MP::where('etiqueta_mp_barcode',$request->etiqueta_pallet)->first();
 
-            Log::info($kilos);        
-        
+
             return response()->json(["estado" => "ok", "dato" => $kilos]);
 
         }else{

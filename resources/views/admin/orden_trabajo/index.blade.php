@@ -260,7 +260,9 @@
 
                 if(in_array)
                 {
-                    alert("La etiqueta ya fue agregada a la lista.")
+
+                     $(".alert-danger").html("La etiqueta ya fue agregada a la lista.").show();    
+
                 }
                 else
                 {
@@ -323,7 +325,7 @@
             }
             else
             {
-            alert("Debes seleccionar una Etiqueta");
+            $(".alert-danger").html("Debes seleccionar una Etiqueta").show(); 
             }
         });
 
@@ -505,7 +507,7 @@
                         var orden = $( "#orden_prod" ).val();
 
                         $("#form-return #orden_trabajo_id").attr("disabled", true);
-                        alert(orden);
+
 
                         //arr_etiquetas.push(etiqueta_id);
                         
@@ -518,7 +520,7 @@
                         {orden : orden, etiqueta_id : etiqueta_id},function(data){
 
 
-                            alert(JSON.stringify(data));
+
                             
 
                             $("#form-returne input[name='orden_number']").val(orden);
@@ -613,12 +615,12 @@
             var form = $("#form-delete");
             //obtengo url
             var url = form.attr('action');
-            alert(url);
+
             $("#form-delete #orden_trabajo_id").attr("disabled", false);
             //obtengo la informacion del formulario
             var data = form.serialize();          
 
-            alert(data);
+
 
             $.post(url, data, function(resp)
             {
@@ -657,8 +659,7 @@
             var form = $("#form-returne");
             //obtengo url
             var url = form.attr('action');
-            //obtengo la informacion del formulario
-            alert(url);
+
             $("#form-returne #orden_trabajo_id").attr("disabled", false);
             $("#form-returne #orden_etiqueta").attr("disabled", false);
             $("#form-returne #orden_kilos_actual").attr("disabled", false);
@@ -666,7 +667,7 @@
 
             var data = form.serialize();
             
-            alert(data);
+
 
             $("#form-returne #orden_trabajo_id").attr("disabled", true);
             $("#form-returne #orden_etiqueta").attr("disabled", true);
