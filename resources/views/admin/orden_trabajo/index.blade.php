@@ -56,6 +56,7 @@
     var table;
     var table_pallet;
     var arr_etiquetas = [];
+    var lote_add = 0;
    
     $(document).ready(function(){
 
@@ -248,7 +249,6 @@
             etiqueta_pallet = $("#etiqueta_ide").val();
             producto_id = $("#producto_ide").val();
 
-
             if(etiqueta_pallet != '')
             {
                 in_array = false;
@@ -273,21 +273,50 @@
 
                         }else{
 
-                            $(".alert-danger").hide();
-                            table_pallet.row.add( [
-                                data['dato'].etiqueta_mp_id,
-                                data['dato'].etiqueta_mp_lote_id,
-                                $("#etiqueta_ide").val(),
-                                data['dato'].etiqueta_mp_peso
-                            ] ).draw( false );
+                            if(lote_add == 0){
+                                lote_add = data['dato'].etiqueta_mp_lote_id;    
 
-                            arr_etiquetas.push(etiqueta_pallet);
+                                $(".alert-danger").hide();
+
+                                table_pallet.row.add( [
+                                    data['dato'].etiqueta_mp_id,
+                                    data['dato'].etiqueta_mp_lote_id,
+                                    $("#etiqueta_ide").val(),
+                                    data['dato'].etiqueta_mp_peso
+                                ] ).draw( false );
+                                
+                                arr_etiquetas.push(etiqueta_pallet);
 
 
-                            $( "#producto_ide" ).prop( "disabled", true );
-                            $( "#especie_id" ).prop( "disabled", true );
-                            $( "#orden_prod" ).prop( "disabled", true );        
+                                $( "#producto_ide" ).prop( "disabled", true );
+                                $( "#especie_id" ).prop( "disabled", true );
+                                $( "#orden_prod" ).prop( "disabled", true );      
+                            
+                            }else{
 
+                                if(lote_add == data['dato'].etiqueta_mp_lote_id){
+                                    $(".alert-danger").hide();
+
+                                    table_pallet.row.add( [
+                                        data['dato'].etiqueta_mp_id,
+                                        data['dato'].etiqueta_mp_lote_id,
+                                        $("#etiqueta_ide").val(),
+                                        data['dato'].etiqueta_mp_peso
+                                    ] ).draw( false );
+                                
+                                    arr_etiquetas.push(etiqueta_pallet);
+
+
+                                    $( "#producto_ide" ).prop( "disabled", true );
+                                    $( "#especie_id" ).prop( "disabled", true );
+                                    $( "#orden_prod" ).prop( "disabled", true );    
+                                }
+                                else{
+
+                                    $(".alert-success").hide();
+                                    $(".alert-danger").html("La etiqueta no coincide con el lote").show(); 
+                                }
+                            }
                         }
                     });
                 }
@@ -625,38 +654,44 @@
         $(document).on('click','#update_return',function(event){
 
 
-            if(arr_etiquetas.length == 0){
-
-                $('#modal_return').modal('hide');
-                table.ajax.reload();
-            }
-
-            var form = $("#form-return");
+            var form = $("#form-returne");
             //obtengo url
             var url = form.attr('action');
             //obtengo la informacion del formulario
+            alert(url);
+            $("#form-returne #orden_trabajo_id").attr("disabled", false);
+            $("#form-returne #orden_etiqueta").attr("disabled", false);
+            $("#form-returne #orden_kilos_actual").attr("disabled", false);
+            $("#form-returne #orden_cajas_actual").attr("disabled", false);
 
-            $("#form-return #orden_trabajo_id").attr("disabled", false);
-
-             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;
+            var data = form.serialize();
             
-            $("#form-return #orden_trabajo_id").attr("disabled", true);
+            alert(data);
+
+            $("#form-returne #orden_trabajo_id").attr("disabled", true);
+            $("#form-returne #orden_etiqueta").attr("disabled", true);
+            $("#form-returne #orden_kilos_actual").attr("disabled", true);
+            $("#form-returne #orden_cajas_actual").attr("disabled", true);
 
             $.post(url, data, function(resp)
             {
-                if(resp[0] == "ok")
+                if(resp['estado'] == "nok")
                 {
+                    $(".alert-danger").html("Las cajas y los kilos no deben ser mayores a los actuales").show();
+
+                }else{
+
                     $(".alert-success").html("El registro fue actualizado exitosamente").show();
                     $(".alert-danger").hide();
                     //reseteo el formulario
-                    $('#form-return').trigger("reset");
+                    $('#form-returne').trigger("reset");
 
+                    $('#modal_etiqueta').modal('hide');
                     $('#modal_return').modal('hide');
 
                     table_pallet.destroy();
-                    arr_etiquetas = [];
-
                     table.ajax.reload();
+                   
                 }
 
             }).fail(function(resp){

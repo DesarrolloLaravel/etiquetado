@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\OrdenTrabajo\CreateRequest;
 use App\Http\Requests\OrdenTrabajo\UpdateRequest;
+use App\Http\Requests\OrdenTrabajo\ReturnRequest;
 
 use App\Models\OrdenTrabajo;
 use App\Models\OrdenTrabajoProducto;
@@ -384,29 +385,37 @@ class OrdenTrabajoController extends Controller
         }
     }
 
-    public function r_pallet(Request $request)
+    public function r_pallet(ReturnRequest $request)
     {
         //
 
-        Log::info($request->etiquetas);
+        Log::info($request->orden_etid);
         Log::info($request->orden_number);
+        Log::info($request->orden_kilos_actual);
+        Log::info($request->orden_kilos_retornar);
+        Log::info($request->orden_cajas_actual);
+        Log::info($request->orden_cajas_retornar);
 
         $ot = OrdenTrabajo::where('orden_trabajo_id',$request->orden_number)->firstOrFail();
+
+        $r_kilos = $request->orden_kilos_actual -  $request->orden_kilos_retornar;
+        $r_cajas = $request->orden_cajas_actual - $request->orden_cajas_retornar;
+
+        if($r_cajas < 0 || $r_kilos < 0){
+            Log::info("error");
+            return response()->json(['estado' => "nok", 'id' => 0]);
+        }
 
         if($request->ajax())
         {
 
-            $prod = explode(',',$request->etiquetas);
+            if( $r_cajas == 0 && $r_kilos == 0){
 
-            for ($i=0; $i < count($prod) ; $i++) { 
-               
-                Log::info($prod[$i]);
-
-                $opp = OrdenTrabajoProducto::where('ot_producto_orden_trabajo',$request->orden_number)->where('ot_producto_etiqueta_pallet',$prod[$i])->firstOrFail();
+                $opp = OrdenTrabajoProducto::where('ot_producto_orden_trabajo',$request->orden_number)->where('ot_producto_etiqueta_pallet',$request->orden_etid)->firstOrFail();
 
                 $opp->delete();       
 
-                $etiqueta = Etiqueta_MP::where('etiqueta_mp_id',$prod[$i])->firstOrFail();
+                $etiqueta = Etiqueta_MP::where('etiqueta_mp_id',$request->orden_etid)->firstOrFail();
 
                 $peso = $ot->orden_trabajo_peso_total - $etiqueta->etiqueta_mp_peso;
 
@@ -418,13 +427,60 @@ class OrdenTrabajoController extends Controller
 
                 $info = array('etiqueta_mp_estado' => 'NO RECEPCIONADO');
                 $etiqueta->fill($info);
-                $etiqueta->save();   
+                $etiqueta->save();
+
+                return response()->json(['estado' => "ok", 'id' => 0]);
             }
-        
-            //envio respuesta al cliente
-            return response()->json([
-                "ok"
-            ]);
+            else{
+
+                $etiqueta = Etiqueta_MP::where('etiqueta_mp_id',$request->orden_etid)->firstOrFail();
+
+                $info_etiqueta_mp = array(
+                    'etiqueta_mp_lote_id'           => $etiqueta->etiqueta_mp_lote_id,
+                    'etiqueta_mp_estado'            => '1',
+                    'etiqueta_mp_producto_id'       => $etiqueta->etiqueta_mp_producto_id,
+                    'etiqueta_mp_fecha'             => \Carbon\Carbon::createFromFormat('Y-m-d', $etiqueta->etiqueta_mp_fecha),
+                    'etiqueta_mp_barcode'           => 'a',
+                    'etiqueta_mp_peso'              => $request->orden_kilos_retornar,
+                    'etiqueta_mp_cantidad_cajas'    => $request->orden_cajas_retornar
+                );
+
+                $eti_id=Etiqueta_MP::create($info_etiqueta_mp);
+                $etiqueta_mp= Etiqueta_MP::findOrFail($eti_id->etiqueta_mp_id);
+
+                $barcode = 'PMP'.$etiqueta->etiqueta_mp_lote_id.'0'.$eti_id->etiqueta_mp_id.'0P';
+
+                $info = array(
+                    'etiqueta_mp_barcode'           => $barcode
+                );
+
+                $etiqueta_mp -> fill($info);
+                $etiqueta_mp->save();
+
+
+                $eti_dos = Etiqueta_MP::where('etiqueta_mp_id',$request->orden_etid)->firstOrFail();
+
+                $enfo = array(
+
+                    'etiqueta_mp_peso'              => $r_kilos,
+                    'etiqueta_mp_cantidad_cajas'    => $r_cajas
+                );
+
+                $eti_dos -> fill($enfo);
+                $eti_dos->save();
+
+                $peso = $ot->orden_trabajo_peso_total - $request->orden_kilos_retornar;
+
+                $sot = OrdenTrabajo::where('orden_trabajo_id',$request->orden_number)->firstOrFail();
+
+                $inf = array('orden_trabajo_peso_total' => $peso);
+                $sot->fill($inf);
+                $sot->save();
+
+
+                return response()->json(['estado' => "ok", 'id' => $eti_id->etiqueta_mp_id]);
+
+            }
         }
 
     }

@@ -36,7 +36,7 @@
                         {!! Form::label('nombre', 'Kilos etiqueta',
                         ['class' => 'col-sm-2 control-label']) !!}
                       <div class="col-sm-2">
-                        {!! Form::number('orden_kilos_actual', null, ['class' => 'form-control', 'id' => 'orden_peso_actual', 'min' => 0, 'disabled']) !!}
+                        {!! Form::number('orden_kilos_actual', null, ['class' => 'form-control', 'id' => 'orden_kilos_actual', 'min' => 0, 'disabled']) !!}
                       </div>
 
                       {!! Form::label('nombre', 'Cajas etiqueta',
