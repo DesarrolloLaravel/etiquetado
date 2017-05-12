@@ -150,18 +150,36 @@ class OrdenDespachoController extends Controller
 
         $dp = OrdenDespacho::where('orden_id',$request->despacho_id)->firstOrFail();
 
-        if($dp->orden_estado == 1){
+        if($dp->orden_estado == "PRE-DESPACHO"){
 
             $lote = OrdenDespachoLote::where('despacho_orden_id',$request->despacho_id)->firstOrFail();
 
+<<<<<<< HEAD
             $caja = OrdenDespachoCaja::where('despacho_caja_despacho_lote_id',$lote->despacho_id)->get()->all();
 			
 			Log::info($caja);
             if($count(caja) > 0){
 			
                 for ($i=0; $i < count($caja) ; $i++) { 
+=======
+            $caja = OrdenDespachoCaja::where('despacho_caja_despacho_lote_id',$lote->despacho_id)->get();
+
+            Log::info($caja);
+
+            if(count($caja) > 0){
+
+                Log::info("entra");
+
+                foreach ($caja as $k) {
+>>>>>>> origin/master
                     
-                    $io = InputOutput::where('io_caja_id',$caja[$i]->despacho_caja_id)->firstOrFail();
+                    Log::info("foreach");
+
+                    Log::info($k->despacho_caja_caja_id);
+
+                    $io = InputOutput::where('io_caja_id',$k->despacho_caja_caja_id)->firstOrFail();
+
+                    Log::info($io);
 
                     $inout = array(
                         'io_tipo' => 2,
@@ -171,8 +189,9 @@ class OrdenDespachoController extends Controller
                     $io->fill($inout);
                     $io->save();
 
-                    $pos = CajaPosicion::where('caja_posicion_caja_id',$caja[$i]->despacho_caja_id)->firstOrFail();
+                    $pos = CajaPosicion::where('caja_posicion_caja_id',$k->despacho_caja_caja_id)->firstOrFail();
 
+                    Log::info($pos);
                     $pos->delete();
                            
                }   
