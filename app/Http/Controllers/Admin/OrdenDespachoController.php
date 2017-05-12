@@ -73,7 +73,7 @@ class OrdenDespachoController extends Controller
 
             $excel->sheet('Cajas', function($sheet) use ($orden) {
 
-               $sheet->row(1, array('Año','Lote','Procesadora','Productor', 'Elaborador', 'ID Caja', 'Producto', 'Descripción', 'Calidad', 'Cliente', 'Código', 'Kilos'));
+               /*$sheet->row(1, array('Año','Lote','Procesadora','Productor', 'Elaborador', 'ID Caja', 'Producto', 'Descripción', 'Calidad', 'Cliente', 'Código', 'Kilos'))*/
 
                $detalle_lote = OrdenDespachoLote::where('despacho_orden_id',$orden->orden_id)->get()->all();
 
@@ -101,16 +101,17 @@ class OrdenDespachoController extends Controller
                             $aux['N° Caja'] = $caja->caja->caja_id;
                             $aux['Producto'] = $producto->producto_name;
                             $aux['Descripcion'] = $producto->producto_descripcion;
-                            $aux['Calidad'] = \Config::get('options.calidad')[$lote->lote_calidad_id];
+                            $aux['Calidad'] = $lote->lote_calidad_id;
                             $aux['Cliente'] = $orden->cliente->cliente_nombre;
                             $aux['Codigo'] = $caja->caja->etiqueta->etiqueta_barcode;
                             $aux['Kilos'] = $caja->caja->caja_peso_real;
                             $cajas[] = $aux;
                         }
                     }
-
-                    $sheet->fromArray($cajas);
                 }
+
+                $sheet->setAutoFilter('A1:Z999999');
+                $sheet->fromArray($cajas);
             });
 
         })->export('xls');
