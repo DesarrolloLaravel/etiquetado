@@ -24,5 +24,12 @@ class OrdenDespachoCaja extends Model
             'despacho_id');
     }
 
+    public function caja(){
+
+        return $this->belongsTo('App\Models\Caja',
+            'despacho_caja_caja_id',
+            'caja_id');
+    }
+
     
 }

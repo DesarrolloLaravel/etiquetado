@@ -413,7 +413,9 @@
                                 $(nRow).attr('data-id', aData[0]);
                             }
                         });
-
+                        
+                        lote_add = data.pallet[0].etiqueta_mp_lote_id;
+                                              
                         for (var i = 0; i < data.pallet.length; i++) {
                             
                             table_pallet.row.add( [
@@ -481,6 +483,8 @@
                             $(nRow).attr('data-id', aData[0]);
                         }
                     });
+
+                    lote_add = data.pallet[0].etiqueta_mp_lote_id;
 
                     for (var i = 0; i < data.pallet.length; i++) {
                         

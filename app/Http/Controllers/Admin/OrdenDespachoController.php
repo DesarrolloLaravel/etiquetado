@@ -42,20 +42,78 @@ class OrdenDespachoController extends Controller
             $excel->sheet('Packing', function($sheet) use ($orden) {
 
 
-                $detalles = [];
+                $sheet->rows(array(
+                    array('Resumen Orden Despacho'),
+                    array('Orden',$orden->orden_id),
+                    array('Fecha',\Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_fecha)->format('d-m-Y')),
+                    array('Orden Producción',$orden->orden_orden_produccion),
+                    array('Guía',$orden->orden_guia),
+                ));
 
-                $detalle['Orden'] = $orden->orden_id;
-                $detalle['Estado'] = $orden->orden_estado;
-                $detalle['Fecha'] = $orden->orden_fecha;
-                $detalle['Orden de Producción'] = $orden->orden_orden_produccion;
-                $detalle['Guía'] = $orden->orden_guia;
- 
-                $sheet->fromArray($detalle);
+                $sheet->cells('A1:A5', function($cells) {
+
+                    $cells->setFontColor('#000000');
+                    $cells->setFontFamily('Calibri');
+                    $cells->setFontSize(16);
+                    $cells->setFontWeight('bold');
+                    $cells->setBorder('solid', 'none', 'solid', 'solid');    
+                });
+
+                 $sheet->cells('B1:B5', function($cells) {
+
+                    $cells->setFontColor('#000000');
+                    $cells->setFontFamily('Calibri');
+                    $cells->setFontSize(16);
+                    $cells->setFontWeight('bold');
+                    $cells->setAlignment('right'); 
+                    $cells->setBorder('solid', 'none', 'solid', 'solid');   
+                });
  
             });
-            
-        })->export('xls');
 
+            $excel->sheet('Cajas', function($sheet) use ($orden) {
+
+               $sheet->row(1, array('Año','Lote','Procesadora','Productor', 'Elaborador', 'ID Caja', 'Producto', 'Descripción', 'Calidad', 'Cliente', 'Código', 'Kilos'));
+
+               $detalle_lote = OrdenDespachoLote::where('despacho_orden_id',$orden->orden_id)->get()->all();
+
+                Log::info($detalle_lote);
+
+                $cajas = [];
+                foreach ($detalle_lote as $detalle) {
+
+                    $despacho_caja = OrdenDespachoCaja::with('caja','caja.etiqueta','caja.etiqueta.lote')->where('despacho_caja_despacho_lote_id',$detalle->orden_id)->get()->all();
+
+                    Log::info($despacho_caja);
+
+                    if(count($despacho_caja) > 0){
+                    
+                        $aux = [];
+                        foreach ($despacho_caja as $caja) {
+                            # code...
+                            $lote = $caja->caja->lote;
+                            $producto = $caja->caja->orden_producto->producto;
+                            $aux['Año'] = $lote->lote->lote_year;
+                            $aux['Lote'] = $lote->lote_id;
+                            $aux['Procesadora'] = $lote->procesador->procesador_name;
+                            $aux['Productor'] = $lote->productor->productor_name;
+                            $aux['Elaborador'] = $lote->elaborador->elaborador_id;
+                            $aux['N° Caja'] = $caja->caja->caja_id;
+                            $aux['Producto'] = $producto->producto_name;
+                            $aux['Descripcion'] = $producto->producto_descripcion;
+                            $aux['Calidad'] = \Config::get('options.calidad')[$lote->lote_calidad_id];
+                            $aux['Cliente'] = $orden->cliente->cliente_nombre;
+                            $aux['Codigo'] = $caja->caja->etiqueta->etiqueta_barcode;
+                            $aux['Kilos'] = $caja->caja->caja_peso_real;
+                            $cajas[] = $aux;
+                        }
+                    }
+
+                    $sheet->fromArray($cajas);
+                }
+            });
+
+        })->export('xls');
     }
 
     public function cargar_etiqueta(Request $request){

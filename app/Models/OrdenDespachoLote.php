@@ -52,9 +52,9 @@ class OrdenDespachoLote extends Model
 
     public function despacho_caja()
     {
-        return $this->hasMany(  'App\Models\OrdenDespachoCaja',
+        return $this->hasMany('App\Models\OrdenDespachoCaja',
                                 'despacho_caja_despacho_lote_id',
-                                'despacho_caja_id');
+                                'despacho_lote_id');
     }
 
     public function orden()
