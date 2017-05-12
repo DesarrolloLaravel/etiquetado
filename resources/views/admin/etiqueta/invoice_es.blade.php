@@ -13,7 +13,7 @@
         -webkit-transform-origin: 16% 65%; /* Chrome, Safari, Opera */
         transform: rotate(90deg);
         transform-origin: 16% 65%;
-        margin-top: -150px;
+        margin-top: -160px;
         margin-left: 1px;
         font-size: 14px;
     }
@@ -37,6 +37,11 @@
 <main>
     <table width="410" border="0" cellspacing="0" cellpadding="0">
         <tbody>
+        <tr class="with-border">
+            <td colspan="12">
+                <p style="font-size: 20px; text-align: center">{{ $data['nombre'] }}</p>
+            </td>
+        </tr>
         <tr class="with-border">
             <td colspan="10">
                 <p>{{ $data['especie_comercial_name'] }}</p>

@@ -77,6 +77,7 @@ class EtiquetaController extends Controller
         $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d-m-Y');
         $data['especie_comercial_name'] = $producto->especie->especie_comercial_name;
         $data['producto'] = $producto->getFullName();
+        $data['nombre'] = $producto->producto_nombre;
         $data['calibre'] = $producto->calibre->calibre_nombre;
         $data['calidad'] = $producto->calidad->calidad_nombre;
         $data['piezas'] = round($caja->caja_unidades);

@@ -38,6 +38,11 @@
       <table width="420" border="0" cellspacing="0" cellpadding="0">
         <tbody>
           <tr class="with-border">
+            <td colspan="12">
+                <p style="font-size: 20px; text-align: center">{{ $data['nombre'] }}</p>
+            </td>
+          </tr>
+          <tr class="with-border">
             <td colspan="10">
               <p>{{ $data['especie_comercial_name'] }}</p>
               <p style="font-size: 14px">{{ $data['producto'] }}</p>

@@ -23,31 +23,59 @@ use App\Http\Controllers\Controller;
 
 class NordicController extends Controller
 {
-    public function print_etiqueta($orden_id, $lote_id, $fecha)
+    public function print_etiqueta($id, $idioma)
     {
-        $orden = OrdenTrabajo::findOrFail($orden_id);
-        $lote = Lote::findOrFail($lote_id);
-        $producto = Producto::findOrFail($orden->orden_trabajo_producto);
+        $etiqueta = Etiqueta::findOrFail($id);
 
-        $data['fecha_produccion'] = \Carbon\Carbon::createFromTimestamp($fecha)->format('d.m.Y');
-        $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d.m.Y');
-        $data['trim'] = $producto->trim->trim_nombre;
+        /*$created_at = new \Carbon\Carbon($etiqueta->created_at);
+        $now = \Carbon\Carbon::now();
+
+        $diff_minutes = $created_at->diffInMinutes($now);
+
+        if($diff_minutes >= 5)
+        {
+            return "Para reemprimir esta Etiqueta debes solicitar autorización a Administración";
+        }
+        else
+        {*/
+        //dd($etiqueta->caja->);
+        $caja = $etiqueta->caja;
+        //dd($caja->orden_producto);
+        $producto = $caja->orden_producto->producto;
+        $orden = $caja->orden_producto->orden;
+        $lote = $etiqueta->lote;
+
+        $condicion = $producto->condicion->condicion_name;
+        
+        $data['condicion']=$condicion;
+        $data['fecha_produccion'] = \Carbon\Carbon::createFromFormat('Y-m-d', $etiqueta->etiqueta_fecha)->format('d-m-Y');
+        $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d-m-Y');
+        $data['especie_comercial_name'] = $producto->especie->especie_comercial_name;
+        $data['producto'] = $producto->getFullName();
+        $data['nombre'] = $producto->producto_nombre;
         $data['calibre'] = $producto->calibre->calibre_nombre;
         $data['calidad'] = $producto->calidad->calidad_nombre;
-        $data['v2'] = \Config::get('producto.v2')[$producto->producto_v2_id];
-        $data['producto_id'] = $producto->producto_id;
-        $data['orden_number'] = $orden->orden_id;
+        $data['piezas'] = round($caja->caja_unidades);
+        $data['peso_neto'] = $caja->caja_peso_real;
+        $data['caja_number'] = $number = str_pad($caja->caja_id, 6, 0, STR_PAD_LEFT);
+        $data['barcode'] = \DNS1D::getBarcodePNG($etiqueta->etiqueta_barcode, "C128");
+        $data['code'] = $etiqueta->etiqueta_barcode;
         $data['lote_number'] = $lote->lote_id;
-        //dd($data);
-
-        $view =  \View::make('admin.nordic.invoice',
-            compact('data'))->render();
+        
+       if(\Config::get('options.idioma')[$idioma] == "Español")
+            $view =  \View::make('admin.nordic.invoice_es',
+                compact('data'))->render();
+        elseif (\Config::get('options.idioma')[$idioma] == "Inglés")
+            $view =  \View::make('admin.nordic.invoice',
+                compact('data'))->render();
+        else
+            $view =  \View::make('admin.nordic.invoice_es',
+                compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
 
         return $pdf->stream('invoice', array ("Attachment" => false));
-
     }
     /**
      * Display a listing of the resource.
