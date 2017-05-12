@@ -37,7 +37,7 @@ class Caja extends Model
 
     public function etiqueta()
     {
-        return $this->hasOne(  'App\Models\Etiqueta',
+        return $this->hasOne('App\Models\Etiqueta',
                                 'etiqueta_caja_id',
                                 'caja_id');
     }
