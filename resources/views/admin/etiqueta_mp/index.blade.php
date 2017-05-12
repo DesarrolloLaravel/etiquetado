@@ -69,7 +69,7 @@
             "columnDefs": [{
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<button class='btn btn-xs btn-warning' id='reprint'><i class='fa fa-file-text'></i></button>\
+                "defaultContent": "<button class='btn btn-xs btn-warning' id='reprint_final'><i class='fa fa-file-text'></i></button>\
                     <button class='btn btn-xs btn-danger' id='delete'><i class='fa fa-close'></i></button>"
             },
                 {

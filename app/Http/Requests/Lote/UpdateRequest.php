@@ -42,9 +42,7 @@ class UpdateRequest extends Request
             'lote_destino_id'       => 'required',
             'lote_condicion'        => 'required',
             'lote_kilos_declarado'  => 'required',
-            'lote_kilos_recepcion'  => 'required',
-            'lote_cajas_declarado'  => 'required',
-            'lote_cajas_recepcion'  => 'required',
+            'lote_cajas_declarado'  => 'required',  
         ];
     }
 

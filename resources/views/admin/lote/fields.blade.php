@@ -104,7 +104,7 @@
 				{!! Form::label('lote_condicion', 'Condición de MP',
 					['class' => 'control-label']) !!}
 				{!! Form::select('lote_condicion', 
-								\Config::get('options.conservacion'),
+								$condiciones,
 								null, 
 								['class' => 'form-control']) !!}
 			</div>

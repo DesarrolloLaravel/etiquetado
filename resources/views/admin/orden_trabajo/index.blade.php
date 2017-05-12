@@ -90,6 +90,7 @@
         });
     
         $("#add").click(function(){
+        $('.alert').hide();
 
             arr_etiquetas = [];
 
@@ -249,7 +250,7 @@
             etiqueta_pallet = $("#etiqueta_ide").val();
             producto_id = $("#producto_ide").val();
 
-            if(etiqueta_pallet != '')
+            if(etiqueta_pallet != '' && producto_id!= '')
             {
                 in_array = false;
 
@@ -325,8 +326,10 @@
             }
             else
             {
-            $(".alert-danger").html("Debes seleccionar una Etiqueta").show(); 
+            $(".alert-danger").html("Debes seleccionar una Etiqueta Y/O rellenar los campos iniciales").show(); 
             }
+
+
         });
 
         $(document).on('click','#guardar',function(event){
@@ -472,7 +475,7 @@
                         "columnDefs": [{
                             "targets": -1,
                             "data": null,
-                            "defaultContent": "<a class='btn btn-xs btn-danger' id='d_return'><i class='fa fa-close'></i></a>"
+                            "defaultContent": "<a class='btn btn-xs btn-danger' id='d_return'><i class='fa fa-reply'></i></a>"
                         }],
                         'fnCreatedRow': function (nRow, aData, iDataIndex) {
                             $(nRow).attr('data-id', aData[0]);
@@ -533,6 +536,7 @@
                         });
                     });
                     
+
             
                     $('.datepicker').datepicker({
                         format : 'dd-mm-yyyy',
@@ -545,6 +549,8 @@
 
             });
 
+            var printPage = window.open('{{ url("admin/etiqueta_mp/print") }}'+'/'+etiqueta_id, '');
+            alert(printPage);
         });
 
         $('#table-trabajos tbody').on( 'click', '#delete', function ()

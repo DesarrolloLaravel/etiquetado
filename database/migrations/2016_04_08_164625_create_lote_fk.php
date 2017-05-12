@@ -31,6 +31,11 @@ class CreateLoteFk extends Migration
                     ->on('elaborador')
                     ->onUpdate('NO ACTION')->onDelete('cascade');
 
+            $table->foreign('lote_condicion_id', 'lote_condicion_id')
+                    ->references('condicion_id')
+                    ->on('condicion')
+                    ->onUpdate('NO ACTION')->onDelete('cascade');
+
             $table->foreign('lote_productor_id', 'lote_productor_id')
                     ->references('productor_id')
                     ->on('productor')

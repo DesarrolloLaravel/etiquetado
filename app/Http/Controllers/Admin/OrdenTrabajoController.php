@@ -92,7 +92,7 @@ class OrdenTrabajoController extends Controller
 
 
 
-        $eti = Etiqueta_MP::where('etiqueta_mp_estado','NO RECEPCIONAdO')->where('etiqueta_mp_barcode',$request->etiqueta_pallet)
+        $eti = Etiqueta_MP::where('etiqueta_mp_estado','RECEPCIONADO')->where('etiqueta_mp_barcode',$request->etiqueta_pallet)
         ->count();
 
 

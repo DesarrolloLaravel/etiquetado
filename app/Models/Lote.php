@@ -40,7 +40,7 @@ class Lote extends Model
                             'lote_year',
                             'lote_produccion',
                             'lote_tipo_id',
-                            'lote_condicion'];
+                            'lote_condicion_id'];
     protected $dates = ['deleted_at'];
 
     public function go_produccion()
@@ -57,6 +57,12 @@ class Lote extends Model
         return $this->belongsTo('App\Models\Calidad',
             'producto_calidad_id',
             'calidad_id');
+    }
+
+    public function condicion(){
+        return $this->belongsTo('App\Models\Condicion',
+            'producto_condicion_id',
+            'condicion_id');
     }
 
     public function etiqueta_mp(){

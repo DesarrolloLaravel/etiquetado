@@ -164,6 +164,9 @@ public function informeFecha(Request $request)
 
        $excel->sheet('Materia Prima Recepcionada', function($sheet) use ( $materia_prima_recep){
 
+        if ($materia_prima_recep->count()>0) {
+
+        
             foreach ($materia_prima_recep as $mpp) {
                 $aux['#']=$mpp->etiqueta_mp_id;
                 $aux['Codigo Barra']=$mpp->etiqueta_mp_barcode;
@@ -175,6 +178,9 @@ public function informeFecha(Request $request)
                 $aux['Vencimiento'] = $mpp->lote->lote_fecha_expiracion;
                 $output[] = $aux;
             }
+        }else{
+            $output[]="";
+        }
             $sheet->setAutoFilter('A1:Z999999');    
             $sheet->fromArray($output);
        
@@ -184,7 +190,7 @@ public function informeFecha(Request $request)
 
       
        $excel->sheet('Materia Prima a Produccion', function($sheet) use ( $materia_prima_prod){
-
+        if ($materia_prima_prod->count()>0) {
             foreach ($materia_prima_prod as $mpp) {
                 $aux['#']=$mpp->etiqueta_mp_id;
                 $aux['Codigo Barra']=$mpp->etiqueta_mp_barcode;
@@ -196,6 +202,9 @@ public function informeFecha(Request $request)
                 $aux['Vencimiento'] = $mpp->lote->lote_fecha_expiracion;
                 $output[] = $aux;
             }
+        }else{
+            $output[]="";
+        }
             $sheet->setAutoFilter('A1:Z999999');    
             $sheet->fromArray($output);
        
@@ -203,8 +212,10 @@ public function informeFecha(Request $request)
 
         $etiqueta_pt = Etiqueta::where('etiqueta_estado','NO RECEPCIONADA')->whereBetween('created_at',array($fecha_i,$fecha_f))->with('lote')->get();
 
+
          $excel->sheet('Etiquetas No Recepcionado', function($sheet) use ( $etiqueta_pt){
 
+        if ($etiqueta_pt->count()>0) {
             foreach ($etiqueta_pt as $mpp) {
                 $aux['#']=$mpp->etiqueta_caja_id;
                 $aux['Codigo Barra']=$mpp->etiqueta_barcode;
@@ -219,6 +230,9 @@ public function informeFecha(Request $request)
 
                 $output[] = $aux;
             }
+        }else{
+            $output[]="";
+        }
             $sheet->setAutoFilter('A1:Z999999');    
             $sheet->fromArray($output);
        
@@ -229,19 +243,24 @@ public function informeFecha(Request $request)
             
             $excel->sheet('Producto Terminado Recepcionado', function($sheet) use ( $etiqueta_rp){
 
-            foreach ($etiqueta_rp as $mpp) {
-                $aux['#']=$mpp->etiqueta_caja_id;
-                $aux['Codigo Barra']=$mpp->etiqueta_barcode;
-                $aux['Lote']=$mpp->etiqueta_lote_id;
-                $aux['Especie']=$mpp->lote->especie->especie_name;
-                $aux['Producto'] = $mpp->caja->orden_producto->producto->getFullName();
-                $aux['Kilos Brutos'] = $mpp->caja->caja_peso_bruto;
-                $aux['Glaseado'] = $mpp->caja->caja_glaseado;
-                $aux['Kilos Reales'] = $mpp->caja->caja_peso_real;
-                $aux['Unidades'] = $mpp->caja->caja_unidades;
-                $aux['Vencimiento'] = $mpp->lote->lote_fecha_expiracion;
+            if ($etiqueta_rp->count()>0) {
+                    
+                foreach ($etiqueta_rp as $mpp) {
+                    $aux['#']=$mpp->etiqueta_caja_id;
+                    $aux['Codigo Barra']=$mpp->etiqueta_barcode;
+                    $aux['Lote']=$mpp->etiqueta_lote_id;
+                    $aux['Especie']=$mpp->lote->especie->especie_name;
+                    $aux['Producto'] = $mpp->caja->orden_producto->producto->getFullName();
+                    $aux['Kilos Brutos'] = $mpp->caja->caja_peso_bruto;
+                    $aux['Glaseado'] = $mpp->caja->caja_glaseado;
+                    $aux['Kilos Reales'] = $mpp->caja->caja_peso_real;
+                    $aux['Unidades'] = $mpp->caja->caja_unidades;
+                    $aux['Vencimiento'] = $mpp->lote->lote_fecha_expiracion;
 
-                $output[] = $aux;
+                    $output[] = $aux;
+                }
+            }else{
+                $output[]="";
             }
             $sheet->setAutoFilter('A1:Z999999');    
             $sheet->fromArray($output);

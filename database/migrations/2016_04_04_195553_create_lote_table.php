@@ -37,7 +37,7 @@ class CreateLoteTable extends Migration
             $table->string('lote_year');
             $table->longText('lote_observaciones');
 
-            $table->enum('lote_condicion', ['CONGELADO', 'FRESCO']);
+            $table->unsignedInteger('lote_condicion_id')->index();
             $table->enum('lote_djurada', ['SI', 'NO']);
             $table->enum('lote_reestriccion', ['SI','NO']);
             $table->enum('lote_produccion',['SI','NO'])->default('NO');

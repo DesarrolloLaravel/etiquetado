@@ -42,7 +42,7 @@ class LoteTableSeeder extends Seeder
                         'lote_djurada' => \Config::get('options.djurada')[rand(1,2)],
                         'lote_reestriccion' => \Config::get('options.reestriccion')[rand(1,2)],
                         'lote_observaciones' => $faker->text,
-                        'lote_condicion' => \Config::get('options.conservacion')[rand(1,2)]];
+                        'lote_condicion' => rand(1,2);
         }
 
         Lote::insert($lotes);

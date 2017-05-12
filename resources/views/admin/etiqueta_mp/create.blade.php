@@ -85,10 +85,7 @@ $(document).ready(function(){
 					//printPage.print({bUI: false, bSilent: true,bShrinkToFit: true});
 					//$("#caja_number").val(parseInt($("#caja_number").val())+1);
 
-					$('#lote_id').val("");
-					$('#especie').val("");
-                	$('#producto_ide').empty()
-                	$('#producto_ide').append("<option value=''>Ninguno</option>");
+
 					$('#cajas').val("");
 					$("#peso_real").val("");
 				}

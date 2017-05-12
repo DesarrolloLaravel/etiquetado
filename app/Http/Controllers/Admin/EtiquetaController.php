@@ -21,6 +21,7 @@ use App\Models\OrdenTrabajo;
 use App\Models\Frigorifico;
 use App\Models\Posicion;
 use App\Models\Camara;
+use App\Models\Condicion;
 
 class EtiquetaController extends Controller
 {
@@ -69,26 +70,13 @@ class EtiquetaController extends Controller
         $orden = $caja->orden_producto->orden;
         $lote = $etiqueta->lote;
 
-        $condicion = \Config::get('producto.condicion')[$producto->producto_condicion_id];
-        if($condicion == "Fz"){
-            if(\Config::get('options.idioma')[$idioma] == "Español")
-                $data['condicion'] = "Congelado";
-            else
-                $data['condicion'] = "Frozen";
-        }
-        elseif ($condicion == "Fs"){
-            if(\Config::get('options.idioma')[$idioma] == "Español")
-                $data['condicion'] = "Fresco";
-            else
-                $data['condicion'] = "Fresh";
-        }
-        else
-            $data['condicion'] = "";
-
+        $condicion = $producto->condicion->condicion_name;
+        
+        $data['condicion']=$condicion;
         $data['fecha_produccion'] = \Carbon\Carbon::createFromFormat('Y-m-d', $etiqueta->etiqueta_fecha)->format('d-m-Y');
         $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d-m-Y');
         $data['especie_comercial_name'] = $producto->especie->especie_comercial_name;
-        $data['producto'] = $producto->getFullName(\Config::get('options.idioma')[$idioma]);
+        $data['producto'] = $producto->getFullName();
         $data['calibre'] = $producto->calibre->calibre_nombre;
         $data['calidad'] = $producto->calidad->calidad_nombre;
         $data['piezas'] = round($caja->caja_unidades);
@@ -106,6 +94,62 @@ class EtiquetaController extends Controller
                 compact('data'))->render();
         else
             $view =  \View::make('admin.etiqueta.invoice',
+                compact('data'))->render();
+
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+
+        return $pdf->stream('invoice', array ("Attachment" => false));
+        //}
+
+    }
+
+    public function print_especifica($id, $idioma)
+    {
+        $etiqueta = Etiqueta::findOrFail($id);
+
+        /*$created_at = new \Carbon\Carbon($etiqueta->created_at);
+        $now = \Carbon\Carbon::now();
+
+        $diff_minutes = $created_at->diffInMinutes($now);
+
+        if($diff_minutes >= 5)
+        {
+            return "Para reemprimir esta Etiqueta debes solicitar autorización a Administración";
+        }
+        else
+        {*/
+        //dd($etiqueta->caja->);
+        $caja = $etiqueta->caja;
+        //dd($caja->orden_producto);
+        $producto = $caja->orden_producto->producto;
+        $orden = $caja->orden_producto->orden;
+        $lote = $etiqueta->lote;
+
+        $condicion = $producto->condicion->condicion_name;
+        
+        $data['condicion']=$condicion;
+        $data['fecha_produccion'] = \Carbon\Carbon::createFromFormat('Y-m-d', $etiqueta->etiqueta_fecha)->format('d-m-Y');
+        $data['fecha_vencimiento'] = \Carbon\Carbon::createFromFormat('Y-m-d', $lote->lote_fecha_expiracion)->format('d-m-Y');
+        $data['especie_comercial_name'] = $producto->especie->especie_comercial_name;
+        $data['producto'] = $producto->getFullName();
+        $data['calibre'] = $producto->calibre->calibre_nombre;
+        $data['calidad'] = $producto->calidad->calidad_nombre;
+        $data['piezas'] = round($caja->caja_unidades);
+        $data['peso_neto'] = $caja->caja_peso_real;
+        $data['caja_number'] = $number = str_pad($caja->caja_id, 6, 0, STR_PAD_LEFT);
+        $data['barcode'] = \DNS1D::getBarcodePNG($etiqueta->etiqueta_barcode, "C128");
+        $data['code'] = $etiqueta->etiqueta_barcode;
+        $data['lote_number'] = $lote->lote_id;
+
+        if(\Config::get('options.idioma')[$idioma] == "Español")
+            $view =  \View::make('admin.nordic.invoice_es',
+                compact('data'))->render();
+        elseif (\Config::get('options.idioma')[$idioma] == "Inglés")
+            $view =  \View::make('admin.nordic.invoice',
+                compact('data'))->render();
+        else
+            $view =  \View::make('admin.nordic.invoice',
                 compact('data'))->render();
 
         $pdf = \App::make('dompdf.wrapper');
@@ -190,9 +234,7 @@ class EtiquetaController extends Controller
         //
         if($request->ajax())
         {
-            $etiquetas = Etiqueta::has('caja.orden_producto.lote')
-                ->with('caja.orden_producto.lote')
-                ->where('etiqueta_estado', 'NO RECEPCIONADA')
+            $etiquetas = Etiqueta::where('etiqueta_estado', 'NO RECEPCIONADA')
                 ->get();
 
             if($etiquetas->count() == 0)

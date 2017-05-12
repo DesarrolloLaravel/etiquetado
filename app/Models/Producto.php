@@ -44,7 +44,7 @@ class Producto extends Model
 
 
     public function etiqueta_mp(){
-        return $this->hasOne('App\Models\Etiqueta_MP',
+        return $this->hasMany('App\Models\Etiqueta_MP',
                              'etiqueta_mp_producto_id',
                              'producto_id');
     }
@@ -60,29 +60,35 @@ class Producto extends Model
 
     public function getFullName($idioma = null)
     {
-        if($this->formato)
-        {
-            if($idioma == "Español"){
-                $formato = $this->formato->formato_nombre;
-                if($formato == "Fillet")
-                    $formato = "Filete";
-            }
-            elseif($idioma == "Inglés"){
-                $formato = $this->formato->formato_nombre;
-            }
-            else{
-                $formato = $this->formato->formato_nombre;
-            }
-        }
-        else{
-            $formato = '';
-        }
+        $especie = $this->especie ? $this->especie->especie_comercial_name : '';
+        $formato = $this->formato ? $this->formato->formato_nombre : '';
+        $condicion = $this->condicion ? $this->condicion->condicion_name : '';
+        $producto = $this->producto_condicion_id == 0 ? '' : $this->producto_condicion_id;
+        $trim = $this->trim ? $this->trim->trim_nombre : '';
+        $calibre = $this->calibre ? $this->calibre->calibre_nombre : '';
+        $variante = $this->variante ? $this->variante->variante_name : '';
+        $productov2 = $this->producto_v2_id == 0 ? '' : $this->producto_v2_id;
+        $calidad = $this->calidad ? $this->calidad->calidad_nombre : '';
 
+        return $especie." ".
+               $formato." ".
+               $condicion." ".
+               $trim." ".
+               $variante." ".
+               $productov2." ".
+               $calidad." ".
+               $calibre;
+    }
+
+    public function getFullNameAttribute()
+    {
+        $formato = $this->formato ? $this->formato->formato_nombre : '';
         $especie = $this->especie ? $this->especie->especie_abbreviation : '';
         $condicion = $this->condicion ? $this->condicion->condicion_name : '';
         $producto = $this->producto_condicion_id == 0 ? '' : $this->producto_condicion_id;
         $trim = $this->trim ? $this->trim->trim_nombre : '';
         $calibre = $this->calibre ? $this->calibre->calibre_nombre : '';
+        $variante = $this->variante ? $this->variante->variante_name : '';
         $productov2 = $this->producto_v2_id == 0 ? '' : $this->producto_v2_id;
         $calidad = $this->calidad ? $this->calidad->calidad_nombre : '';
 
@@ -91,27 +97,9 @@ class Producto extends Model
             $formato." ".
             $trim." ".
             $calibre." ".
+            $variante." ".
             $productov2." ".
             $calidad;
-    }
-
-    public function getFullNameAttribute()
-    {
-        $especie = $this->especie ? $this->especie->especie_abbreviation : '';
-        $producto = $this->producto_condicion_id == 0 ? '' : $this->producto_condicion_id;
-        $formato = $this->formato ? $this->formato->formato_nombre : '';
-        $trim = $this->trim ? $this->trim->trim_name : '';
-        $calibre = $this->calibre ? $this->calibre->calibre_nombre : '';
-        $productov2 = $this->producto_v2_id == 0 ? '' : $this->producto_v2_id;
-        $calidad = $this->calidad ? $this->calidad->calidad_nombre : '';
-
-        return $especie." ".
-        \Config::get('producto.condicion')[$producto]." ".
-        $formato." ".
-        $trim." ".
-        $calibre." ".
-        \Config::get('producto.v2')[$productov2]." ".
-        $calidad;
     }
 
     public function calibre(){

@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Caja;
 use App\Models\Lote;
-use App\Models\OrdenTrabajo;
+use App\Models\Etiqueta;
 use App\Models\Producto;
+use App\Models\CajaPosicion;
+use App\Models\OrdenProduccion;
+use App\Models\OrdenTrabajo;
+use App\Models\Frigorifico;
+use App\Models\Posicion;
+use App\Models\Camara;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\Nordic\CreateRequest;
@@ -57,10 +64,32 @@ class NordicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+public function create()
     {
         //
-        return view('admin.nordic.create');
+/*        $etiqueta = Etiqueta::orderBy('created_at', 'DESC')->limit(1)->first();
+
+        $orden = $etiqueta->caja->orden_producto->orden;
+        $lote = $orden->lote;
+
+        $productos = $orden->productos->lists('fullName','producto_id');
+
+        $producto = $etiqueta->caja->orden_producto->producto;
+
+        $orden_id = $orden->orden_id;
+        $lote_id = $lote->lote_id;
+        $producto_id = $producto->producto_id;
+        $producto_fullName = $producto->fullName;
+        $peso_estandar = $producto->producto_peso;
+        $caja_id = $etiqueta->caja->caja_id + 1;
+
+        return view('admin.etiqueta.create', compact('lote_id', 'orden_id', 'producto_id',
+            'producto_fullName', 'caja_id', 'productos', 'peso_estandar'));*/
+        
+        $proxima_caja = Caja::withTrashed()->max('caja_id') + 1;
+
+        return view('admin.nordic.create',compact('proxima_caja'));
+
     }
 
     /**

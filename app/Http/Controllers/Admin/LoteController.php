@@ -18,6 +18,7 @@ use App\Models\Procesador;
 use App\Models\MateriaPrima;
 use App\Models\Elaborador;
 use App\Models\Especie;
+use App\Models\Condicion;
 use App\Models\Productor;
 use App\Models\Destino;
 use App\Models\Lote;
@@ -240,12 +241,20 @@ class LoteController extends Controller
                         ->all();
 
         $calidades = ['null' => 'Ninguno'] + Calidad::orderBy('calidad_nombre', 'ASC')
+                ->where('calidad_id','>','0')
                 ->get()
                 ->lists('calidad_nombre', 'calidad_id')->all();
 
         $formatos = ['null'=>'Ninguno'] + Formato::orderBy('formato_nombre', 'ASC')
+                ->where('formato_id','>','0')
                 ->get()
                 ->lists('formato_abreviatura','formato_id')->all();
+
+        $condiciones = ['null'=>'Ninguna'] + Condicion::orderBy('condicion_name', 'ASC')
+                ->where('condicion_id','>','0')
+                ->get()
+                ->lists('condicion_name','condicion_id')->all();
+        
 
         $mps = ['' => 'Ninguno'] +
                        MateriaPrima::orderBy('materia_prima_name', 'ASC')
@@ -262,8 +271,9 @@ class LoteController extends Controller
 
         $especies = [''=>'Ninguno'] + 
                         Especie::orderBy('especie_name', 'ASC')
+                        ->where('especie_id','>','0')
                         ->get()
-                        ->lists('especie_name','especie_id')
+                        ->lists('especie_comercial_name','especie_id')
                         ->all();
 
         $productores = [''=>'Ninguno'] + 
@@ -299,6 +309,7 @@ class LoteController extends Controller
                         'calidades',
                         'formatos',
                         'elaboradores',
+                        'condiciones',
                         'especies',
                         'mps',
                         'productores',
@@ -473,6 +484,11 @@ class LoteController extends Controller
                             ->lists('especie_name','especie_id')
                             ->all();
 
+                    $condiciones = ['null'=>'Ninguna'] + Condicion::orderBy('condicion_name', 'ASC')
+                ->where('condicion_id','>','0')
+                ->get()
+                ->lists('condicion_name','condicion_id')->all();
+
             $productores = [''=>'Ninguno'] + 
                             Productor::orderBy('productor_name', 'ASC')
                             ->get()
@@ -496,6 +512,7 @@ class LoteController extends Controller
                     ->with('formatos', $formatos)
                     ->with('calidades', $calidades)
                     ->with('mps', $mps)
+                    ->with('condiciones',$condiciones)
                     ->with('elaboradores', $elaboradores)
                     ->with('especies', $especies)
                     ->with('productores', $productores)

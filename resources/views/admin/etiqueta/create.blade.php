@@ -54,7 +54,8 @@ $(document).ready(function(){
         //obtengo url
         var url = form.attr('action');
 
-
+        var disabled = form.find(':input:disabled').removeAttr('disabled');
+        //obtengo la informacion del formulario
         var data = form.serialize();
 
         disabled.attr('disabled','disabled');
@@ -253,7 +254,7 @@ $(document).ready(function(){
 	<div class="col-md-12">
 	    <div class="box box-primary">
 	        <div class="box-header with-border">
-	            <h3 class="box-title">Ingreso de datos</h3>
+	            <h3 class="box-title">Ingreso de datos - Generica</h3>
 	            <br>
 	            <p class="alert alert-success"></p>
 	            <div class="alert alert-danger">

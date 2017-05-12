@@ -64,43 +64,53 @@ class ProductoController extends Controller
         }
         else
         {
-            $especies = [''=>'NO APLICA'] + Especie::orderBy('especie_abbreviation', 'ASC')
+            $especies = ['0'=>'NO APLICA'] + Especie::orderBy('especie_abbreviation', 'ASC')
+                    ->where('especie_id','>','0')
                     ->get()
-                    ->lists('especie_abbreviation','especie_id')->all();
+                    ->lists('especie_comercial_name','especie_id')->all();
 
-            $condiciones = [''=>'NO APLICA'] + Condicion::orderBy('condicion_name', 'ASC')
+            $condiciones = ['0'=>'NO APLICA'] + Condicion::orderBy('condicion_name', 'ASC')
+                    ->where('condicion_id','>','0')
                     ->get()
                     ->lists('condicion_name','condicion_id')->all();
 
-            $formatos = [''=>'NO APLICA'] + Formato::orderBy('formato_nombre', 'ASC')
+            $formatos = ['0'=>'NO APLICA'] + Formato::orderBy('formato_nombre', 'ASC')
+                    ->where('formato_id','>','0')
                     ->get()
                     ->lists('formato_abreviatura','formato_id')->all();
 
-            $trims = [''=>'NO APLICA'] + Trim::orderBy('trim_name', 'ASC')
+            $trims = ['0'=>'NO APLICA'] + Trim::orderBy('trim_name', 'ASC')
+                    ->where('trim_id','>','0')
                     ->get()
                     ->lists('trim_name','trim_id')->all();
 
-            $calidades = ['' => 'NO APLICA'] + Calidad::orderBy('calidad_nombre', 'ASC')
+            $calidades = ['0' => 'NO APLICA'] + Calidad::orderBy('calidad_nombre', 'ASC')
+                    ->where('calidad_id','>','0')
                     ->get()
                     ->lists('calidad_nombre', 'calidad_id')->all();
 
-            $variantes = [''=>'NO APLICA'] + Variante::orderBy('variante_name', 'ASC')
+            $variantes = ['0'=>'NO APLICA'] + Variante::orderBy('variante_name', 'ASC')
+                    ->where('variante_id','>','0')
                     ->get()
                     ->lists('variante_name','variante_id')->all();
 
-            $variantes_dos = [''=>'NO APLICA'] + VarianteDos::orderBy('varianteDos_name', 'ASC')
+            $variantes_dos = ['0'=>'NO APLICA'] + VarianteDos::orderBy('varianteDos_name', 'ASC')
+                    ->where('varianteDos_id','>','0')
                     ->get()
                     ->lists('varianteDos_name','varianteDos_id')->all();
 
-            $calibres = ['' => 'NO APLICA'] + Calibre::orderBy('calibre_nombre', 'ASC')
+            $calibres = ['0' => 'NO APLICA'] + Calibre::orderBy('calibre_nombre', 'ASC')
+                    ->where('calibre_id','>','0')
                     ->get()
                     ->lists('calibre_nombre', 'calibre_id')->all();
 
-            $envases = ['' => 'NO APLICA'] + Envase::orderBy('envase_nombre', 'ASC')
+            $envases = ['0' => 'NO APLICA'] + Envase::orderBy('envase_nombre', 'ASC')
+                    ->where('envase_id','>','0')
                     ->get()
                     ->lists('envase_nombre', 'envase_id')->all();
 
-            $envases_dos = ['' => 'NO APLICA'] + Envase_Dos::orderBy('envaseDos_nombre', 'ASC')
+            $envases_dos = ['0' => 'NO APLICA'] + Envase_Dos::orderBy('envaseDos_nombre', 'ASC')
+                    ->where('envaseDos_id','>','0')
                     ->get()
                     ->lists('envaseDos_nombre', 'envaseDos_id')->all();
 

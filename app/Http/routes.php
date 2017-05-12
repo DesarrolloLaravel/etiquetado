@@ -114,6 +114,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','profile:administraci
 	Route::get('etiqueta','EtiquetaController@index');
     Route::get('etiqueta/all','EtiquetaController@indexAll');
 	Route::get('etiqueta/print/{id}/{idioma}', 'EtiquetaController@print_etiqueta');
+    Route::get('etiqueta/print_especial/{id}/{idioma}', 'EtiquetaController@print_especifica');
 	Route::get('etiqueta/create', 'EtiquetaController@create');
 	Route::post('etiqueta/store', 'EtiquetaController@store');
 	Route::post('etiqueta/update', 'EtiquetaController@update');
