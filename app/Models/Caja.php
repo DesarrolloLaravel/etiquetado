@@ -73,9 +73,9 @@ class Caja extends Model
     public function despachoCaja()
     {
         return $this->hasOne('App\Models\OrdenDespachoCaja',
-            'despacho_caja_caja_id',
-            'caja_id'
-            );
+                             'despacho_caja_caja_id',
+                             'caja_id'
+                             );
     }
 
 }

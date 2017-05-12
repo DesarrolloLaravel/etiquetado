@@ -93,7 +93,7 @@ class OrdenDespachoController extends Controller
                             # code...
                             $lote = $caja->caja->lote;
                             $producto = $caja->caja->orden_producto->producto;
-                            $aux['Año'] = $lote->lote->lote_year;
+                            $aux['Año'] = $lote->lote_year;
                             $aux['Lote'] = $lote->lote_id;
                             $aux['Procesadora'] = $lote->procesador->procesador_name;
                             $aux['Productor'] = $lote->productor->productor_name;
@@ -154,6 +154,14 @@ class OrdenDespachoController extends Controller
 
             $lote = OrdenDespachoLote::where('despacho_orden_id',$request->despacho_id)->firstOrFail();
 
+<<<<<<< HEAD
+            $caja = OrdenDespachoCaja::where('despacho_caja_despacho_lote_id',$lote->despacho_id)->get()->all();
+			
+			Log::info($caja);
+            if($count(caja) > 0){
+			
+                for ($i=0; $i < count($caja) ; $i++) { 
+=======
             $caja = OrdenDespachoCaja::where('despacho_caja_despacho_lote_id',$lote->despacho_id)->get();
 
             Log::info($caja);
@@ -163,6 +171,7 @@ class OrdenDespachoController extends Controller
                 Log::info("entra");
 
                 foreach ($caja as $k) {
+>>>>>>> origin/master
                     
                     Log::info("foreach");
 
