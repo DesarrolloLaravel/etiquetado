@@ -206,18 +206,21 @@ class OrdenTrabajoController extends Controller
             $prod = explode(',',$request->etiquetas);
 
             $orden_fecha = \Carbon\Carbon::createFromFormat('d-m-Y', $request->orden_fecha);
-            
-            for ($x=0; $x < count($prod) ; $x++) { 
 
-                $etiq = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$x])->firstOrFail();
+            if(!empty($request->etiquetas)){
 
-                Log::info($etiq);
+                for ($x=0; $x < count($prod) ; $x++) { 
 
-                $peso = $peso + $etiq->etiqueta_mp_peso;
-                
-                Log::info($peso);
+                    $etiq = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$x])->firstOrFail();
+
+                    Log::info($etiq);
+
+                    $peso = $peso + $etiq->etiqueta_mp_peso;
+                    
+                    Log::info($peso);
+                }
             }
-
+            
             $info = array(
                 'orden_trabajo_orden_produccion'    => $request->orden_trabajo_orden_produccion,
                 'orden_trabajo_especie'           => $request->orden_trabajo_especie,
@@ -229,24 +232,27 @@ class OrdenTrabajoController extends Controller
 
             $orden = OrdenTrabajo::create($info);
 
-
-            for ($i=0; $i < count($prod) ; $i++) { 
+            if(!empty($request->etiquetas)){
+                
+                for ($i=0; $i < count($prod) ; $i++) { 
                
-                Log::info($prod[$i]);
+                    Log::info($prod[$i]);
 
-                $etiq = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$i])->firstOrFail();
+                    $etiq = Etiqueta_MP::where('etiqueta_mp_barcode',$prod[$i])->firstOrFail();
 
-                $pp = array(
-                    'ot_producto_orden_trabajo' => $orden->orden_trabajo_id,
-                    'ot_producto_etiqueta_pallet' => $etiq->etiqueta_mp_id
-                );
+                    $pp = array(
+                        'ot_producto_orden_trabajo' => $orden->orden_trabajo_id,
+                        'ot_producto_etiqueta_pallet' => $etiq->etiqueta_mp_id
+                    );
 
-                $opp = OrdenTrabajoProducto::create($pp);    
+                    $opp = OrdenTrabajoProducto::create($pp);    
 
-                $info = array('etiqueta_mp_estado' => 'PRODUCCION');
-                $etiq->fill($info);
-                $etiq->save();   
+                    $info = array('etiqueta_mp_estado' => 'PRODUCCION');
+                    $etiq->fill($info);
+                    $etiq->save();   
+                }    
             }
+            
             
             //envio respuesta al cliente
             return response()->json([

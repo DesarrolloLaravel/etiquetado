@@ -346,6 +346,8 @@
             //obtengo la informacion del formulario
             var data = form.serialize()  + '&etiquetas=' + arr_etiquetas;          
 
+            alert(data);
+
             $.post(url, data, function(resp)
             {
                 if(resp[0] == "ok")
