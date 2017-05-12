@@ -103,7 +103,7 @@
 			<div class="form-group">
 				{!! Form::label('lote_condicion', 'Condición de MP',
 					['class' => 'control-label']) !!}
-				{!! Form::select('lote_condicion', 
+				{!! Form::select('lote_condicion_id', 
 								$condiciones,
 								null, 
 								['class' => 'form-control']) !!}

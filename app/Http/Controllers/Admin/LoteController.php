@@ -211,7 +211,7 @@ class LoteController extends Controller
                                 .$lote->lote_produccion.'","'
                                 .$lote->lote_kilos_recepcion.'","'
                                 .$lote->especie->especie_id.'","'
-                                .$lote->especie->especie_name.'"],';
+                                .$lote->especie->especie_comercial_name.'"],';
             }
             //elimino la ultima coma del json
             $dt_json = substr($dt_json, 0, -1);
@@ -355,6 +355,7 @@ class LoteController extends Controller
                 'lote_productor_id'     => $request->lote_productor_id,
                 'lote_destino_id'       => $request->lote_destino_id,
                 'lote_cliente_id'       => $request->lote_cliente_id,
+                'lote_condicion_id'     => $request->lote_condicion_id,
                 'lote_users_id'         => \Auth::user()->users_id,
                 'lote_observaciones'    => $request->lote_observaciones,
                 'lote_djurada'          => \Config::get('options.djurada')[$request->lote_djurada],
@@ -458,10 +459,12 @@ class LoteController extends Controller
                         ->all();
 
             $calidades = ['null' => 'Ninguno'] + Calidad::orderBy('calidad_nombre', 'ASC')
+                    ->where('calidad_id','>','0')
                     ->get()
                     ->lists('calidad_nombre', 'calidad_id')->all();
 
             $formatos = ['null'=>'Ninguno'] + Formato::orderBy('formato_nombre', 'ASC')
+                    ->where('formato_id','>','0')
                     ->get()
                     ->lists('formato_abreviatura','formato_id')->all();
 
@@ -480,14 +483,15 @@ class LoteController extends Controller
 
             $especies = [''=>'Ninguno'] + 
                             Especie::orderBy('especie_name', 'ASC')
+                            ->where('especie_id','>','0')
                             ->get()
-                            ->lists('especie_name','especie_id')
+                            ->lists('especie_comercial_name','especie_id')
                             ->all();
 
-                    $condiciones = ['null'=>'Ninguna'] + Condicion::orderBy('condicion_name', 'ASC')
-                ->where('condicion_id','>','0')
-                ->get()
-                ->lists('condicion_name','condicion_id')->all();
+            $condiciones = ['null'=>'Ninguna'] + Condicion::orderBy('condicion_name', 'ASC')
+                            ->where('condicion_id','>','0')
+                            ->get()
+                            ->lists('condicion_name','condicion_id')->all();
 
             $productores = [''=>'Ninguno'] + 
                             Productor::orderBy('productor_name', 'ASC')
@@ -567,6 +571,7 @@ class LoteController extends Controller
                 'lote_productor_id'     => $request->lote_productor_id,
                 'lote_destino_id'       => $request->lote_destino_id,
                 'lote_cliente_id'       => $request->lote_cliente_id,
+                'lote_condicion_id'     => $request->lote_condicion_id,
                 'lote_users_id'         => \Auth::user()->users_id,
                 'lote_observaciones'    => $request->lote_observaciones,
                 'lote_djurada'          => \Config::get('options.djurada')[$request->lote_djurada],

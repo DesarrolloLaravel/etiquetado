@@ -115,7 +115,7 @@ class CajaController extends Controller
                         $aux['N° Caja'] = $caja->caja_id;
                         $aux['Producto'] = $producto->producto_nombre;
                         $aux['Descripcion'] = $producto->fullName;
-                        $aux['Especie'] = $producto->especie->especie_name;
+                        $aux['Especie'] = $producto->especie->especie_comercial_name;
                         $aux['Calibre'] = $producto->calibre->calibre_nombre;
                         $aux['Calidad'] = $producto->calidad->calidad_nombre;
                         $aux['Cliente'] = $caja->orden_producto->ordenProduccion->cliente->cliente_nombre;
@@ -171,7 +171,7 @@ public function informeFecha(Request $request)
                 $aux['#']=$mpp->etiqueta_mp_id;
                 $aux['Codigo Barra']=$mpp->etiqueta_mp_barcode;
                 $aux['Lote']=$mpp->etiqueta_mp_lote_id;
-                $aux['Especie']=$mpp->lote->especie->especie_name;
+                $aux['Especie']=$mpp->lote->especie->especie_comercial_name;
                 $aux['Producto'] = $mpp->producto->getFullName();
                 $aux['Kilos'] = $mpp->etiqueta_mp_peso;
                 $aux['Cajas'] = $mpp->etiqueta_mp_cantidad_cajas;
@@ -195,7 +195,7 @@ public function informeFecha(Request $request)
                 $aux['#']=$mpp->etiqueta_mp_id;
                 $aux['Codigo Barra']=$mpp->etiqueta_mp_barcode;
                 $aux['Lote']=$mpp->etiqueta_mp_lote_id;
-                $aux['Especie']=$mpp->lote->especie->especie_name;
+                $aux['Especie']=$mpp->lote->especie->especie_comercial_name;
                 $aux['Producto'] = $mpp->producto->getFullName();
                 $aux['Kilos'] = $mpp->etiqueta_mp_peso;
                 $aux['Cajas'] = $mpp->etiqueta_mp_cantidad_cajas;
@@ -220,7 +220,7 @@ public function informeFecha(Request $request)
                 $aux['#']=$mpp->etiqueta_caja_id;
                 $aux['Codigo Barra']=$mpp->etiqueta_barcode;
                 $aux['Lote']=$mpp->etiqueta_lote_id;
-                $aux['Especie']=$mpp->lote->especie->especie_name;
+                $aux['Especie']=$mpp->lote->especie->especie_comercial_name;
                 $aux['Producto'] = $mpp->caja->orden_producto->producto->getFullName();
                 $aux['Kilos Brutos'] = $mpp->caja->caja_peso_bruto;
                 $aux['Glaseado'] = $mpp->caja->caja_glaseado;
@@ -249,7 +249,7 @@ public function informeFecha(Request $request)
                     $aux['#']=$mpp->etiqueta_caja_id;
                     $aux['Codigo Barra']=$mpp->etiqueta_barcode;
                     $aux['Lote']=$mpp->etiqueta_lote_id;
-                    $aux['Especie']=$mpp->lote->especie->especie_name;
+                    $aux['Especie']=$mpp->lote->especie->especie_comercial_name;
                     $aux['Producto'] = $mpp->caja->orden_producto->producto->getFullName();
                     $aux['Kilos Brutos'] = $mpp->caja->caja_peso_bruto;
                     $aux['Glaseado'] = $mpp->caja->caja_glaseado;
@@ -348,7 +348,7 @@ public function informeFecha(Request $request)
                     $aux['N° Caja'] = $caja->caja_id;
                     $aux['Producto'] = $producto->producto_nombre;
                     $aux['Descripcion'] = $producto->fullName;
-                    $aux['Especie'] = $producto->especie->especie_name;
+                    $aux['Especie'] = $producto->especie->especie_comercial_name;
                     $aux['Calibre'] = $producto->calibre->calibre_nombre;
                     $aux['Calidad'] = $producto->calidad->calidad_nombre;
                     $aux['Cliente'] = $caja->orden_producto->orden->cliente->cliente_nombre;

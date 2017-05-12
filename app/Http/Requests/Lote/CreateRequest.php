@@ -38,7 +38,7 @@ class CreateRequest extends Request
             'lote_n_documento'      => 'required',
             'lote_productor_id'     => 'required',
             'lote_destino_id'       => 'required',
-            'lote_condicion'        => 'required',
+            'lote_condicion_id'     => 'required',
             'lote_kilos_declarado'  => 'required',
             'lote_cajas_declarado'  => 'required',
         ];
@@ -68,7 +68,7 @@ class CreateRequest extends Request
             'lote_kilos.required' => 'El campo Kilos es obligatorio',
             'lote_productor_id.required' => 'Debes seleccionar un Productor',
             'lote_destino_id.required' => 'Debes seleccionar un Destino',
-            'lote_condicion.required' => 'Debes elegir una Condición',
+            'lote_condicion_id.required' => 'Debes elegir una Condición',
             'lote_kilos_declarado.required'  => 'El campo Kilos Declarados es obligatorio',
             'lote_kilos_recepcion.required'  => 'El campo Kilos Recepción es obligatorio',
             'lote_cajas_declarado.required'  => 'El campo Cajas Declaradas es obligatorio',

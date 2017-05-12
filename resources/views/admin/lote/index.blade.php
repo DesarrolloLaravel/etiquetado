@@ -327,7 +327,7 @@
         $("#"+form+" select[name='lote_procesador_id']").val(data.lote_procesador_id);
         $("#"+form+" select[name='lote_calidad_id']").val(data.lote_calidad_id);
         $("#"+form+" select[name='lote_especie_id']").val(data.lote_especie_id);
-        $("#"+form+" select[name='lote_condicion']").val(data.lote_condicion == "CONGELADO"?1:2);
+        $("#"+form+" select[name='lote_condicion_id']").val(data.lote_condicion_id);
         $("#"+form+" select[name='lote_mp_id']").val(data.lote_mp_id);
         $("#"+form+" select[name='lote_destino_id']").val(data.lote_destino_id);
         $("#"+form+" select[name='lote_cliente_id']").val(data.lote_cliente_id);

@@ -133,7 +133,7 @@ class OrdenTrabajoController extends Controller
                 $dt_json .= '["","'
                                 .$orden->orden_trabajo_id.'","'
                                 .$orden->ordenProduccion->orden_id.'","'
-                                .$orden->especie->especie_name.'","'
+                                .$orden->especie->especie_comercial_name.'","'
                                 .$orden->producto->fullName.'","'
                                 .$orden->orden_trabajo_peso_total.'","'
                                 .\Carbon\Carbon::createFromFormat('Y-m-d',$orden->orden_trabajo_fecha)->format('d-m-Y').'"],';
