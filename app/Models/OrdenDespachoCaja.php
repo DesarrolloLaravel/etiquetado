@@ -27,8 +27,8 @@ class OrdenDespachoCaja extends Model
     public function caja(){
 
         return $this->belongsTo('App\Models\Caja',
-            'despacho_caja_caja_id',
-            'caja_id');
+                                'despacho_caja_caja_id',
+                                'caja_id');
     }
 
     
