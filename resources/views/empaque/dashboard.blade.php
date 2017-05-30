@@ -17,7 +17,7 @@
 
                 <div class="panel-body">
                     <div class="page-header">
-                        <h1>Bienvenido al M&oacute;dulo de Etiquetado - Acuafood</h1>
+                        <h1>Bienvenido al Sistema de Producci&oacute;n - Acuafood</h1>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
@@ -80,19 +81,21 @@ class UserController extends Controller
         if($request -> ajax()){
             //crea un cliente con los datos del request
 
-            $v = \Validator::make($request->all(), [
-                'users_name' => 'max:255',
-                'users_email' => 'unique:users,users_email',
-                'users_user' => 'unique:users,users_user',
-                'password' => 'min:5'
-            ]); 
-            //si falla la validación
-            if ($v->fails())
-            {
+            // $v = \Validator::make($request->all(), [
+            //     'users_name' => 'max:255',
+            //     'users_email' => 'unique:users,users_email',
+            //     'users_user' => 'unique:users,users_user',
+            //     'password' => 'min:5'
+            // ]); 
+           \DB::table('users')->insert(array(
+            'users_user'		=> $request->users_user,
+            'users_name'		=> $request->users_name,
+            'users_email'		=> $request->users_email,
+            'password'	=> \Hash::make($request->users_password),
+            'users_role'        => $request->users_role
+        	));
+            
                 //respondo con un json que contiene los errores
-                return response()->json(["nok"]);
-            }            
-            User::create($request->all());
             return response()->json([
                 "ok"
 
@@ -154,12 +157,15 @@ class UserController extends Controller
             $user = User::findOrFail($request->users_id);
 
             //genera un array con la info del update
+
+           
             $info = array(
+            	'users_user' => $request->users_user,
                 'users_name' => $request->users_name,
                 'users_email' => $request->users_email,
                 'users_role' => $request->users_role,
-                'users_password' => $request->users_password
-            );
+                'password' => \Hash::make($request->users_password)
+                );
 
             //añade la info al elaborador encontrado
             $user->fill($info);

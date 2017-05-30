@@ -28,7 +28,9 @@ class UpdateRequest extends Request
             'users_name' => 'required|max:255',
             'users_email' => 'required|email',
             'users_user' => 'required',
+            'password' => 'required|min:5',
             'users_role' => 'required'
+            
         ];
         
     }
@@ -38,9 +40,13 @@ class UpdateRequest extends Request
         return [
             'users_name.required' => 'El campo Nombre es obligatorio',
             'users_email.required' => 'El campo Email es obligatorio',
+            'users_email.unique' => 'Ya existe ese Email',
             'users_email.email' => 'El campo Email debe ser valido',
             'users_user.required' => 'El campo ID-Usuario es obligatorio',
-            'users_role.required' => 'El Rol es requerido'      
+            'users_user.unique' => 'Ya existe ese ID-Usuario',
+            'password.required' => 'El campo Clave es obligatorio',
+            'password.min' => 'El campo Clave debe tener minimo  caracteres',
+            'users_role.required' => 'El Rol es requerido'
         ];
     }
 }

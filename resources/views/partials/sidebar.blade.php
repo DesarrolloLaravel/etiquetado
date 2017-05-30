@@ -101,6 +101,51 @@
                 </li>
 
                 <li class="{{ isActiveRoute('geren/despacho') }}"><a href="{{ url('/geren/despacho') }}"><i class='fa fa-cubes'></i> <span>Despacho</span></a></li>
+            @elseif(\Auth::user()->users_role == "almacenamiento")
+             <li class="{{ isActiveRoute('almacenamiento/home') }}"><a href="{{ url('/almacenamiento/home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a></li>
+                <li class="treeview {{ areActiveRoutes(['almacenamiento/lote/create','almacenamiento/lote']) }}">
+                    <a href="#"><i class='fa fa-folder'></i> <span>Lotes</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('/almacenamiento/lote') }}"><i class='fa fa-circle-o'></i>Listar</a></li>
+                        <li><a href="{{ url('/almacenamiento/etiqueta_mp/create') }}"><i class='fa fa-circle-o'></i>Etiqueta Pallet</a></li>
+                        <li><a href="{{ url('/almacenamiento/etiqueta_mp') }}"><i class='fa fa-circle-o'></i>Recepci&oacute;n Pallet</a></li>
+                    </ul>
+                </li>
+                <li class="treeview {{ areActiveRoutes(['almacenamiento/etiqueta/create','almacenamiento/etiqueta', 'almacenamiento/nordic/create', 'almacenamiento/etiqueta/all']) }}">
+                    <a href="#"><i class='glyphicon glyphicon-barcode'></i> <span>Etiqueta</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('almacenamiento/etiqueta') }}"><i class='fa fa-circle-o'></i>Monitor de Cajas</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview {{ areActiveRoutes(['almacenamiento/caja']) }}">
+                    <a href="#"><i class='fa fa-list-alt'></i> <span>Stock</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('almacenamiento/caja') }}"><i class='fa fa-cubes'></i>Control Stock</a></li>
+                    </ul>    
+                </li>
+
+                <li class="{{ isActiveRoute('almacenamiento/despacho') }}"><a href="{{ url('/almacenamiento/despacho') }}"><i class='fa fa-cubes'></i> <span>Despacho</span></a></li>
+            @elseif(\Auth::user()->users_role == "empaque")
+            <li class="{{ isActiveRoute('empaque/home') }}"><a href="{{ url('/empaque/home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a></li>
+                <!--<li class="{{ isActiveRoute('admin/recepcion') }}"><a href="{{ url('/admin/recepcion') }}"><i class='fa fa-sign-out'></i> <span>Recepci&oacute;n Materia Prima</span></a></li>-->
+                <li class="treeview {{ areActiveRoutes(['empaque/etiqueta/create','empaque/etiqueta', 'empaque/nordic/create', 'empaque/etiqueta/all']) }}">
+                    <a href="#"><i class='glyphicon glyphicon-barcode'></i> <span>Etiqueta</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('empaque/etiqueta/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Planta</a></li>
+                        <li><a href="{{ url('empaque/nordic/create') }}"><i class='fa fa-circle-o'></i>Imprimir - Espec&iacute;fica</a></li>
+                        <li><a href="{{ url('empaque/etiqueta') }}"><i class='fa fa-circle-o'></i>Monitor de Cajas</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview {{ areActiveRoutes(['empaque/caja']) }}">
+                    <a href="#"><i class='fa fa-list-alt'></i> <span>Stock</span><i class="fa fa-angle-right pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('empaque/caja') }}"><i class='fa fa-cubes'></i>Control Stock</a></li>
+                    </ul>    
+                </li>
+
+                <li class="{{ isActiveRoute('empaque/despacho') }}"><a href="{{ url('/empaque/despacho') }}"><i class='fa fa-cubes'></i> <span>Despacho</span></a></li>
             @elseif(\Auth::user()->users_role == "recepcion")
             <li class="{{ isActiveRoute('recepcion/home') }}"><a href="{{ url('/recepcion/home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a></li>
             <li class="treeview {{ areActiveRoutes(['recepcion/lote/create','recepcion/lote']) }}">
@@ -123,15 +168,6 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ url('/produccion/ordenproduccion') }}"><i class='fa fa-circle-o'></i>Producci&oacute;n</a></li>
                     <li><a href="#"><i class='fa fa-circle-o'></i>Traslado</a></li>
-                </ul>
-            </li>
-            @elseif(\Auth::user()->users_role == "empaque")
-            <li class="{{ isActiveRoute('empaque/home') }}"><a href="{{ url('/empaque/home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a></li>
-            <li class="treeview {{ areActiveRoutes(['empaque/etiqueta/create']) }}">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Etiqueta</span><i class="fa fa-angle-right pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ url('empaque/etiqueta/create') }}"><i class='fa fa-circle-o'></i>Imprimir</a></li>
-                    <li><a href="{{ url('empaque/etiqueta') }}"><i class='fa fa-circle-o'></i>Listar</a></li>
                 </ul>
             </li>
             @endif
